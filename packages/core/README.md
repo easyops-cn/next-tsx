@@ -1,3 +1,3 @@
 # @next-tsx/core
 
-It contains the core interfaces.
+It contains only the core interfaces.
