@@ -2,7 +2,7 @@ import type { ReactNode, PropsWithChildren } from "react";
 
 export function render(app: ReactNode): ReactNode;
 
-export function Routes(props: PropsWithChildren<{}>): ReactNode;
+export function Routes(props: PropsWithChildren<{ slot?: string }>): ReactNode;
 
 export function Route(props: {
   path: string;
@@ -43,6 +43,20 @@ export interface App {
   config: Record<string, any>;
 }
 
+/** 获取当前的特性开关配置 */
+export function useFlags(): Record<string, boolean>;
+
+/** 获取当前的媒体查询信息 */
+export function useMedia(): {
+  // 屏幕宽度断点名（大屏优先）
+  // xLarge: >= 1920px
+  // large: >= 1600px
+  // medium: >= 1280px
+  // small: >= 1024px
+  // xSmall: < 1024px
+  breakpoint: "xSmall" | "small" | "medium" | "large" | "xLarge";
+};
+
 /** 获取当前的 URL search 参数 */
 export function useQuery(): {
   readonly [key: string]: string | undefined;
@@ -52,6 +66,9 @@ export function useQuery(): {
 export function usePathParams(): {
   readonly [key: string]: string | undefined;
 };
+
+/** 获取当前的 URL path name */
+export function usePathName(): string;
 
 /** 获取用于进行导航跳转的对象 */
 export function useHistory(): History;
@@ -94,7 +111,7 @@ export function createContext<T>(defaultValue?: T): Context<T>;
 
 export interface Context<T> {
   /** 提供 Context 数据的组件 */
-  Provider: (props: { value: T; children: React.ReactNode }) => any;
+  Provider: (props: { value: T; children: React.ReactNode }) => ReactNode;
 }
 
 /** 将 children 放置在统一提供的 portal 容器中渲染 */
@@ -115,10 +132,7 @@ export function translate(
  * 第二个参数可传递变量用于替换文本中的占位符（形如 `{{ propName }}`），
  * 也可传递默认值，当找不到对应 key 的翻译时使用该默认值。
  */
-export function translate(
-  key: string,
-  defaultValue?: string
-): string;
+export function translate(key: string, defaultValue?: string): string;
 
 export function translateByRecord(record: Record<string, string>): string;
 
