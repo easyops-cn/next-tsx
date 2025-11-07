@@ -1,0 +1,1044 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`parseApp should work 1`] = `
+{
+  "appType": "app",
+  "constants": Map {
+    "/Pages/Layout.css" => "* {
+  box-sizing: border-box;
+}
+",
+  },
+  "entry": {
+    "contracts": Set {},
+    "defaultExport": null,
+    "errors": [],
+    "filePath": "/index.tsx",
+    "internals": [
+      {
+        "function": {
+          "name": "sayHello",
+          "source": "function sayHello(name: string) {
+  return \`Hello, \${name}!\`;
+}",
+          "typescript": true,
+        },
+        "type": "function",
+      },
+    ],
+    "moduleType": "entry",
+    "namedExports": Map {},
+    "render": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "Route",
+              "properties": {
+                "component": {
+                  "name": "BaseLayout",
+                  "reference": {
+                    "importSource": "/Pages/Layout.tsx",
+                    "type": "imported",
+                  },
+                },
+                "path": "/",
+              },
+              "ref": undefined,
+              "reference": {
+                "importSource": "next-tsx",
+                "name": "Route",
+                "type": "imported",
+              },
+              "slot": undefined,
+            },
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "Route",
+              "properties": {
+                "component": {
+                  "name": "Page404",
+                  "reference": {
+                    "importSource": "/Pages/Page404.tsx",
+                    "type": "imported",
+                  },
+                },
+                "path": "/404",
+              },
+              "ref": undefined,
+              "reference": {
+                "importSource": "next-tsx",
+                "name": "Route",
+                "type": "imported",
+              },
+              "slot": undefined,
+            },
+          ],
+          "events": undefined,
+          "lifeCycle": undefined,
+          "name": "Routes",
+          "properties": {},
+          "ref": undefined,
+          "reference": {
+            "importSource": "next-tsx",
+            "name": "Routes",
+            "type": "imported",
+          },
+          "slot": undefined,
+        },
+      ],
+      "type": "render",
+    },
+    "source": undefined,
+    "usedHelpers": Set {},
+  },
+  "errors": [],
+  "files": undefined,
+  "modules": Map {
+    "/index.tsx" => {
+      "contracts": Set {},
+      "defaultExport": null,
+      "errors": [],
+      "filePath": "/index.tsx",
+      "internals": [
+        {
+          "function": {
+            "name": "sayHello",
+            "source": "function sayHello(name: string) {
+  return \`Hello, \${name}!\`;
+}",
+            "typescript": true,
+          },
+          "type": "function",
+        },
+      ],
+      "moduleType": "entry",
+      "namedExports": Map {},
+      "render": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": undefined,
+                "events": undefined,
+                "lifeCycle": undefined,
+                "name": "Route",
+                "properties": {
+                  "component": {
+                    "name": "BaseLayout",
+                    "reference": {
+                      "importSource": "/Pages/Layout.tsx",
+                      "type": "imported",
+                    },
+                  },
+                  "path": "/",
+                },
+                "ref": undefined,
+                "reference": {
+                  "importSource": "next-tsx",
+                  "name": "Route",
+                  "type": "imported",
+                },
+                "slot": undefined,
+              },
+              {
+                "children": undefined,
+                "events": undefined,
+                "lifeCycle": undefined,
+                "name": "Route",
+                "properties": {
+                  "component": {
+                    "name": "Page404",
+                    "reference": {
+                      "importSource": "/Pages/Page404.tsx",
+                      "type": "imported",
+                    },
+                  },
+                  "path": "/404",
+                },
+                "ref": undefined,
+                "reference": {
+                  "importSource": "next-tsx",
+                  "name": "Route",
+                  "type": "imported",
+                },
+                "slot": undefined,
+              },
+            ],
+            "events": undefined,
+            "lifeCycle": undefined,
+            "name": "Routes",
+            "properties": {},
+            "ref": undefined,
+            "reference": {
+              "importSource": "next-tsx",
+              "name": "Routes",
+              "type": "imported",
+            },
+            "slot": undefined,
+          },
+        ],
+        "type": "render",
+      },
+      "source": undefined,
+      "usedHelpers": Set {},
+    },
+    "/Pages/Layout.tsx" => {
+      "contracts": Set {},
+      "defaultExport": {
+        "component": {
+          "bindingMap": Map {
+            Node {
+              "end": 272,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 10,
+                  "index": 272,
+                  "line": 10,
+                },
+                "filename": undefined,
+                "identifierName": "x",
+                "start": Position {
+                  "column": 9,
+                  "index": 271,
+                  "line": 10,
+                },
+              },
+              "name": "x",
+              "start": 271,
+              "type": "Identifier",
+            } => {
+              "id": Node {
+                "end": 272,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 10,
+                    "index": 272,
+                    "line": 10,
+                  },
+                  "filename": undefined,
+                  "identifierName": "x",
+                  "start": Position {
+                    "column": 9,
+                    "index": 271,
+                    "line": 10,
+                  },
+                },
+                "name": "x",
+                "start": 271,
+                "type": "Identifier",
+              },
+              "initialValue": 0,
+              "kind": "state",
+            },
+            Node {
+              "end": 278,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "index": 278,
+                  "line": 10,
+                },
+                "filename": undefined,
+                "identifierName": "setX",
+                "start": Position {
+                  "column": 12,
+                  "index": 274,
+                  "line": 10,
+                },
+              },
+              "name": "setX",
+              "start": 274,
+              "type": "Identifier",
+            } => {
+              "id": Node {
+                "end": 272,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 10,
+                    "index": 272,
+                    "line": 10,
+                  },
+                  "filename": undefined,
+                  "identifierName": "x",
+                  "start": Position {
+                    "column": 9,
+                    "index": 271,
+                    "line": 10,
+                  },
+                },
+                "name": "x",
+                "start": 271,
+                "type": "Identifier",
+              },
+              "kind": "setState",
+            },
+          },
+          "children": [
+            {
+              "context": [
+                {
+                  "name": "CONTEXT_PROVIDER__LayoutContext__x",
+                  "track": true,
+                  "value": "<% CTX.x %>",
+                },
+              ],
+              "events": {
+                "trigger": [
+                  {
+                    "action": "conditional",
+                    "payload": {
+                      "alternate": null,
+                      "consequent": {
+                        "action": "update_variable",
+                        "payload": {
+                          "name": "x",
+                          "value": "<% EVENT.detail.value %>",
+                        },
+                      },
+                      "test": "<% EVENT.detail.name === "setX" %>",
+                    },
+                  },
+                ],
+              },
+              "name": "eo-event-agent",
+              "portal": true,
+              "properties": {
+                "id": "context-agent-LayoutContext",
+              },
+            },
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "style",
+              "properties": {
+                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CONSTANTS["/Pages/Layout.css"])}) %>",
+              },
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "h1",
+              "properties": {
+                "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"Home "}, {type:"expression",value:(CTX.x)}) %>",
+              },
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": undefined,
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "name": "Link",
+                          "properties": {
+                            "textContent": "Home",
+                            "url": "/",
+                          },
+                          "ref": undefined,
+                          "reference": null,
+                          "slot": undefined,
+                        },
+                      ],
+                      "events": undefined,
+                      "lifeCycle": undefined,
+                      "name": "li",
+                      "properties": {},
+                      "ref": undefined,
+                      "reference": null,
+                      "slot": undefined,
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": undefined,
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "name": "Link",
+                          "properties": {
+                            "textContent": "About",
+                            "url": "/about",
+                          },
+                          "ref": undefined,
+                          "reference": null,
+                          "slot": undefined,
+                        },
+                      ],
+                      "events": undefined,
+                      "lifeCycle": undefined,
+                      "name": "li",
+                      "properties": {},
+                      "ref": undefined,
+                      "reference": null,
+                      "slot": undefined,
+                    },
+                  ],
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "name": "ul",
+                  "properties": {},
+                  "ref": undefined,
+                  "reference": null,
+                  "slot": undefined,
+                },
+              ],
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "Nav",
+              "properties": {},
+              "ref": undefined,
+              "reference": {
+                "name": "Nav",
+                "type": "local",
+              },
+              "slot": undefined,
+            },
+            {
+              "children": [
+                {
+                  "children": undefined,
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "name": "h2",
+                  "properties": {
+                    "textContent": "Welcome",
+                  },
+                  "ref": undefined,
+                  "reference": null,
+                  "slot": "header",
+                },
+                {
+                  "children": [
+                    {
+                      "children": undefined,
+                      "events": undefined,
+                      "lifeCycle": undefined,
+                      "name": "Route",
+                      "properties": {
+                        "component": {
+                          "name": "Home",
+                          "reference": {
+                            "importSource": "/Pages/Home.tsx",
+                            "type": "imported",
+                          },
+                        },
+                        "path": "/",
+                      },
+                      "ref": undefined,
+                      "reference": null,
+                      "slot": undefined,
+                    },
+                    {
+                      "children": undefined,
+                      "events": undefined,
+                      "lifeCycle": undefined,
+                      "name": "Route",
+                      "properties": {
+                        "component": {
+                          "name": "About",
+                          "reference": {
+                            "importSource": "/Pages/About.tsx",
+                            "type": "imported",
+                          },
+                        },
+                        "path": "/about",
+                      },
+                      "ref": undefined,
+                      "reference": null,
+                      "slot": undefined,
+                    },
+                  ],
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "name": "Routes",
+                  "properties": {},
+                  "ref": undefined,
+                  "reference": null,
+                  "slot": "body",
+                },
+              ],
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "Card",
+              "properties": {},
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+          ],
+          "id": Node {
+            "end": 257,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 30,
+                "index": 257,
+                "line": 9,
+              },
+              "filename": undefined,
+              "identifierName": "Layout",
+              "start": Position {
+                "column": 24,
+                "index": 251,
+                "line": 9,
+              },
+            },
+            "name": "Layout",
+            "start": 251,
+            "type": "Identifier",
+          },
+          "type": "page",
+        },
+        "type": "page",
+      },
+      "errors": [],
+      "filePath": "/Pages/Layout.tsx",
+      "internals": [
+        {
+          "component": {
+            "bindingMap": Map {},
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": undefined,
+                    "events": undefined,
+                    "lifeCycle": undefined,
+                    "name": "slot",
+                    "properties": {},
+                    "ref": undefined,
+                    "reference": null,
+                    "slot": undefined,
+                  },
+                ],
+                "events": undefined,
+                "lifeCycle": undefined,
+                "name": "nav",
+                "properties": {},
+                "ref": undefined,
+                "reference": null,
+                "slot": undefined,
+              },
+            ],
+            "id": Node {
+              "end": 1297,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 12,
+                  "index": 1297,
+                  "line": 57,
+                },
+                "filename": undefined,
+                "identifierName": "Nav",
+                "start": Position {
+                  "column": 9,
+                  "index": 1294,
+                  "line": 57,
+                },
+              },
+              "name": "Nav",
+              "start": 1294,
+              "type": "Identifier",
+            },
+            "type": "template",
+          },
+          "type": "template",
+        },
+      ],
+      "moduleType": "page",
+      "namedExports": Map {},
+      "source": undefined,
+      "usedHelpers": Set {
+        "_helper_mergeTexts",
+      },
+    },
+    "/Pages/Home.tsx" => {
+      "contracts": Set {},
+      "defaultExport": {
+        "component": {
+          "bindingMap": Map {
+            Node {
+              "end": 140,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 11,
+                  "index": 140,
+                  "line": 6,
+                },
+                "filename": undefined,
+                "identifierName": "x",
+                "start": Position {
+                  "column": 10,
+                  "index": 139,
+                  "line": 6,
+                },
+              },
+              "name": "x",
+              "range": undefined,
+              "start": 139,
+              "type": "Identifier",
+            } => {
+              "contextKey": "x",
+              "contextProvider": {
+                "importSource": "/Contexts/LayoutContext.ts",
+                "name": "LayoutContext",
+                "type": "imported",
+              },
+              "id": Node {
+                "end": 140,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 11,
+                    "index": 140,
+                    "line": 6,
+                  },
+                  "filename": undefined,
+                  "identifierName": "x",
+                  "start": Position {
+                    "column": 10,
+                    "index": 139,
+                    "line": 6,
+                  },
+                },
+                "name": "x",
+                "range": undefined,
+                "start": 139,
+                "type": "Identifier",
+              },
+              "kind": "context",
+            },
+            Node {
+              "end": 146,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 17,
+                  "index": 146,
+                  "line": 6,
+                },
+                "filename": undefined,
+                "identifierName": "setX",
+                "start": Position {
+                  "column": 13,
+                  "index": 142,
+                  "line": 6,
+                },
+              },
+              "name": "setX",
+              "range": undefined,
+              "start": 142,
+              "type": "Identifier",
+            } => {
+              "contextKey": "setX",
+              "contextProvider": {
+                "importSource": "/Contexts/LayoutContext.ts",
+                "name": "LayoutContext",
+                "type": "imported",
+              },
+              "id": Node {
+                "end": 146,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 17,
+                    "index": 146,
+                    "line": 6,
+                  },
+                  "filename": undefined,
+                  "identifierName": "setX",
+                  "start": Position {
+                    "column": 13,
+                    "index": 142,
+                    "line": 6,
+                  },
+                },
+                "name": "setX",
+                "range": undefined,
+                "start": 142,
+                "type": "Identifier",
+              },
+              "kind": "context",
+            },
+          },
+          "children": [
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": {
+                "onMount": [
+                  {
+                    "action": "call_selector",
+                    "payload": {
+                      "args": [
+                        {
+                          "name": "setX",
+                          "value": 42,
+                        },
+                      ],
+                      "method": "trigger",
+                      "selector": "#context-agent-LayoutContext",
+                    },
+                  },
+                ],
+                "onUnmount": [
+                  {
+                    "action": "call_selector",
+                    "payload": {
+                      "args": [
+                        {
+                          "name": "setX",
+                          "value": 0,
+                        },
+                      ],
+                      "method": "trigger",
+                      "selector": "#context-agent-LayoutContext",
+                    },
+                  },
+                ],
+              },
+              "name": "h1",
+              "properties": {
+                "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"\\n      This is home-"}, {type:"expression",value:(CTX.CONTEXT_PROVIDER__LayoutContext__x)}) %>",
+              },
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+          ],
+          "id": Node {
+            "end": 124,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 28,
+                "index": 124,
+                "line": 5,
+              },
+              "filename": undefined,
+              "identifierName": "Home",
+              "start": Position {
+                "column": 24,
+                "index": 120,
+                "line": 5,
+              },
+            },
+            "name": "Home",
+            "start": 120,
+            "type": "Identifier",
+          },
+          "type": "page",
+        },
+        "type": "page",
+      },
+      "errors": [
+        {
+          "message": "Expect an identifier as the variable name, received ObjectPattern",
+          "node": Node {
+            "end": 148,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 19,
+                "index": 148,
+                "line": 6,
+              },
+              "filename": undefined,
+              "identifierName": undefined,
+              "start": Position {
+                "column": 8,
+                "index": 137,
+                "line": 6,
+              },
+            },
+            "properties": [
+              Node {
+                "computed": false,
+                "end": 140,
+                "extra": {
+                  "shorthand": true,
+                },
+                "key": Node {
+                  "end": 140,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 11,
+                      "index": 140,
+                      "line": 6,
+                    },
+                    "filename": undefined,
+                    "identifierName": "x",
+                    "start": Position {
+                      "column": 10,
+                      "index": 139,
+                      "line": 6,
+                    },
+                  },
+                  "name": "x",
+                  "start": 139,
+                  "type": "Identifier",
+                },
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 11,
+                    "index": 140,
+                    "line": 6,
+                  },
+                  "filename": undefined,
+                  "identifierName": undefined,
+                  "start": Position {
+                    "column": 10,
+                    "index": 139,
+                    "line": 6,
+                  },
+                },
+                "method": false,
+                "shorthand": true,
+                "start": 139,
+                "type": "ObjectProperty",
+                "value": Node {
+                  "end": 140,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 11,
+                      "index": 140,
+                      "line": 6,
+                    },
+                    "filename": undefined,
+                    "identifierName": "x",
+                    "start": Position {
+                      "column": 10,
+                      "index": 139,
+                      "line": 6,
+                    },
+                  },
+                  "name": "x",
+                  "range": undefined,
+                  "start": 139,
+                  "type": "Identifier",
+                },
+              },
+              Node {
+                "computed": false,
+                "end": 146,
+                "extra": {
+                  "shorthand": true,
+                },
+                "key": Node {
+                  "end": 146,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 17,
+                      "index": 146,
+                      "line": 6,
+                    },
+                    "filename": undefined,
+                    "identifierName": "setX",
+                    "start": Position {
+                      "column": 13,
+                      "index": 142,
+                      "line": 6,
+                    },
+                  },
+                  "name": "setX",
+                  "start": 142,
+                  "type": "Identifier",
+                },
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 17,
+                    "index": 146,
+                    "line": 6,
+                  },
+                  "filename": undefined,
+                  "identifierName": undefined,
+                  "start": Position {
+                    "column": 13,
+                    "index": 142,
+                    "line": 6,
+                  },
+                },
+                "method": false,
+                "shorthand": true,
+                "start": 142,
+                "type": "ObjectProperty",
+                "value": Node {
+                  "end": 146,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 17,
+                      "index": 146,
+                      "line": 6,
+                    },
+                    "filename": undefined,
+                    "identifierName": "setX",
+                    "start": Position {
+                      "column": 13,
+                      "index": 142,
+                      "line": 6,
+                    },
+                  },
+                  "name": "setX",
+                  "range": undefined,
+                  "start": 142,
+                  "type": "Identifier",
+                },
+              },
+            ],
+            "start": 137,
+            "type": "ObjectPattern",
+          },
+          "severity": "error",
+        },
+      ],
+      "filePath": "/Pages/Home.tsx",
+      "internals": [],
+      "moduleType": "page",
+      "namedExports": Map {},
+      "source": undefined,
+      "usedHelpers": Set {
+        "_helper_mergeTexts",
+      },
+    },
+    "/Contexts/LayoutContext.ts" => {
+      "contracts": Set {},
+      "defaultExport": null,
+      "errors": [],
+      "filePath": "/Contexts/LayoutContext.ts",
+      "internals": [],
+      "moduleType": "unknown",
+      "namedExports": Map {
+        "LayoutContext" => {
+          "context": "LayoutContext",
+          "type": "context",
+        },
+      },
+      "source": undefined,
+      "usedHelpers": Set {},
+    },
+    "/Pages/About.tsx" => {
+      "contracts": Set {},
+      "defaultExport": {
+        "component": {
+          "bindingMap": Map {},
+          "children": [
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "h1",
+              "properties": {
+                "textContent": "This is about",
+              },
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+          ],
+          "id": Node {
+            "end": 29,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 29,
+                "index": 29,
+                "line": 1,
+              },
+              "filename": undefined,
+              "identifierName": "About",
+              "start": Position {
+                "column": 24,
+                "index": 24,
+                "line": 1,
+              },
+            },
+            "name": "About",
+            "start": 24,
+            "type": "Identifier",
+          },
+          "type": "page",
+        },
+        "type": "page",
+      },
+      "errors": [],
+      "filePath": "/Pages/About.tsx",
+      "internals": [],
+      "moduleType": "page",
+      "namedExports": Map {},
+      "source": undefined,
+      "usedHelpers": Set {},
+    },
+    "/Pages/Layout.css" => {
+      "contracts": Set {},
+      "defaultExport": null,
+      "errors": [],
+      "filePath": "/Pages/Layout.css",
+      "internals": [],
+      "moduleType": "css",
+      "namedExports": Map {},
+      "source": undefined,
+      "usedHelpers": Set {},
+    },
+    "/Pages/Page404.tsx" => {
+      "contracts": Set {},
+      "defaultExport": {
+        "component": {
+          "bindingMap": Map {},
+          "children": [
+            {
+              "children": undefined,
+              "events": undefined,
+              "lifeCycle": undefined,
+              "name": "h1",
+              "properties": {
+                "textContent": "404 Not Found",
+              },
+              "ref": undefined,
+              "reference": null,
+              "slot": undefined,
+            },
+          ],
+          "id": Node {
+            "end": 31,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 31,
+                "index": 31,
+                "line": 1,
+              },
+              "filename": undefined,
+              "identifierName": "Page404",
+              "start": Position {
+                "column": 24,
+                "index": 24,
+                "line": 1,
+              },
+            },
+            "name": "Page404",
+            "start": 24,
+            "type": "Identifier",
+          },
+          "type": "page",
+        },
+        "type": "page",
+      },
+      "errors": [],
+      "filePath": "/Pages/Page404.tsx",
+      "internals": [],
+      "moduleType": "page",
+      "namedExports": Map {},
+      "source": undefined,
+      "usedHelpers": Set {},
+    },
+  },
+}
+`;

@@ -1,0 +1,52 @@
+{
+  "name": "next-tsx",
+  "private": true,
+  "homepage": "https://github.com/easyops-cn/next-tsx",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:easyops-cn/next-tsx.git"
+  },
+  "license": "GPL-3.0",
+  "scripts": {
+    "prepare": "husky",
+    "start": "lerna run start",
+    "build": "lerna run build --concurrency=2",
+    "test": "test-next-project",
+    "test:ci": "lerna run test:ci --concurrency 2 -- --runInBand",
+    "lint-staged": "lint-staged"
+  },
+  "prettier": {
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.27.6",
+    "@next-core/babel-preset-next": "^1.0.26",
+    "@types/jest": "^29.5.14",
+    "@types/js-yaml": "^3.12.10",
+    "@types/lodash": "^4.17.17",
+    "@types/node": "^20.19.0",
+    "@types/react": "^18.2.79",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.29.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
+    "jest-websocket-mock": "^2.5.0",
+    "lerna": "^8.1.8",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.0",
+    "typescript": "^5.8.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "resolutions": {
+    "@babel/parser": "^7.27.5",
+    "@types/react": "^18.2.79",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1"
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+}
