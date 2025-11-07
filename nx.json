@@ -19,7 +19,7 @@
       "{workspaceRoot}/tsconfig.json",
       "{workspaceRoot}/tsconfig.module.json"
     ],
-    "jest": ["{workspaceRoot}/packages/jest-config-factory/**/*"]
+    "jest": ["{workspaceRoot}/__jest__/**/*", "{workspaceRoot}/jest/**/*"]
   },
   "targetDefaults": {
     "build": {

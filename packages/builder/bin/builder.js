@@ -87,7 +87,7 @@ async function buildApp(watchMode) {
 
   const targetPath = path.join(
     process.cwd(),
-    "../../../next-core/mock-micro-apps/elevo-demo/storyboard.yaml"
+    "storyboard.yaml"
   );
   await writeFile(
     targetPath,
