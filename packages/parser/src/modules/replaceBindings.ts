@@ -9,6 +9,7 @@ import type {
 import { getContextReferenceVariableName } from "./getContextReference.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
+import { TransformBindingMap } from "./constants.js";
 
 type Replacement = IdReplacement | Annotation;
 
@@ -252,33 +253,21 @@ export function replaceBindings(
 
       const localBinding = options.component?.bindingMap.get(bindingId);
       if (localBinding) {
+        const bindingTarget = TransformBindingMap.get(localBinding.kind);
         if (
+          bindingTarget ||
           localBinding.kind === "state" ||
           localBinding.kind === "resource" ||
           localBinding.kind === "constant" ||
-          localBinding.kind === "param" ||
-          localBinding.kind === "app" ||
-          localBinding.kind === "auth" ||
-          localBinding.kind === "location" ||
-          localBinding.kind === "query" ||
-          localBinding.kind === "pathParams"
+          localBinding.kind === "param"
         ) {
           replacements.push({
             type: "id",
             start: idPath.node.start!,
             end: idPath.node.end!,
             replacement:
-              localBinding.kind === "app"
-                ? "APP"
-                : localBinding.kind === "auth"
-                  ? "SYS"
-                  : localBinding.kind === "location"
-                    ? "location"
-                    : localBinding.kind === "query"
-                      ? "QUERY"
-                      : localBinding.kind === "pathParams"
-                        ? "PATH"
-                        : `${options.component!.type === "template" ? "STATE" : "CTX"}.${bindingId.name}`,
+              bindingTarget ||
+              `${options.component!.type === "template" ? "STATE" : "CTX"}.${bindingId.name}`,
             shorthand: shorthand ? varName : undefined,
           });
         } else if (localBinding.kind === "context") {

@@ -2,15 +2,7 @@ import type { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
 import { validateGlobalApi } from "./validations.js";
 import type { BindingInfo, ParsedModule } from "./interfaces.js";
-
-const IdentifierUseMap = new Map<string, BindingInfo["kind"]>([
-  ["useQuery", "query"],
-  ["usePathParams", "pathParams"],
-  ["useApp", "app"],
-  ["useAuth", "auth"],
-  ["useHistory", "history"],
-  ["useLocation", "location"],
-]);
+import { IdentifierUseMap } from "./constants.js";
 
 export function parseIdentifierUse(
   decl: NodePath<t.VariableDeclarator>,

@@ -10,6 +10,7 @@ initRaw();
 const { safeDump, JSON_SCHEMA } = jsYaml;
 
 const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".css", ".json"];
+const EXCLUDED_EXTENSIONS = [".d.ts", ".spec.ts", ".spec.tsx"];
 
 const srcDir = path.join(process.cwd(), "src");
 
@@ -39,8 +40,10 @@ async function buildApp(watchMode) {
       if (item.isDirectory()) {
         await processDirectory(path.join(dirPath, item.name));
       } else if (item.isFile()) {
-        const ext = path.extname(item.name);
-        if (ALLOWED_EXTENSIONS.includes(ext)) {
+        if (
+          ALLOWED_EXTENSIONS.some((ext) => item.name.endsWith(ext)) &&
+          !EXCLUDED_EXTENSIONS.some((ext) => item.name.endsWith(ext))
+        ) {
           const filePath = path.join(dirPath, item.name);
           const content = await readFile(filePath, "utf-8");
           files.push({
@@ -85,10 +88,7 @@ async function buildApp(watchMode) {
     rootId: "",
   });
 
-  const targetPath = path.join(
-    process.cwd(),
-    "storyboard.yaml"
-  );
+  const targetPath = path.join(process.cwd(), "storyboard.yaml");
   await writeFile(
     targetPath,
     safeDump(
@@ -163,7 +163,8 @@ async function main() {
         // 只处理我们关心的文件类型
         if (
           filename &&
-          ALLOWED_EXTENSIONS.some((ext) => filename.endsWith(ext))
+          ALLOWED_EXTENSIONS.some((ext) => filename.endsWith(ext)) &&
+          !EXCLUDED_EXTENSIONS.some((ext) => filename.endsWith(ext))
         ) {
           console.log(`File changed: ${filename}`);
           await executeTask(watchMode);

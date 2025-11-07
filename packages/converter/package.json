@@ -38,6 +38,7 @@
     "test:ci": "cross-env NODE_ENV='test' CI=true test-next"
   },
   "dependencies": {
+    "@babel/runtime": "^7.27.6",
     "@babel/types": "^7.27.7",
     "@easyops-cn/brick-next-pipes": "^0.7.3",
     "@next-api-sdk/cmdb-sdk": "^1.1.1",

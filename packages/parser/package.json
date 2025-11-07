@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.27.2",
+    "@babel/runtime": "^7.27.6",
     "@babel/traverse": "^7.27.4",
     "@babel/types": "^7.27.7",
     "@next-core/types": "^1.18.0"
