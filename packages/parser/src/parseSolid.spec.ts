@@ -40,7 +40,7 @@ export default function() {
 `;
 
 describe("parseSolid", () => {
-  test("should parse TSX code with defineContext", () => {
+  test("should parse TSX code with useResource", () => {
     const view = parseView(code);
     expect(view).toBeTruthy();
   });
