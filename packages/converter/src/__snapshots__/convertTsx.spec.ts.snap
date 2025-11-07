@@ -15,48 +15,27 @@ exports[`convertTsx should work 1`] = `
                 {
                   "else": [
                     {
-                      "action": "context.replace",
+                      "action": "context.set",
                       "args": [
                         "logId",
                         undefined,
-                      ],
-                    },
-                    {
-                      "action": "history.pushQuery",
-                      "args": [
-                        {
-                          "logId": null,
-                        },
-                        {
-                          "notify": false,
-                        },
                       ],
                     },
                   ],
                   "if": "<% EVENT.detail %>",
                   "then": [
                     {
-                      "action": "context.replace",
+                      "action": "context.set",
                       "args": [
                         "logId",
                         "<% EVENT.detail %>",
-                      ],
-                    },
-                    {
-                      "action": "history.pushQuery",
-                      "args": [
-                        {
-                          "logId": "<% EVENT.detail %>",
-                        },
-                        {
-                          "notify": false,
-                        },
                       ],
                     },
                   ],
                 },
               ],
             },
+            "lifeCycle": undefined,
             "properties": {
               "inputStyle": {
                 "width": "300px",
@@ -72,19 +51,10 @@ exports[`convertTsx should work 1`] = `
             "children": [
               {
                 "brick": "eo-button",
-                "children": [
-                  {
-                    "brick": "span",
-                    "events": undefined,
-                    "properties": {
-                      "textContent": "<%= CTX.allExpanded ? "全部收起" : "全部展开" %>",
-                    },
-                  },
-                ],
                 "events": {
                   "click": [
                     {
-                      "action": "context.replace",
+                      "action": "context.set",
                       "args": [
                         "allExpanded",
                         "<% !CTX.allExpanded %>",
@@ -92,16 +62,20 @@ exports[`convertTsx should work 1`] = `
                     },
                   ],
                 },
+                "lifeCycle": undefined,
                 "properties": {
+                  "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CTX.allExpanded ? "全部收起" : "全部展开")}) %>",
                   "themeVariant": "elevo",
                 },
               },
             ],
             "dataSource": "<%= CTX.logs %>",
             "events": undefined,
+            "lifeCycle": undefined,
           },
         ],
         "events": undefined,
+        "lifeCycle": undefined,
         "properties": {
           "alignItems": "center",
           "gap": "0.5em",
@@ -114,6 +88,7 @@ exports[`convertTsx should work 1`] = `
             "brick": "eo-next-table",
             "children": [],
             "events": undefined,
+            "lifeCycle": undefined,
             "properties": {
               "columns": [
                 {
@@ -124,6 +99,7 @@ exports[`convertTsx should work 1`] = `
                     {
                       "brick": "span",
                       "events": undefined,
+                      "lifeCycle": undefined,
                       "properties": {
                         "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.cellData * 1000).format("HH:mm:ss"))}) %>",
                       },
@@ -138,6 +114,7 @@ exports[`convertTsx should work 1`] = `
                     {
                       "brick": "span",
                       "events": undefined,
+                      "lifeCycle": undefined,
                       "properties": {
                         "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(\`\${DATA.cellData}\${DATA.rowData.opSubType ? \` / \${DATA.rowData.opSubType}\` : ""}\`)}) %>",
                       },
@@ -158,6 +135,7 @@ exports[`convertTsx should work 1`] = `
                             {
                               "brick": "eo-code-block",
                               "events": undefined,
+                              "lifeCycle": undefined,
                               "properties": {
                                 "language": "json",
                                 "source": "<%= FN.prettierOutput(DATA.cellData) %>",
@@ -169,16 +147,8 @@ exports[`convertTsx should work 1`] = `
                             },
                             {
                               "brick": "span",
-                              "children": [
-                                {
-                                  "brick": "span",
-                                  "events": undefined,
-                                  "properties": {
-                                    "textContent": "<%= DATA.cellData %>",
-                                  },
-                                },
-                              ],
                               "events": undefined,
+                              "lifeCycle": undefined,
                               "properties": {
                                 "style": {
                                   "display": "block",
@@ -187,12 +157,14 @@ exports[`convertTsx should work 1`] = `
                                   "textOverflow": "ellipsis",
                                   "whiteSpace": "nowrap",
                                 },
+                                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(DATA.cellData)}) %>",
                               },
                               "slot": "else",
                             },
                           ],
                           "dataSource": "<%= CTX.allExpanded || CTX.expandedSet.has(DATA.rowData.logId) %>",
                           "events": undefined,
+                          "lifeCycle": undefined,
                         },
                       ],
                     },
@@ -208,7 +180,7 @@ exports[`convertTsx should work 1`] = `
                       "events": {
                         "open.detail": [
                           {
-                            "action": "context.replace",
+                            "action": "context.set",
                             "args": [
                               "detailLog",
                               "<% DATA.rowData %>",
@@ -222,7 +194,7 @@ exports[`convertTsx should work 1`] = `
                         ],
                         "toggle": [
                           {
-                            "action": "context.replace",
+                            "action": "context.set",
                             "args": [
                               "expandedSet",
                               "<% new Set(
@@ -234,6 +206,7 @@ exports[`convertTsx should work 1`] = `
                           },
                         ],
                       },
+                      "lifeCycle": undefined,
                       "properties": {
                         "allExpanded": "<%= CTX.allExpanded %>",
                         "expanded": "<%= CTX.expandedSet.has(DATA.rowData.logId) %>",
@@ -257,6 +230,7 @@ exports[`convertTsx should work 1`] = `
         ],
         "dataSource": "<%= CTX.logs %>",
         "events": undefined,
+        "lifeCycle": undefined,
       },
       {
         "brick": "eo-modal",
@@ -271,6 +245,7 @@ exports[`convertTsx should work 1`] = `
                     "brick": "eo-descriptions",
                     "children": [],
                     "events": undefined,
+                    "lifeCycle": undefined,
                     "properties": {
                       "column": 1,
                       "dataSource": "<%= CTX.detailLog %>",
@@ -293,6 +268,7 @@ exports[`convertTsx should work 1`] = `
                             {
                               "brick": "span",
                               "events": undefined,
+                              "lifeCycle": undefined,
                               "properties": {
                                 "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.time * 1000).format("llll"))}) %>",
                               },
@@ -306,6 +282,7 @@ exports[`convertTsx should work 1`] = `
                   {
                     "brick": "eo-code-block",
                     "events": undefined,
+                    "lifeCycle": undefined,
                     "properties": {
                       "language": "json",
                       "source": "<%= FN.prettierOutput(CTX.detailLog.data) %>",
@@ -315,11 +292,13 @@ exports[`convertTsx should work 1`] = `
                 ],
                 "dataSource": "<%= CTX.detailLog %>",
                 "events": undefined,
+                "lifeCycle": undefined,
               },
             ],
           },
         ],
         "events": undefined,
+        "lifeCycle": undefined,
         "portal": true,
         "properties": {
           "cancelText": undefined,
@@ -424,6 +403,7 @@ exports[`convertTsx should work 1`] = `
                       },
                     ],
                   },
+                  "lifeCycle": undefined,
                   "properties": {
                     "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(STATE.expanded ? "收起" : "展开")}) %>",
                     "themeVariant": "elevo",
@@ -432,6 +412,7 @@ exports[`convertTsx should work 1`] = `
               ],
               "dataSource": "<%= !STATE.allExpanded %>",
               "events": undefined,
+              "lifeCycle": undefined,
             },
             {
               "brick": "eo-button",
@@ -448,6 +429,7 @@ exports[`convertTsx should work 1`] = `
                   },
                 ],
               },
+              "lifeCycle": undefined,
               "properties": {
                 "textContent": "详情",
                 "themeVariant": "elevo",
@@ -455,6 +437,7 @@ exports[`convertTsx should work 1`] = `
             },
           ],
           "events": undefined,
+          "lifeCycle": undefined,
           "properties": {
             "alignItems": "center",
             "gap": "0.5em",

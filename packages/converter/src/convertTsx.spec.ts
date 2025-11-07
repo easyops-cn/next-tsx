@@ -6,7 +6,7 @@ import { convertView } from "./modules/convertView.js";
 describe("convertTsx", () => {
   test("should work", async () => {
     const code = await readFile(
-      path.join(__dirname, "../../tsx-parser/src/__fixtures__/logs.txt"),
+      path.join(__dirname, "../../parser/src/__fixtures__/logs.txt"),
       "utf-8"
     );
 

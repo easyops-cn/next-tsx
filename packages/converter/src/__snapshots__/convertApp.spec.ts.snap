@@ -24,6 +24,7 @@ exports[`convertApp should work 1`] = `
   ],
   "routes": [
     {
+      "alias": "Page404",
       "bricks": [
         {
           "brick": "h1",
@@ -39,6 +40,7 @@ exports[`convertApp should work 1`] = `
       "path": "\${APP.homepage}/404",
     },
     {
+      "alias": "BaseLayout",
       "bricks": [
         {
           "brick": "eo-event-agent",
@@ -158,6 +160,7 @@ exports[`convertApp should work 1`] = `
                   "slot": "header",
                 },
                 {
+                  "alias": "About",
                   "bricks": [
                     {
                       "brick": "h1",
@@ -173,6 +176,7 @@ exports[`convertApp should work 1`] = `
                   "path": "\${APP.homepage}/about",
                 },
                 {
+                  "alias": "Home",
                   "bricks": [
                     {
                       "brick": "h1",
@@ -256,6 +260,7 @@ exports[`convertApp should work 1`] = `
         },
       ],
       "name": "tpl-nav",
+      "proxy": undefined,
       "state": [],
     },
   ],

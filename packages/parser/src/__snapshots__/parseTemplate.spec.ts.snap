@@ -3,6 +3,7 @@
 exports[`parseTemplate should work 1`] = `
 {
   "appType": "template",
+  "constants": Map {},
   "entry": {
     "contracts": Set {},
     "defaultExport": {
@@ -205,12 +206,14 @@ exports[`parseTemplate should work 1`] = `
                         },
                       ],
                     },
+                    "lifeCycle": undefined,
                     "name": "Button",
                     "properties": {
                       "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(STATE.expanded ? "收起" : "展开")}) %>",
                     },
                     "ref": undefined,
                     "reference": null,
+                    "slot": undefined,
                   },
                 ],
                 "name": "If",
@@ -231,19 +234,23 @@ exports[`parseTemplate should work 1`] = `
                     },
                   ],
                 },
+                "lifeCycle": undefined,
                 "name": "Button",
                 "properties": {
                   "textContent": "详情",
                 },
                 "ref": undefined,
                 "reference": null,
+                "slot": undefined,
               },
             ],
             "events": undefined,
+            "lifeCycle": undefined,
             "name": "Toolbar",
             "properties": {},
             "ref": undefined,
             "reference": null,
+            "slot": undefined,
           },
         ],
         "id": Node {

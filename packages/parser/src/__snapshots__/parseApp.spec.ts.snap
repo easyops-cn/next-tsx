@@ -49,7 +49,7 @@ exports[`parseApp should work 1`] = `
               },
               "ref": undefined,
               "reference": {
-                "importSource": "next-tsx",
+                "importSource": "@next-tsx/core",
                 "name": "Route",
                 "type": "imported",
               },
@@ -72,7 +72,7 @@ exports[`parseApp should work 1`] = `
               },
               "ref": undefined,
               "reference": {
-                "importSource": "next-tsx",
+                "importSource": "@next-tsx/core",
                 "name": "Route",
                 "type": "imported",
               },
@@ -85,7 +85,7 @@ exports[`parseApp should work 1`] = `
           "properties": {},
           "ref": undefined,
           "reference": {
-            "importSource": "next-tsx",
+            "importSource": "@next-tsx/core",
             "name": "Routes",
             "type": "imported",
           },
@@ -140,7 +140,7 @@ exports[`parseApp should work 1`] = `
                 },
                 "ref": undefined,
                 "reference": {
-                  "importSource": "next-tsx",
+                  "importSource": "@next-tsx/core",
                   "name": "Route",
                   "type": "imported",
                 },
@@ -163,7 +163,7 @@ exports[`parseApp should work 1`] = `
                 },
                 "ref": undefined,
                 "reference": {
-                  "importSource": "next-tsx",
+                  "importSource": "@next-tsx/core",
                   "name": "Route",
                   "type": "imported",
                 },
@@ -176,7 +176,7 @@ exports[`parseApp should work 1`] = `
             "properties": {},
             "ref": undefined,
             "reference": {
-              "importSource": "next-tsx",
+              "importSource": "@next-tsx/core",
               "name": "Routes",
               "type": "imported",
             },
@@ -194,86 +194,86 @@ exports[`parseApp should work 1`] = `
         "component": {
           "bindingMap": Map {
             Node {
-              "end": 272,
+              "end": 278,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 10,
-                  "index": 272,
+                  "index": 278,
                   "line": 10,
                 },
                 "filename": undefined,
                 "identifierName": "x",
                 "start": Position {
                   "column": 9,
-                  "index": 271,
+                  "index": 277,
                   "line": 10,
                 },
               },
               "name": "x",
-              "start": 271,
+              "start": 277,
               "type": "Identifier",
             } => {
               "id": Node {
-                "end": 272,
+                "end": 278,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 10,
-                    "index": 272,
+                    "index": 278,
                     "line": 10,
                   },
                   "filename": undefined,
                   "identifierName": "x",
                   "start": Position {
                     "column": 9,
-                    "index": 271,
+                    "index": 277,
                     "line": 10,
                   },
                 },
                 "name": "x",
-                "start": 271,
+                "start": 277,
                 "type": "Identifier",
               },
               "initialValue": 0,
               "kind": "state",
             },
             Node {
-              "end": 278,
+              "end": 284,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 16,
-                  "index": 278,
+                  "index": 284,
                   "line": 10,
                 },
                 "filename": undefined,
                 "identifierName": "setX",
                 "start": Position {
                   "column": 12,
-                  "index": 274,
+                  "index": 280,
                   "line": 10,
                 },
               },
               "name": "setX",
-              "start": 274,
+              "start": 280,
               "type": "Identifier",
             } => {
               "id": Node {
-                "end": 272,
+                "end": 278,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 10,
-                    "index": 272,
+                    "index": 278,
                     "line": 10,
                   },
                   "filename": undefined,
                   "identifierName": "x",
                   "start": Position {
                     "column": 9,
-                    "index": 271,
+                    "index": 277,
                     "line": 10,
                   },
                 },
                 "name": "x",
-                "start": 271,
+                "start": 277,
                 "type": "Identifier",
               },
               "kind": "setState",
@@ -483,23 +483,23 @@ exports[`parseApp should work 1`] = `
             },
           ],
           "id": Node {
-            "end": 257,
+            "end": 263,
             "loc": SourceLocation {
               "end": Position {
                 "column": 30,
-                "index": 257,
+                "index": 263,
                 "line": 9,
               },
               "filename": undefined,
               "identifierName": "Layout",
               "start": Position {
                 "column": 24,
-                "index": 251,
+                "index": 257,
                 "line": 9,
               },
             },
             "name": "Layout",
-            "start": 251,
+            "start": 257,
             "type": "Identifier",
           },
           "type": "page",
@@ -536,23 +536,23 @@ exports[`parseApp should work 1`] = `
               },
             ],
             "id": Node {
-              "end": 1297,
+              "end": 1303,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 12,
-                  "index": 1297,
+                  "index": 1303,
                   "line": 57,
                 },
                 "filename": undefined,
                 "identifierName": "Nav",
                 "start": Position {
                   "column": 9,
-                  "index": 1294,
+                  "index": 1300,
                   "line": 57,
                 },
               },
               "name": "Nav",
-              "start": 1294,
+              "start": 1300,
               "type": "Identifier",
             },
             "type": "template",
@@ -742,165 +742,7 @@ exports[`parseApp should work 1`] = `
         },
         "type": "page",
       },
-      "errors": [
-        {
-          "message": "Expect an identifier as the variable name, received ObjectPattern",
-          "node": Node {
-            "end": 148,
-            "loc": SourceLocation {
-              "end": Position {
-                "column": 19,
-                "index": 148,
-                "line": 6,
-              },
-              "filename": undefined,
-              "identifierName": undefined,
-              "start": Position {
-                "column": 8,
-                "index": 137,
-                "line": 6,
-              },
-            },
-            "properties": [
-              Node {
-                "computed": false,
-                "end": 140,
-                "extra": {
-                  "shorthand": true,
-                },
-                "key": Node {
-                  "end": 140,
-                  "loc": SourceLocation {
-                    "end": Position {
-                      "column": 11,
-                      "index": 140,
-                      "line": 6,
-                    },
-                    "filename": undefined,
-                    "identifierName": "x",
-                    "start": Position {
-                      "column": 10,
-                      "index": 139,
-                      "line": 6,
-                    },
-                  },
-                  "name": "x",
-                  "start": 139,
-                  "type": "Identifier",
-                },
-                "loc": SourceLocation {
-                  "end": Position {
-                    "column": 11,
-                    "index": 140,
-                    "line": 6,
-                  },
-                  "filename": undefined,
-                  "identifierName": undefined,
-                  "start": Position {
-                    "column": 10,
-                    "index": 139,
-                    "line": 6,
-                  },
-                },
-                "method": false,
-                "shorthand": true,
-                "start": 139,
-                "type": "ObjectProperty",
-                "value": Node {
-                  "end": 140,
-                  "loc": SourceLocation {
-                    "end": Position {
-                      "column": 11,
-                      "index": 140,
-                      "line": 6,
-                    },
-                    "filename": undefined,
-                    "identifierName": "x",
-                    "start": Position {
-                      "column": 10,
-                      "index": 139,
-                      "line": 6,
-                    },
-                  },
-                  "name": "x",
-                  "range": undefined,
-                  "start": 139,
-                  "type": "Identifier",
-                },
-              },
-              Node {
-                "computed": false,
-                "end": 146,
-                "extra": {
-                  "shorthand": true,
-                },
-                "key": Node {
-                  "end": 146,
-                  "loc": SourceLocation {
-                    "end": Position {
-                      "column": 17,
-                      "index": 146,
-                      "line": 6,
-                    },
-                    "filename": undefined,
-                    "identifierName": "setX",
-                    "start": Position {
-                      "column": 13,
-                      "index": 142,
-                      "line": 6,
-                    },
-                  },
-                  "name": "setX",
-                  "start": 142,
-                  "type": "Identifier",
-                },
-                "loc": SourceLocation {
-                  "end": Position {
-                    "column": 17,
-                    "index": 146,
-                    "line": 6,
-                  },
-                  "filename": undefined,
-                  "identifierName": undefined,
-                  "start": Position {
-                    "column": 13,
-                    "index": 142,
-                    "line": 6,
-                  },
-                },
-                "method": false,
-                "shorthand": true,
-                "start": 142,
-                "type": "ObjectProperty",
-                "value": Node {
-                  "end": 146,
-                  "loc": SourceLocation {
-                    "end": Position {
-                      "column": 17,
-                      "index": 146,
-                      "line": 6,
-                    },
-                    "filename": undefined,
-                    "identifierName": "setX",
-                    "start": Position {
-                      "column": 13,
-                      "index": 142,
-                      "line": 6,
-                    },
-                  },
-                  "name": "setX",
-                  "range": undefined,
-                  "start": 142,
-                  "type": "Identifier",
-                },
-              },
-            ],
-            "start": 137,
-            "type": "ObjectPattern",
-          },
-          "severity": "error",
-        },
-      ],
+      "errors": [],
       "filePath": "/Pages/Home.tsx",
       "internals": [],
       "moduleType": "page",

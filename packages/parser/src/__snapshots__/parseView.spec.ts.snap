@@ -3,6 +3,7 @@
 exports[`parseView should work 1`] = `
 {
   "appType": "view",
+  "constants": Map {},
   "entry": {
     "contracts": Set {
       "<% \`logs/\${CTX.logId}\` %>",
@@ -486,6 +487,68 @@ exports[`parseView should work 1`] = `
               "transform": "<% DATA.data.logs %>",
             },
           },
+          Node {
+            "end": 1112,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 26,
+                "index": 1112,
+                "line": 51,
+              },
+              "filename": undefined,
+              "identifierName": "refetchLogs",
+              "start": Position {
+                "column": 15,
+                "index": 1101,
+                "line": 51,
+              },
+            },
+            "name": "refetchLogs",
+            "start": 1101,
+            "type": "Identifier",
+          } => {
+            "id": Node {
+              "end": 1112,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 26,
+                  "index": 1112,
+                  "line": 51,
+                },
+                "filename": undefined,
+                "identifierName": "refetchLogs",
+                "start": Position {
+                  "column": 15,
+                  "index": 1101,
+                  "line": 51,
+                },
+              },
+              "name": "refetchLogs",
+              "start": 1101,
+              "type": "Identifier",
+            },
+            "kind": "refetch",
+            "resourceId": Node {
+              "end": 1099,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 13,
+                  "index": 1099,
+                  "line": 51,
+                },
+                "filename": undefined,
+                "identifierName": "logs",
+                "start": Position {
+                  "column": 9,
+                  "index": 1095,
+                  "line": 51,
+                },
+              },
+              "name": "logs",
+              "start": 1095,
+              "type": "Identifier",
+            },
+          },
         },
         "children": [
           {
@@ -504,21 +567,8 @@ exports[`parseView should work 1`] = `
                                 "action": "update_variable",
                                 "payload": {
                                   "name": "logId",
+                                  "scope": "global",
                                   "value": undefined,
-                                },
-                              },
-                              {
-                                "action": "update_query",
-                                "payload": {
-                                  "args": [
-                                    {
-                                      "logId": null,
-                                    },
-                                    {
-                                      "notify": false,
-                                    },
-                                  ],
-                                  "method": "push",
                                 },
                               },
                             ],
@@ -527,21 +577,8 @@ exports[`parseView should work 1`] = `
                                 "action": "update_variable",
                                 "payload": {
                                   "name": "logId",
+                                  "scope": "global",
                                   "value": "<% EVENT.detail %>",
-                                },
-                              },
-                              {
-                                "action": "update_query",
-                                "payload": {
-                                  "args": [
-                                    {
-                                      "logId": "<% EVENT.detail %>",
-                                    },
-                                    {
-                                      "notify": false,
-                                    },
-                                  ],
-                                  "method": "push",
                                 },
                               },
                             ],
@@ -550,6 +587,7 @@ exports[`parseView should work 1`] = `
                         },
                       ],
                     },
+                    "lifeCycle": undefined,
                     "name": "Search",
                     "properties": {
                       "inputStyle": {
@@ -560,33 +598,32 @@ exports[`parseView should work 1`] = `
                     },
                     "ref": undefined,
                     "reference": null,
+                    "slot": undefined,
                   },
                   {
                     "children": [
                       {
-                        "children": [
-                          {
-                            "name": "Plaintext",
-                            "properties": {
-                              "textContent": "<%= CTX.allExpanded ? "全部收起" : "全部展开" %>",
-                            },
-                          },
-                        ],
+                        "children": undefined,
                         "events": {
                           "click": [
                             {
                               "action": "update_variable",
                               "payload": {
                                 "name": "allExpanded",
+                                "scope": "global",
                                 "value": "<% !CTX.allExpanded %>",
                               },
                             },
                           ],
                         },
+                        "lifeCycle": undefined,
                         "name": "Button",
-                        "properties": {},
+                        "properties": {
+                          "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CTX.allExpanded ? "全部收起" : "全部展开")}) %>",
+                        },
                         "ref": undefined,
                         "reference": null,
+                        "slot": undefined,
                       },
                     ],
                     "name": "If",
@@ -596,16 +633,19 @@ exports[`parseView should work 1`] = `
                   },
                 ],
                 "events": undefined,
+                "lifeCycle": undefined,
                 "name": "Toolbar",
                 "properties": {},
                 "ref": undefined,
                 "reference": null,
+                "slot": undefined,
               },
               {
                 "children": [
                   {
                     "children": undefined,
                     "events": undefined,
+                    "lifeCycle": undefined,
                     "name": "Table",
                     "properties": {
                       "columns": [
@@ -656,6 +696,7 @@ exports[`parseView should work 1`] = `
                                   {
                                     "children": undefined,
                                     "events": undefined,
+                                    "lifeCycle": undefined,
                                     "name": "CodeBlock",
                                     "properties": {
                                       "language": "json",
@@ -666,17 +707,12 @@ exports[`parseView should work 1`] = `
                                     },
                                     "ref": undefined,
                                     "reference": null,
+                                    "slot": undefined,
                                   },
                                   {
-                                    "children": [
-                                      {
-                                        "name": "Plaintext",
-                                        "properties": {
-                                          "textContent": "<%= v %>",
-                                        },
-                                      },
-                                    ],
+                                    "children": undefined,
                                     "events": undefined,
+                                    "lifeCycle": undefined,
                                     "name": "Plaintext",
                                     "properties": {
                                       "style": {
@@ -686,6 +722,7 @@ exports[`parseView should work 1`] = `
                                         "textOverflow": "ellipsis",
                                         "whiteSpace": "nowrap",
                                       },
+                                      "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(v)}) %>",
                                     },
                                     "ref": undefined,
                                     "reference": null,
@@ -718,6 +755,7 @@ exports[`parseView should work 1`] = `
                                       "action": "update_variable",
                                       "payload": {
                                         "name": "detailLog",
+                                        "scope": "global",
                                         "value": "<% r %>",
                                       },
                                     },
@@ -736,6 +774,7 @@ exports[`parseView should work 1`] = `
                                       "action": "update_variable",
                                       "payload": {
                                         "name": "expandedSet",
+                                        "scope": "global",
                                         "value": "<% new Set(
                         CTX.expandedSet.has(r.logId)
                           ? [...CTX.expandedSet].filter((id) => id !== r.logId)
@@ -745,6 +784,7 @@ exports[`parseView should work 1`] = `
                                     },
                                   ],
                                 },
+                                "lifeCycle": undefined,
                                 "name": "Operations",
                                 "properties": {
                                   "allExpanded": "<%= CTX.allExpanded %>",
@@ -755,6 +795,7 @@ exports[`parseView should work 1`] = `
                                   "name": "Operations",
                                   "type": "local",
                                 },
+                                "slot": undefined,
                               },
                             ],
                             "params": [
@@ -773,6 +814,7 @@ exports[`parseView should work 1`] = `
                     },
                     "ref": undefined,
                     "reference": null,
+                    "slot": undefined,
                   },
                 ],
                 "name": "If",
@@ -787,6 +829,7 @@ exports[`parseView should work 1`] = `
                       {
                         "children": undefined,
                         "events": undefined,
+                        "lifeCycle": undefined,
                         "name": "Descriptions",
                         "properties": {
                           "columns": 1,
@@ -825,10 +868,12 @@ exports[`parseView should work 1`] = `
                         },
                         "ref": undefined,
                         "reference": null,
+                        "slot": undefined,
                       },
                       {
                         "children": undefined,
                         "events": undefined,
+                        "lifeCycle": undefined,
                         "name": "CodeBlock",
                         "properties": {
                           "language": "json",
@@ -836,6 +881,7 @@ exports[`parseView should work 1`] = `
                         },
                         "ref": undefined,
                         "reference": null,
+                        "slot": undefined,
                       },
                     ],
                     "name": "If",
@@ -845,6 +891,7 @@ exports[`parseView should work 1`] = `
                   },
                 ],
                 "events": undefined,
+                "lifeCycle": undefined,
                 "name": "Modal",
                 "properties": {
                   "hideCancelButton": true,
@@ -856,15 +903,18 @@ exports[`parseView should work 1`] = `
                 },
                 "ref": "modalRef",
                 "reference": null,
+                "slot": undefined,
               },
             ],
             "events": undefined,
+            "lifeCycle": undefined,
             "name": "View",
             "properties": {
               "title": "任务日志",
             },
             "ref": undefined,
             "reference": null,
+            "slot": undefined,
           },
         ],
         "id": null,
@@ -873,7 +923,56 @@ exports[`parseView should work 1`] = `
       "title": "任务日志",
       "type": "view",
     },
-    "errors": [],
+    "errors": [
+      {
+        "message": "Function "pushQuery" is not defined",
+        "node": Node {
+          "end": 1526,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 23,
+              "index": 1526,
+              "line": 69,
+            },
+            "filename": undefined,
+            "identifierName": "pushQuery",
+            "start": Position {
+              "column": 14,
+              "index": 1517,
+              "line": 69,
+            },
+          },
+          "name": "pushQuery",
+          "start": 1517,
+          "type": "Identifier",
+        },
+        "severity": "error",
+      },
+      {
+        "message": "Function "pushQuery" is not defined",
+        "node": Node {
+          "end": 1651,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 23,
+              "index": 1651,
+              "line": 72,
+            },
+            "filename": undefined,
+            "identifierName": "pushQuery",
+            "start": Position {
+              "column": 14,
+              "index": 1642,
+              "line": 72,
+            },
+          },
+          "name": "pushQuery",
+          "start": 1642,
+          "type": "Identifier",
+        },
+        "severity": "error",
+      },
+    ],
     "filePath": "/View.tsx",
     "internals": [
       {
@@ -1076,12 +1175,14 @@ exports[`parseView should work 1`] = `
                           },
                         ],
                       },
+                      "lifeCycle": undefined,
                       "name": "Button",
                       "properties": {
                         "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(STATE.expanded ? "收起" : "展开")}) %>",
                       },
                       "ref": undefined,
                       "reference": null,
+                      "slot": undefined,
                     },
                   ],
                   "name": "If",
@@ -1102,19 +1203,23 @@ exports[`parseView should work 1`] = `
                       },
                     ],
                   },
+                  "lifeCycle": undefined,
                   "name": "Button",
                   "properties": {
                     "textContent": "详情",
                   },
                   "ref": undefined,
                   "reference": null,
+                  "slot": undefined,
                 },
               ],
               "events": undefined,
+              "lifeCycle": undefined,
               "name": "Toolbar",
               "properties": {},
               "ref": undefined,
               "reference": null,
+              "slot": undefined,
             },
           ],
           "id": Node {
@@ -1164,7 +1269,58 @@ exports[`parseView should work 1`] = `
       "_helper_mergeTexts",
     },
   },
-  "errors": [],
+  "errors": [
+    {
+      "filePath": "/View.tsx",
+      "message": "Function "pushQuery" is not defined",
+      "node": Node {
+        "end": 1526,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 23,
+            "index": 1526,
+            "line": 69,
+          },
+          "filename": undefined,
+          "identifierName": "pushQuery",
+          "start": Position {
+            "column": 14,
+            "index": 1517,
+            "line": 69,
+          },
+        },
+        "name": "pushQuery",
+        "start": 1517,
+        "type": "Identifier",
+      },
+      "severity": "error",
+    },
+    {
+      "filePath": "/View.tsx",
+      "message": "Function "pushQuery" is not defined",
+      "node": Node {
+        "end": 1651,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 23,
+            "index": 1651,
+            "line": 72,
+          },
+          "filename": undefined,
+          "identifierName": "pushQuery",
+          "start": Position {
+            "column": 14,
+            "index": 1642,
+            "line": 72,
+          },
+        },
+        "name": "pushQuery",
+        "start": 1642,
+        "type": "Identifier",
+      },
+      "severity": "error",
+    },
+  ],
   "files": undefined,
   "modules": [],
 }

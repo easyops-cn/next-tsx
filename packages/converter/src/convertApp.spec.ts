@@ -20,7 +20,7 @@ describe("convertApp", () => {
         const content = await readFile(
           path.join(
             __dirname,
-            "../../tsx-parser/src/__fixtures__/",
+            "../../parser/src/__fixtures__/",
             fixturePath
           ),
           "utf-8"
