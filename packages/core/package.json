@@ -13,8 +13,7 @@
   "exports": {
     ".": {
       "types": "./index.d.ts"
-    },
-    "./*": "./*"
+    }
   },
   "dependencies": {
     "@types/react": "^18.2.79"

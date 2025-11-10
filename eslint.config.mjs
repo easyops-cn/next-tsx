@@ -8,6 +8,11 @@ export default [
   },
   ...eslintConfigNext,
   {
+    rules: {
+      "react/react-in-jsx-scope": "off"
+    }
+  },
+  {
     files: ["packages/builder/**/*.js"],
     ...nodeConfig,
     languageOptions: {

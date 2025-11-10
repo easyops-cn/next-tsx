@@ -49,6 +49,13 @@ export function replaceBindings(
   const replacements: Replacement[] = [];
 
   const visitor: Visitor = {
+    TSNonNullExpression(tsPath) {
+      replacements.push({
+        type: "annotation",
+        start: tsPath.node.expression.end!,
+        end: tsPath.node.end!,
+      });
+    },
     Identifier(idPath) {
       if (!idPath.isReferencedIdentifier()) {
         return;

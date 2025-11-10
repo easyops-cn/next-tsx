@@ -1,0 +1,26 @@
+{
+  "name": "@apps/test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "builder --watch",
+    "build": "builder"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/storyboard.yaml"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@next-bricks/basic": "^1.62.1",
+    "@next-bricks/containers": "^1.16.1",
+    "@next-bricks/icons": "^1.6.1",
+    "@next-tsx/builder": "^0.0.5",
+    "@next-tsx/core": "^0.0.7"
+  }
+}

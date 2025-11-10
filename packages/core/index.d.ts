@@ -28,10 +28,23 @@ export function useResource<T = any>(
   }
 ): [data: T, refetch: () => void];
 
-/** 返回一个可变的 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
-export function useRef<T>(initialValue: T): {
-  current: T;
-};
+/** 返回一个 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
+export function useRef<T>(initialValue: T): RefObject<T>;
+
+export type Ref<T> = RefObject<T> | null;
+
+export interface RefObject<T> {
+  readonly current: T;
+}
+
+/**
+ * 自定义暴露给父组件的实例值。
+ * 在父组件中使用 `useRef` 并传递给该组件的 `ref` 属性后，可以通过该 `ref` 访问到由 `init` 创建的值。
+ */
+export function useImperativeHandle<T>(
+  ref: Ref<T> | undefined,
+  init: () => T
+): void;
 
 /** 获取当前应用的信息 */
 export function useApp(): App;

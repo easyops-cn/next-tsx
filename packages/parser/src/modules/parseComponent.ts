@@ -44,9 +44,9 @@ export function parseComponent(
   const params = fn.get("params");
   let templateRef: NodePath<t.Identifier> | undefined;
   if (type === "template") {
-    if (params.length > 2) {
+    if (params.length > 1) {
       state.errors.push({
-        message: `Component function can only have no more than 2 parameters, received ${params.length}`,
+        message: `Component function can only have no more than 1 parameters, received ${params.length}`,
         node: fn.node,
         severity: "error",
       });
@@ -91,6 +91,20 @@ export function parseComponent(
           return null;
         }
         const varName = key.node.name;
+
+        if (varName === "ref") {
+          if (!value.isIdentifier()) {
+            state.errors.push({
+              message: `Component function parameter "ref" must be an identifier, received ${value.type}`,
+              node: value.node,
+              severity: "error",
+            });
+            return null;
+          }
+          templateRef = value;
+          continue;
+        }
+
         const isEventHandler = /^on[A-Z]/.test(varName);
         if (isEventHandler) {
           if (!value.isIdentifier()) {
@@ -135,18 +149,6 @@ export function parseComponent(
           bindingMap.set(bindingId, paramBinding);
         }
       }
-    }
-    if (params.length > 1) {
-      const refParam = params[1];
-      if (!refParam.isIdentifier()) {
-        state.errors.push({
-          message: `Component function second parameter must be an identifier for ref, received ${refParam.type}`,
-          node: refParam.node,
-          severity: "error",
-        });
-        return null;
-      }
-      templateRef = refParam;
     }
   } else if (params.length > 0) {
     state.errors.push({
