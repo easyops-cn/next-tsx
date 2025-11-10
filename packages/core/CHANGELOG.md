@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.6...@next-tsx/core@0.0.7) (2025-11-10)
+
+
+### Bug Fixes
+
+* fix types ([37c3fc6](https://github.com/easyops-cn/next-tsx/commit/37c3fc6ae50fd239f1ae538137d81ce9c2394f46))
+
+
+
+
+
 ## [0.0.6](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.5...@next-tsx/core@0.0.6) (2025-11-07)
 
 
