@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.2.0...@next-tsx/parser@0.2.1) (2025-11-11)
+
+
+### Bug Fixes
+
+* fix if statements parsing ([7258d3e](https://github.com/easyops-cn/next-tsx/commit/7258d3e7b271668dc9a654c4e7d46096609385a0))
+
+
+
+
+
 # [0.2.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.1.0...@next-tsx/parser@0.2.0) (2025-11-11)
 
 
