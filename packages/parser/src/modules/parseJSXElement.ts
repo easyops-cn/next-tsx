@@ -209,6 +209,7 @@ export function parseJSXElement(
         continue;
       }
       let handler: EventHandler[] | null = null;
+      let eventPath = exprPath;
       // Assert: exprPath.isReferencedIdentifier()
       if (exprPath.isIdentifier()) {
         const bindingId = exprPath.scope.getBindingIdentifier(
@@ -216,21 +217,28 @@ export function parseJSXElement(
         );
         if (bindingId) {
           const binding = options.component?.bindingMap.get(bindingId);
-          if (binding && binding.kind === "eventHandler") {
-            handler = [
-              {
-                action: "dispatch_event",
-                payload: {
-                  type: convertJsxEventAttr(binding.id.name),
-                  detail: "<% EVENT.detail %>",
-                },
-              },
-            ];
+          if (binding) {
+            switch (binding.kind) {
+              case "eventHandlerParam":
+                handler = [
+                  {
+                    action: "dispatch_event",
+                    payload: {
+                      type: convertJsxEventAttr(binding.id.name),
+                      detail: "<% EVENT.detail %>",
+                    },
+                  },
+                ];
+                break;
+              case "eventCallback":
+                eventPath = binding.callback!;
+                break;
+            }
           }
         }
       }
       if (!handler) {
-        handler = parseEvent(exprPath, state, app, options);
+        handler = parseEvent(eventPath, state, app, options);
       }
       if (handler) {
         if (attrName === "onMount" || attrName === "onUnmount") {

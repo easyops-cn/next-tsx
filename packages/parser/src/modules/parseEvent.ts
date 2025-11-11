@@ -234,7 +234,7 @@ export function parseEventHandler(
               ],
             },
           };
-        case "eventHandler": {
+        case "eventHandlerParam": {
           if (args.length > 1) {
             state.errors.push({
               message: `Event dispatcher "${callee.node.name}" expects at most 1 argument, but got ${args.length}`,

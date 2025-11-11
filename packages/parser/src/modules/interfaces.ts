@@ -10,6 +10,7 @@ import type {
   LifeCycle,
   ParseError,
 } from "../interfaces.js";
+import type { NodePath } from "@babel/traverse";
 
 export interface ParsedApp {
   appType: "app" | "view" | "template";
@@ -100,7 +101,8 @@ export interface BindingInfo {
     | "flags"
     | "media"
     | "param"
-    | "eventHandler"
+    | "eventHandlerParam"
+    | "eventCallback"
     | "component"
     | "context"
     | "function";
@@ -117,6 +119,9 @@ export interface BindingInfo {
   /** For kind "context" */
   contextProvider?: ContextReference;
   contextKey?: string;
+
+  /** For kind "eventCallback" */
+  callback?: NodePath<t.FunctionExpression | t.ArrowFunctionExpression>;
 }
 
 export interface EventBindingInfo {

@@ -141,7 +141,7 @@ exports[`parseTemplate should work 1`] = `
               "start": 81,
               "type": "Identifier",
             },
-            "kind": "eventHandler",
+            "kind": "eventHandlerParam",
           },
           Node {
             "end": 105,
@@ -185,7 +185,7 @@ exports[`parseTemplate should work 1`] = `
               "start": 93,
               "type": "Identifier",
             },
-            "kind": "eventHandler",
+            "kind": "eventHandlerParam",
           },
         },
         "children": [

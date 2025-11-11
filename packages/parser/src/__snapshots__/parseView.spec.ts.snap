@@ -1116,7 +1116,7 @@ exports[`parseView should work 1`] = `
                 "start": 218,
                 "type": "Identifier",
               },
-              "kind": "eventHandler",
+              "kind": "eventHandlerParam",
             },
             Node {
               "end": 242,
@@ -1160,7 +1160,7 @@ exports[`parseView should work 1`] = `
                 "start": 230,
                 "type": "Identifier",
               },
-              "kind": "eventHandler",
+              "kind": "eventHandlerParam",
             },
           },
           "children": [
