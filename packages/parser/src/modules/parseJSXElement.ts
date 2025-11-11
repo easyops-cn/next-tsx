@@ -18,6 +18,7 @@ import { validateGlobalApi } from "./validations.js";
 import { getComponentReference } from "./getComponentReference.js";
 import type { LifeCycle } from "../interfaces.js";
 import { parseContextProvider } from "./parseContextProvider.js";
+import { getContextReferenceEventAgentId } from "./getContextReference.js";
 
 export function parseJSXElement(
   path: NodePath<t.JSXElement>,
@@ -232,6 +233,22 @@ export function parseJSXElement(
                 break;
               case "eventCallback":
                 eventPath = binding.callback!;
+                break;
+              case "context":
+                handler = [
+                  {
+                    action: "call_selector",
+                    payload: {
+                      selector: `#${getContextReferenceEventAgentId(binding.contextProvider!.name)}`,
+                      method: "trigger",
+                      args: [
+                        {
+                          name: binding.contextKey!,
+                        },
+                      ],
+                    },
+                  },
+                ];
                 break;
             }
           }

@@ -223,3 +223,10 @@ export interface Store {
  * 对于大部分组件，设置 url 时不需要带上该前缀，但在某些需要使用完整 URL 的场景下需要使用该常量进行拼接。
  */
 export const BASE_URL: string;
+
+declare module "react" {
+  interface DOMAttributes {
+    onMount?: () => void;
+    onUnmount?: () => void;
+  }
+}

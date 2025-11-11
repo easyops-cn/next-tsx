@@ -31,7 +31,12 @@ import { convertRoutes } from "./modules/convertRoutes.js";
 import { convertLifeCycle } from "./convertLifeCycle.js";
 import { convertProperties } from "./convertProperties.js";
 
-const PORTAL_COMPONENTS = ["eo-modal", "eo-drawer"];
+const PORTAL_COMPONENTS = [
+  "eo-modal",
+  "eo-drawer",
+  "eo-event-agent",
+  "eo-batch-agent",
+];
 
 export async function convertComponent(
   component: ComponentChild,
