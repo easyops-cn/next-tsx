@@ -23,6 +23,11 @@ export default function Layout() {
     }
   }, [a, b, c]);
 
+  const dataSource = {
+    name: "Tom",
+    age: 30,
+  };
+
   return (
     <>
       <button
@@ -34,6 +39,19 @@ export default function Layout() {
         My App
       </button>
       <pre>{JSON.stringify(sessionStore.getItem("myKey"), null, 2)}</pre>
+      <eo-descriptions
+        dataSource={dataSource}
+        list={[
+          {
+            label: "Name",
+            render: (d) => <strong>{d.name}</strong>,
+          },
+          {
+            label: "Age",
+            render: (d) => <em>{d.age}</em>,
+          },
+        ]}
+      />
       {createPortal(<MyModal />)}
     </>
   );

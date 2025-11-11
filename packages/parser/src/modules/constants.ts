@@ -55,3 +55,5 @@ export const CTX_BINDING_KINDS: BindingInfo["kind"][] = [
   "constant",
   "param",
 ];
+
+export const SYMBOL_RENDER_USE_BRICK = Symbol("renderUseBrick");

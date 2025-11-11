@@ -29,6 +29,7 @@ import convertCodeBlock from "./convertCodeBlock.js";
 import { getAppTplName, getViewTplName } from "./modules/getTplName.js";
 import { convertRoutes } from "./modules/convertRoutes.js";
 import { convertLifeCycle } from "./convertLifeCycle.js";
+import { convertProperties } from "./convertProperties.js";
 
 const PORTAL_COMPONENTS = ["eo-modal", "eo-drawer"];
 
@@ -135,8 +136,14 @@ export async function convertComponent(
           component.name.toLowerCase() === component.name
         ) {
           brick = {
-            brick: component.name.replaceAll("_", ".").replaceAll("--", "."),
-            properties: component.properties,
+            brick: component.name.replaceAll("--", "."),
+            properties: await convertProperties(
+              component.properties,
+              mod,
+              state,
+              options,
+              scope
+            ),
           };
         } else {
           // eslint-disable-next-line no-console
@@ -164,7 +171,13 @@ export async function convertComponent(
           state.app.appType === "app"
             ? getAppTplName(tplName)
             : getViewTplName(tplName, options.rootId),
-        properties: component.properties,
+        properties: await convertProperties(
+          component.properties,
+          mod,
+          state,
+          options,
+          scope
+        ),
       };
     } else {
       // eslint-disable-next-line no-console

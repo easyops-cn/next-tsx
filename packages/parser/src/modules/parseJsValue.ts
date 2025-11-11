@@ -9,6 +9,7 @@ import type {
 import { validateEmbeddedExpression } from "./validations.js";
 import { replaceBindings } from "./replaceBindings.js";
 import { parseChildren } from "./parseChildren.js";
+import { SYMBOL_RENDER_USE_BRICK } from "./constants.js";
 
 const ambiguousSymbol = Symbol("ambiguous");
 
@@ -74,6 +75,7 @@ export function parseJsValue(
       }
     }
     return {
+      type: SYMBOL_RENDER_USE_BRICK,
       params: paramNames,
       children: parseChildren(expr, state, app, options),
     } as RenderUseBrick;

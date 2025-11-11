@@ -1,5 +1,6 @@
 import type * as t from "@babel/types";
 import type { ComponentChild, SourceFile } from "./modules/interfaces.js";
+import type { SYMBOL_RENDER_USE_BRICK } from "./modules/constants.js";
 
 export interface ParseOptions {
   reward?: boolean;
@@ -167,6 +168,7 @@ export interface LifeCycle {
 }
 
 export interface RenderUseBrick {
+  type: typeof SYMBOL_RENDER_USE_BRICK;
   params: string[];
   children: ComponentChild[];
 }
