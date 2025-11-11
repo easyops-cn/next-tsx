@@ -2,7 +2,7 @@ import { createPortal, useState } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 
 export default function Layout() {
-  const [a] = useState<string | null>(null);
+  const [a, _setA] = useState<string | null>(null);
 
   return (
     <>
