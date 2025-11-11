@@ -56,6 +56,7 @@ export type EventHandler =
   | TypeEventHandlerOfCallAPI
   | TypeEventHandlerOfDispatchEvent
   | TypeEventHandlerOfNavigate
+  | TypeEventHandlerOfStore
   | TypeEventHandlerOfConditional;
 
 export interface TypeEventHandlerOfUpdateVariable {
@@ -132,6 +133,15 @@ export interface TypeEventHandlerOfNavigate {
   action: "navigate";
   payload: {
     method: "push" | "replace" | "reload" | "pushQuery" | "replaceQuery";
+    args: unknown[];
+  };
+}
+
+export interface TypeEventHandlerOfStore {
+  action: "store";
+  payload: {
+    type: "local" | "session";
+    method: "setItem" | "removeItem";
     args: unknown[];
   };
 }

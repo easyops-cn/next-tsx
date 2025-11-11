@@ -1,4 +1,10 @@
-import { createPortal, useState, useEffect, showMessage } from "@next-tsx/core";
+import {
+  createPortal,
+  useState,
+  useEffect,
+  showMessage,
+  sessionStore,
+} from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 
 export default function Layout() {
@@ -12,6 +18,8 @@ export default function Layout() {
         type: "success",
         content: "Value of a changed: " + a + " / " + b + " / " + c,
       });
+
+      sessionStore.setItem("myKey", { a, b, c });
     }
   }, [a, b, c]);
 
@@ -25,6 +33,7 @@ export default function Layout() {
       >
         My App
       </button>
+      <pre>{JSON.stringify(sessionStore.getItem("myKey"), null, 2)}</pre>
       {createPortal(<MyModal />)}
     </>
   );

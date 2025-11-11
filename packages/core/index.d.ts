@@ -200,6 +200,24 @@ export function showDialog(options: {
 export function copyText(text: string): Promise<void>;
 
 /**
+ * 本地存储对象，数据存储在浏览器的 Local Storage 中，生命周期为永久。
+ * 可存储任意能被 JSON 序列化的数据。
+ */
+export const localStore: Store;
+
+/**
+ * 会话存储对象，数据存储在浏览器的 Session Storage 中，生命周期为当前会话。
+ * 可存储任意能被 JSON 序列化的数据。
+ */
+export const sessionStore: Store;
+
+export interface Store {
+  getItem<T = any>(key: string): T | null;
+  setItem<T = any>(key: string, value: T): void;
+  removeItem(key: string): void;
+}
+
+/**
  * 平台部署的基础路径，通常为 `/next/`。
  *
  * 对于大部分组件，设置 url 时不需要带上该前缀，但在某些需要使用完整 URL 的场景下需要使用该常量进行拼接。

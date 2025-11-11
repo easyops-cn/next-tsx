@@ -11,6 +11,7 @@ import type {
   ParseModuleOptions,
   ParsedModule,
   ModulePartOfComponent,
+  EffectsMap,
 } from "./interfaces.js";
 import { parseChildren } from "./parseChildren.js";
 import { parseJsValue } from "./parseJsValue.js";
@@ -40,9 +41,11 @@ export function parseLegacyModule(
   }
 
   const bindingMap: BindingMap = new Map();
+  const effectsMap: EffectsMap = new Map();
   const component: ParsedComponent = {
     type: "view",
     bindingMap,
+    effectsMap,
   };
   const globalOptions: ParseJsValueOptions = {
     component,

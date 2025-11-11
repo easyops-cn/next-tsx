@@ -27,10 +27,12 @@ interface Annotation {
   end: number;
 }
 
-const GlobalConstants = new Map([
+const GlobalVariables = new Map([
   ["BASE_URL", "BASE_URL"],
   ["translate", "I18N"],
   ["translateByRecord", "I18N_TEXT"],
+  ["localStore", "LOCAL_STORAGE"],
+  ["sessionStore", "SESSION_STORAGE"],
 ]);
 
 export function replaceBindings(
@@ -65,7 +67,7 @@ export function replaceBindings(
         idPath.parentPath.node.shorthand;
       const varName = idPath.node.name;
 
-      for (const [globalName, replacement] of GlobalConstants) {
+      for (const [globalName, replacement] of GlobalVariables) {
         if (validateGlobalApi(idPath, globalName)) {
           replacements.push({
             type: "id",
