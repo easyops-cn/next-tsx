@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.7...@next-tsx/core@0.0.8) (2025-11-11)
+
+
+### Bug Fixes
+
+* refine ref props, remove ts non-null operators ([a05aea9](https://github.com/easyops-cn/next-tsx/commit/a05aea90ed9d06214818d383a437a07585c1fc4e))
+
+
+
+
+
 ## [0.0.7](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.6...@next-tsx/core@0.0.7) (2025-11-10)
 
 
