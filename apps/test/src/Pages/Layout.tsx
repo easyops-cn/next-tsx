@@ -28,16 +28,14 @@ export default function Layout() {
     age: 30,
   };
 
+  const handleClick = () => {
+    setA("New Value by callback");
+    setC((prev) => prev + 42);
+  };
+
   return (
     <>
-      <button
-        onClick={() => {
-          setA("New Value");
-          setC((prev) => prev + 42);
-        }}
-      >
-        My App
-      </button>
+      <button onClick={handleClick}>My App</button>
       <pre>{JSON.stringify(sessionStore.getItem("myKey"), null, 2)}</pre>
       <eo-descriptions
         dataSource={dataSource}

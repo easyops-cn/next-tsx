@@ -62,7 +62,19 @@ export function parseJsValue(
       return null;
     }
     const paramNames: string[] = [];
-    for (const param of path.get("params")) {
+
+    const params = path.get("params");
+    if (params.length > 1 && options.component?.id?.name.includes("-")) {
+      state.errors.push({
+        message:
+          "Multiple parameters in render callback are not supported in custom elements",
+        node: params[1].node,
+        severity: "error",
+      });
+      return null;
+    }
+
+    for (const param of params) {
       if (param.isIdentifier()) {
         paramNames.push(param.node.name);
       } else {

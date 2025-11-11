@@ -11,6 +11,7 @@ import type {
   EffectsMap,
 } from "./interfaces.js";
 import {
+  isGeneralFunctionExpression,
   validateEmbeddedExpression,
   validateFunction,
   validateGlobalApi,
@@ -118,7 +119,10 @@ export function parseComponent(
             });
             return null;
           }
-          bindingMap.set(value.node, { id: value.node, kind: "eventHandler" });
+          bindingMap.set(value.node, {
+            id: value.node,
+            kind: "eventHandlerParam",
+          });
         } else {
           let bindingId: t.Identifier | undefined;
           let initialValue: unknown;
@@ -310,6 +314,20 @@ export function parseComponent(
             severity: "error",
           });
           continue;
+        }
+
+        if (isGeneralFunctionExpression(init)) {
+          const callbackBody = init.get("body");
+          if (callbackBody.isBlockStatement()) {
+            // It's a event callback function
+            const funcBinding: BindingInfo = {
+              id: declId.node,
+              kind: "eventCallback",
+              callback: init,
+            };
+            bindingMap.set(declId.node, funcBinding);
+            continue;
+          }
         }
 
         const binding: BindingInfo = { id: declId.node, kind: "constant" };
