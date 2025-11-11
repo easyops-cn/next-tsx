@@ -6,4 +6,5 @@ export {
   isExpressionString,
   isAnyOfficialComponent,
   isOfficialComponent,
+  isRenderUseBrick,
 } from "./modules/validations.js";

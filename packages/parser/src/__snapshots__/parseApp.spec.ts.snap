@@ -482,6 +482,7 @@ exports[`parseApp should work 1`] = `
               "slot": undefined,
             },
           ],
+          "effectsMap": Map {},
           "id": Node {
             "end": 263,
             "loc": SourceLocation {
@@ -535,6 +536,7 @@ exports[`parseApp should work 1`] = `
                 "slot": undefined,
               },
             ],
+            "effectsMap": Map {},
             "id": Node {
               "end": 1303,
               "loc": SourceLocation {
@@ -718,6 +720,7 @@ exports[`parseApp should work 1`] = `
               "slot": undefined,
             },
           ],
+          "effectsMap": Map {},
           "id": Node {
             "end": 124,
             "loc": SourceLocation {
@@ -787,6 +790,7 @@ exports[`parseApp should work 1`] = `
               "slot": undefined,
             },
           ],
+          "effectsMap": Map {},
           "id": Node {
             "end": 29,
             "loc": SourceLocation {
@@ -849,6 +853,7 @@ exports[`parseApp should work 1`] = `
               "slot": undefined,
             },
           ],
+          "effectsMap": Map {},
           "id": Node {
             "end": 31,
             "loc": SourceLocation {

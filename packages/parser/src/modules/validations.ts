@@ -1,7 +1,11 @@
 import type { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
-import type { ComponentChild, ParsedModule } from "./interfaces.js";
-import { MODULE_SOURCE } from "./constants.js";
+import type {
+  ComponentChild,
+  ParsedModule,
+  RenderUseBrick,
+} from "./interfaces.js";
+import { MODULE_SOURCE, SYMBOL_RENDER_USE_BRICK } from "./constants.js";
 
 export function validateFunction(
   fn: t.FunctionDeclaration | t.FunctionExpression | t.ArrowFunctionExpression,
@@ -121,4 +125,10 @@ export function isGeneralFunctionExpression(
   path: NodePath<t.Node | null | undefined>
 ): path is NodePath<t.FunctionExpression | t.ArrowFunctionExpression> {
   return path.isFunctionExpression() || path.isArrowFunctionExpression();
+}
+
+export function isRenderUseBrick(
+  value: Record<string, unknown> | RenderUseBrick
+): value is RenderUseBrick {
+  return (value as RenderUseBrick).type === SYMBOL_RENDER_USE_BRICK;
 }

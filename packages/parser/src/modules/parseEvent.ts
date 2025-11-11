@@ -406,6 +406,37 @@ export function parseEventHandler(
             }
           }
         }
+        const isLocalStore = validateGlobalApi(object, "localStore");
+        const isSessionStore =
+          !isLocalStore && validateGlobalApi(object, "sessionStore");
+        if (isLocalStore || isSessionStore) {
+          const property = callee.get("property");
+          if (!property.isIdentifier()) {
+            state.errors.push({
+              message: `Event handler call expression with non-identifier property is not supported`,
+              node: property.node,
+              severity: "error",
+            });
+            return null;
+          }
+          const method = property.node.name;
+          if (method !== "setItem" && method !== "removeItem") {
+            state.errors.push({
+              message: `"${object.node.name}.${method}()" is not supported in event handler`,
+              node: property.node,
+              severity: "error",
+            });
+            return null;
+          }
+          return {
+            action: "store",
+            payload: {
+              type: isLocalStore ? "local" : "session",
+              method,
+              args: args.map((arg) => parseJsValue(arg, state, app, options)),
+            },
+          };
+        }
       }
 
       if (!object.isCallExpression()) {

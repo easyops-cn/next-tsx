@@ -9,7 +9,7 @@ import type {
 import { getContextReferenceVariableName } from "./getContextReference.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
-import { TransformBindingMap } from "./constants.js";
+import { CTX_BINDING_KINDS, TransformBindingMap } from "./constants.js";
 
 type Replacement = IdReplacement | Annotation;
 
@@ -27,10 +27,12 @@ interface Annotation {
   end: number;
 }
 
-const GlobalConstants = new Map([
+const GlobalVariables = new Map([
   ["BASE_URL", "BASE_URL"],
   ["translate", "I18N"],
   ["translateByRecord", "I18N_TEXT"],
+  ["localStore", "LOCAL_STORAGE"],
+  ["sessionStore", "SESSION_STORAGE"],
 ]);
 
 export function replaceBindings(
@@ -65,7 +67,7 @@ export function replaceBindings(
         idPath.parentPath.node.shorthand;
       const varName = idPath.node.name;
 
-      for (const [globalName, replacement] of GlobalConstants) {
+      for (const [globalName, replacement] of GlobalVariables) {
         if (validateGlobalApi(idPath, globalName)) {
           replacements.push({
             type: "id",
@@ -261,13 +263,7 @@ export function replaceBindings(
       const localBinding = options.component?.bindingMap.get(bindingId);
       if (localBinding) {
         const bindingTarget = TransformBindingMap.get(localBinding.kind);
-        if (
-          bindingTarget ||
-          localBinding.kind === "state" ||
-          localBinding.kind === "resource" ||
-          localBinding.kind === "constant" ||
-          localBinding.kind === "param"
-        ) {
+        if (bindingTarget || CTX_BINDING_KINDS.includes(localBinding.kind)) {
           replacements.push({
             type: "id",
             start: idPath.node.start!,

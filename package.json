@@ -9,6 +9,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "prepare": "husky",
+    "serve": "brick-container-serve",
     "start": "lerna run start",
     "build": "lerna run build --concurrency=2",
     "test": "test-next-project",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@babel/types": "^7.27.6",
     "@next-core/babel-preset-next": "^1.0.26",
+    "@next-core/brick-container": "^3.23.7",
     "@next-core/eslint-config-next": "^3.0.1",
     "@types/jest": "^29.5.14",
     "@types/js-yaml": "^3.12.10",

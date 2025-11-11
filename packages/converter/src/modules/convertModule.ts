@@ -91,20 +91,34 @@ async function parseModulePart(
   const { component } = part;
 
   for (const binding of component.bindingMap.values()) {
+    let conf: ContextConf;
     if (binding.kind === "resource") {
-      context.push(convertDataSource(binding.resource!));
+      conf = convertDataSource(binding.resource!);
     } else if (
       binding.kind === "state" ||
       binding.kind === "constant" ||
       binding.kind === "param"
     ) {
-      context.push({
+      conf = {
         name: binding.id.name,
         value: binding.initialValue,
         expose: binding.kind === "param",
         track: true,
-      });
+      };
+    } else {
+      continue;
     }
+    const effects = component.effectsMap.get(binding.id);
+    if (effects && effects.length > 0) {
+      conf.onChange = effects.map((id) => ({
+        ...(part.type === "template"
+          ? { targetRef: id }
+          : { target: `#${id}` }),
+        args: ["effect"],
+        method: "trigger",
+      }));
+    }
+    context.push(conf);
   }
 
   let children: ComponentChild[] | undefined;

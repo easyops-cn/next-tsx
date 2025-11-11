@@ -158,6 +158,11 @@ function convertEventHandler(
         action: `history.${handler.payload.method}`,
         args: handler.payload.args,
       };
+    case "store":
+      return {
+        action: `${handler.payload.type}Storage.${handler.payload.method}`,
+        args: handler.payload.args,
+      };
     case "show_message":
       return {
         action: `message.${handler.payload.type}` as "message.info",

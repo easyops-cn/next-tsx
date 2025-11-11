@@ -664,6 +664,7 @@ exports[`parseView should work 1`] = `
                             "params": [
                               "v",
                             ],
+                            "type": Symbol(renderUseBrick),
                           },
                           "title": "时间",
                         },
@@ -683,6 +684,7 @@ exports[`parseView should work 1`] = `
                               "v",
                               "r",
                             ],
+                            "type": Symbol(renderUseBrick),
                           },
                           "title": "操作类型",
                         },
@@ -739,6 +741,7 @@ exports[`parseView should work 1`] = `
                               "v",
                               "r",
                             ],
+                            "type": Symbol(renderUseBrick),
                           },
                           "title": "数据",
                         },
@@ -802,6 +805,7 @@ exports[`parseView should work 1`] = `
                               "v",
                               "r",
                             ],
+                            "type": Symbol(renderUseBrick),
                           },
                           "title": "操作",
                         },
@@ -862,6 +866,7 @@ exports[`parseView should work 1`] = `
                                 "params": [
                                   "r",
                                 ],
+                                "type": Symbol(renderUseBrick),
                               },
                             },
                           ],
@@ -917,6 +922,7 @@ exports[`parseView should work 1`] = `
             "slot": undefined,
           },
         ],
+        "effectsMap": Map {},
         "id": null,
         "type": "view",
       },
@@ -1222,6 +1228,7 @@ exports[`parseView should work 1`] = `
               "slot": undefined,
             },
           ],
+          "effectsMap": Map {},
           "id": Node {
             "end": 186,
             "loc": SourceLocation {

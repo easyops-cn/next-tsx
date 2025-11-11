@@ -28,6 +28,15 @@ export function useResource<T = any>(
   }
 ): [data: T, refetch: () => void];
 
+/**
+ * 在依赖项数组变化时执行回调函数。
+ *
+ * 注意与 React 中的 useEffect 行为略有不同：
+ * - 初始渲染时不会执行 callback，仅在 deps 变化时执行 callback
+ * - 不支持返回清理函数
+ */
+export function useEffect(callback: () => void, deps: unknown[]): void;
+
 /** 返回一个 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
 export function useRef<T>(initialValue: T): RefObject<T>;
 
@@ -189,6 +198,24 @@ export function showDialog(options: {
 
 /** 拷贝一段文本 */
 export function copyText(text: string): Promise<void>;
+
+/**
+ * 本地存储对象，数据存储在浏览器的 Local Storage 中，生命周期为永久。
+ * 可存储任意能被 JSON 序列化的数据。
+ */
+export const localStore: Store;
+
+/**
+ * 会话存储对象，数据存储在浏览器的 Session Storage 中，生命周期为当前会话。
+ * 可存储任意能被 JSON 序列化的数据。
+ */
+export const sessionStore: Store;
+
+export interface Store {
+  getItem<T = any>(key: string): T | null;
+  setItem<T = any>(key: string, value: T): void;
+  removeItem(key: string): void;
+}
 
 /**
  * 平台部署的基础路径，通常为 `/next/`。

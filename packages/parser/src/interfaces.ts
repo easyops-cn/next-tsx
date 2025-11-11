@@ -1,5 +1,6 @@
 import type * as t from "@babel/types";
 import type { ComponentChild, SourceFile } from "./modules/interfaces.js";
+import type { SYMBOL_RENDER_USE_BRICK } from "./modules/constants.js";
 
 export interface ParseOptions {
   reward?: boolean;
@@ -56,6 +57,7 @@ export type EventHandler =
   | TypeEventHandlerOfCallAPI
   | TypeEventHandlerOfDispatchEvent
   | TypeEventHandlerOfNavigate
+  | TypeEventHandlerOfStore
   | TypeEventHandlerOfConditional;
 
 export interface TypeEventHandlerOfUpdateVariable {
@@ -136,6 +138,15 @@ export interface TypeEventHandlerOfNavigate {
   };
 }
 
+export interface TypeEventHandlerOfStore {
+  action: "store";
+  payload: {
+    type: "local" | "session";
+    method: "setItem" | "removeItem";
+    args: unknown[];
+  };
+}
+
 export interface TypeEventHandlerOfConditional {
   action: "conditional";
   payload: {
@@ -157,6 +168,7 @@ export interface LifeCycle {
 }
 
 export interface RenderUseBrick {
+  type: typeof SYMBOL_RENDER_USE_BRICK;
   params: string[];
   children: ComponentChild[];
 }
