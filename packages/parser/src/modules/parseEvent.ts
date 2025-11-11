@@ -296,7 +296,7 @@ export function parseEventHandler(
         }
         default:
           state.errors.push({
-            message: `"${callee.node.name}" is not callable`,
+            message: `"${callee.node.name}" is invalid or not callable`,
             node: callee.node,
             severity: "error",
           });

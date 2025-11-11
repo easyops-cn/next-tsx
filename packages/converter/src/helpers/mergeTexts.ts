@@ -13,7 +13,7 @@ export function mergeTexts(
       return String(value);
     }
     if (type === "object" && value !== null) {
-      throw new Error("Can not render object as text");
+      throw new Error("Cannot render object as text");
     }
     return "";
   }
