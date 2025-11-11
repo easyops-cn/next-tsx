@@ -2,6 +2,7 @@ import type { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
 import type {
   BindingInfo,
+  EventHandler,
   ParsedApp,
   ParsedModule,
   ParseJsValueOptions,
@@ -13,6 +14,7 @@ import {
 } from "./getContextReference.js";
 import { parseElement } from "./parseElement.js";
 import type { ChildElement } from "./internal-interfaces.js";
+import { parseEvent } from "./parseEvent.js";
 
 export function parseContextProvider(
   path: NodePath<t.JSXElement>,
@@ -93,6 +95,7 @@ export function parseContextProvider(
   const properties = expression.get("properties");
   const stateSetters = new Map<string, string>();
   const stateGetters = new Map<string, string>();
+  const eventCallbacks = new Map<string, BindingInfo>();
   for (const prop of properties) {
     if (!prop.isObjectProperty()) {
       state.errors.push({
@@ -139,6 +142,19 @@ export function parseContextProvider(
       case "state":
         stateGetters.set(value.node.name, binding.id.name);
         break;
+      case "eventCallback": {
+        const params = binding.callback!.get("params");
+        if (params.length > 0) {
+          state.errors.push({
+            message: `Event callback binding for Context Provider value property "${value.node.name}" must not have any parameters`,
+            node: params[0].node,
+            severity: "error",
+          });
+          continue;
+        }
+        eventCallbacks.set(value.node.name, binding);
+        break;
+      }
       default:
         state.errors.push({
           message: `Unsupported binding kind "${binding.kind}" for Context Provider value property "${value.node.name}"`,
@@ -149,7 +165,11 @@ export function parseContextProvider(
     }
   }
 
-  if (stateSetters.size === 0) {
+  if (
+    stateSetters.size === 0 &&
+    stateGetters.size === 0 &&
+    eventCallbacks.size === 0
+  ) {
     return elements;
   }
 
@@ -163,20 +183,39 @@ export function parseContextProvider(
           id: getContextReferenceEventAgentId(contextReference.name),
         },
         events: {
-          trigger: [...stateSetters].map(([setterName, stateName]) => ({
-            action: "conditional",
-            payload: {
-              test: `<% EVENT.detail.name === ${JSON.stringify(setterName)} %>`,
-              consequent: {
-                action: "update_variable",
+          trigger: [
+            ...[...stateSetters].map<EventHandler>(
+              ([setterName, stateName]) => ({
+                action: "conditional",
                 payload: {
-                  name: stateName,
-                  value: "<% EVENT.detail.value %>",
+                  test: `<% EVENT.detail.name === ${JSON.stringify(setterName)} %>`,
+                  consequent: {
+                    action: "update_variable",
+                    payload: {
+                      name: stateName,
+                      value: "<% EVENT.detail.value %>",
+                    },
+                  },
+                  alternate: null,
                 },
-              },
-              alternate: null,
-            },
-          })),
+              })
+            ),
+            ...[...eventCallbacks].map<EventHandler>(
+              ([callbackName, binding]) => ({
+                action: "conditional",
+                payload: {
+                  test: `<% EVENT.detail.name === ${JSON.stringify(callbackName)} %>`,
+                  consequent: parseEvent(
+                    binding.callback!,
+                    state,
+                    app,
+                    options
+                  ),
+                  alternate: null,
+                },
+              })
+            ),
+          ],
         },
         ...(stateGetters.size > 0
           ? {

@@ -9,8 +9,9 @@ export default [
   ...eslintConfigNext,
   {
     rules: {
-      "react/react-in-jsx-scope": "off"
-    }
+      "react/react-in-jsx-scope": "off",
+      "react/no-unknown-property": "off",
+    },
   },
   {
     files: ["packages/builder/**/*.js"],

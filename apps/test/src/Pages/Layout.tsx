@@ -4,8 +4,12 @@ import {
   useEffect,
   showMessage,
   sessionStore,
+  Routes,
+  Route,
 } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
+import { LayoutContext } from "../Contexts/LayoutContext";
+import About from "./About";
 
 export default function Layout() {
   const [a, setA] = useState<string | null>(null);
@@ -34,7 +38,7 @@ export default function Layout() {
   };
 
   return (
-    <>
+    <LayoutContext.Provider value={{ handleClick }}>
       <button onClick={handleClick}>My App</button>
       <pre>{JSON.stringify(sessionStore.getItem("myKey"), null, 2)}</pre>
       <eo-descriptions
@@ -50,7 +54,12 @@ export default function Layout() {
           },
         ]}
       />
+      <div>
+        <Routes>
+          <Route path="/about" component={About} />
+        </Routes>
+      </div>
       {createPortal(<MyModal />)}
-    </>
+    </LayoutContext.Provider>
   );
 }
