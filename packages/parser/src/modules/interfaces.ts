@@ -79,6 +79,7 @@ export interface ParsedRender {
 }
 
 export type BindingMap = Map<t.Identifier, BindingInfo>;
+export type EffectsMap = Map<t.Identifier, string[]>;
 
 export interface BindingInfo {
   id: t.Identifier;
@@ -134,6 +135,7 @@ export interface DataBindingInfo {
 
 export interface ParsedComponent {
   bindingMap: BindingMap;
+  effectsMap: EffectsMap;
   type: "template" | "view" | "page";
   children?: ComponentChild[];
   id?: t.Identifier | null;

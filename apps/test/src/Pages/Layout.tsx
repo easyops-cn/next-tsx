@@ -1,14 +1,30 @@
-import { createPortal, useState } from "@next-tsx/core";
+import { createPortal, useState, useEffect, showMessage } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 
 export default function Layout() {
-  const [a, _setA] = useState<string | null>(null);
+  const [a, setA] = useState<string | null>(null);
+  const b = a ? "value" : "null";
+  const [c, setC] = useState<number>(0);
+
+  useEffect(() => {
+    if (a) {
+      showMessage({
+        type: "success",
+        content: "Value of a changed: " + a + " / " + b + " / " + c,
+      });
+    }
+  }, [a, b, c]);
 
   return (
     <>
-      <div title={a!.length > 0 ? (a as string) : "default"}>
-        <h1>My App</h1>
-      </div>
+      <button
+        onClick={() => {
+          setA("New Value");
+          setC((prev) => prev + 42);
+        }}
+      >
+        My App
+      </button>
       {createPortal(<MyModal />)}
     </>
   );

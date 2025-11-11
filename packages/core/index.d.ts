@@ -28,6 +28,15 @@ export function useResource<T = any>(
   }
 ): [data: T, refetch: () => void];
 
+/**
+ * 在依赖项数组变化时执行回调函数。
+ *
+ * 注意与 React 中的 useEffect 行为略有不同：
+ * - 初始渲染时不会执行 callback，仅在 deps 变化时执行 callback
+ * - 不支持返回清理函数
+ */
+export function useEffect(callback: () => void, deps: unknown[]): void;
+
 /** 返回一个 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
 export function useRef<T>(initialValue: T): RefObject<T>;
 

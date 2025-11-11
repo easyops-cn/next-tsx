@@ -8,9 +8,9 @@ import type {
   ParsedModule,
   ParsedApp,
   ComponentChild,
+  EffectsMap,
 } from "./interfaces.js";
 import {
-  // isGeneralFunctionExpression,
   validateEmbeddedExpression,
   validateFunction,
   validateGlobalApi,
@@ -21,6 +21,7 @@ import { parseUseResource } from "./parseUseResource.js";
 import { parseUseContext } from "./parseUseContext.js";
 import { parseIdentifierUse } from "./parseIdentifierUse.js";
 import { parseUseImperativeHandle } from "./parseUseImperativeHandle.js";
+import { parseUseEffect } from "./parseUseEffect.js";
 
 export function parseComponent(
   fn: NodePath<t.FunctionDeclaration>,
@@ -34,8 +35,10 @@ export function parseComponent(
   }
 
   const bindingMap: BindingMap = new Map();
+  const effectsMap: EffectsMap = new Map();
   const component: ParsedComponent = {
     bindingMap,
+    effectsMap,
     type,
     id: fn.node.id,
   };
@@ -401,70 +404,22 @@ export function parseComponent(
           });
           continue;
         }
-        // if (validateGlobalApi(callee, "useEffect")) {
-        //   const args = expr.get("arguments");
-        //   if (args.length !== 2) {
-        //     state.errors.push({
-        //       message: `useEffect() requires exactly 2 arguments, received ${args.length}`,
-        //       node: expr.node,
-        //       severity: "error",
-        //     });
-        //   }
-        //   const callback = args[0];
-        //   const depArray = args[1];
-        //   if (!isGeneralFunctionExpression(callback)) {
-        //     state.errors.push({
-        //       message: `useEffect() first argument must be a function, received ${callback.type}`,
-        //       node: callback.node,
-        //       severity: "error",
-        //     });
-        //     continue;
-        //   }
-        //   if (!validateFunction(callback.node, state)) {
-        //     continue;
-        //   }
-        //   const callbackParams = callback.get("params");
-        //   if (callbackParams.length > 0) {
-        //     state.errors.push({
-        //       message: `useEffect() function must not have parameters, received ${callbackParams.length}`,
-        //       node: callback.node,
-        //       severity: "error",
-        //     });
-        //     continue;
-        //   }
-
-        //   const callbackBody = callback.get("body");
-        //   if (!callbackBody.isBlockStatement()) {
-        //     state.errors.push({
-        //       message: `useEffect() function body must be a block statement, received ${callbackBody.type}`,
-        //       node: callbackBody.node,
-        //       severity: "error",
-        //     });
-        //     continue;
-        //   }
-        //   if (!depArray.isArrayExpression()) {
-        //     state.errors.push({
-        //       message: `useEffect() second argument must be an array, received ${depArray.type}`,
-        //       node: depArray.node,
-        //       severity: "error",
-        //     });
-        //     continue;
-        //   }
-        //   const depElements = depArray.get("elements");
-        //   if (depElements.length > 0) {
-        //     state.errors.push({
-        //       message: `useEffect() dependency array must be empty, received ${depElements.length} elements`,
-        //       node: depArray.node,
-        //       severity: "warning",
-        //     });
-        //   }
-
-        //   // let onUnmountHandlers: EventHandler | EventHandler[] | null = null;
-        //   // const onMountHandlers = parseEventHandler(callbackBody, state, app, options, (returnPath) => {
-        //   //   onUnmountHandlers = parseEventHandler(returnPath.get("argument") as NodePath<t.Expression>, state, app, options);
-        //   // });
-        //   continue;
-        // }
+        if (validateGlobalApi(callee, "useEffect")) {
+          const result = parseUseEffect(expr, state, app, options);
+          if (result) {
+            component.children ??= [];
+            component.children.push(result.component);
+            for (const dep of result.deps) {
+              let effects = effectsMap.get(dep);
+              if (!effects) {
+                effects = [];
+                effectsMap.set(dep, effects);
+              }
+              effects.push(result.id);
+            }
+          }
+          continue;
+        }
 
         if (validateGlobalApi(callee, "useImperativeHandle")) {
           const result = parseUseImperativeHandle(

@@ -48,3 +48,10 @@ export const TransformBindingMap = new Map<BindingInfo["kind"], string>([
   ["flags", "FLAGS"],
   ["media", "MEDIA"],
 ]);
+
+export const CTX_BINDING_KINDS: BindingInfo["kind"][] = [
+  "state",
+  "resource",
+  "constant",
+  "param",
+];

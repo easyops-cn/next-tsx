@@ -9,7 +9,7 @@ import type {
 import { getContextReferenceVariableName } from "./getContextReference.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
-import { TransformBindingMap } from "./constants.js";
+import { CTX_BINDING_KINDS, TransformBindingMap } from "./constants.js";
 
 type Replacement = IdReplacement | Annotation;
 
@@ -261,13 +261,7 @@ export function replaceBindings(
       const localBinding = options.component?.bindingMap.get(bindingId);
       if (localBinding) {
         const bindingTarget = TransformBindingMap.get(localBinding.kind);
-        if (
-          bindingTarget ||
-          localBinding.kind === "state" ||
-          localBinding.kind === "resource" ||
-          localBinding.kind === "constant" ||
-          localBinding.kind === "param"
-        ) {
+        if (bindingTarget || CTX_BINDING_KINDS.includes(localBinding.kind)) {
           replacements.push({
             type: "id",
             start: idPath.node.start!,
