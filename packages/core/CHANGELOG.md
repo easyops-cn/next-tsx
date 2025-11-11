@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.8...@next-tsx/core@0.1.0) (2025-11-11)
+
+
+### Features
+
+* support local/session store ([286bda4](https://github.com/easyops-cn/next-tsx/commit/286bda44b34c3e212e99febc7a471aa85b355a9e))
+* support useEffect (ctx/state onChange) ([3293d2b](https://github.com/easyops-cn/next-tsx/commit/3293d2bcbe1310eaca1a3d046310e6fcb6ed5e6e))
+
+
+
+
+
 ## [0.0.8](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.0.7...@next-tsx/core@0.0.8) (2025-11-11)
 
 
