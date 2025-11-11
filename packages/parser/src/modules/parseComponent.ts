@@ -371,7 +371,7 @@ export function parseComponent(
         app,
         options
       );
-      const alternateChildren = alternate
+      const alternateChildren = alternate.node
         ? parseIfStatementChildren(
             alternate as NodePath<t.Statement>,
             state,
@@ -379,6 +379,10 @@ export function parseComponent(
             options
           )
         : null;
+
+      if (consequentChildren === false || alternateChildren === false) {
+        return null;
+      }
 
       prevParent.children ??= [];
       const ifComponent: ComponentChild = {
@@ -400,12 +404,10 @@ export function parseComponent(
       };
       prevParent.children.push(ifComponent);
       prevParent = ifComponent;
-      if (consequentChildren) {
-        prevSlot = "else";
+      prevSlot = "else";
 
-        if (alternateChildren) {
-          break;
-        }
+      if (alternate.node) {
+        break;
       }
       continue;
     }
@@ -486,6 +488,11 @@ function parseReturnStatement(
     });
     return null;
   }
+
+  if (arg.isNullLiteral()) {
+    return null;
+  }
+
   return parseChildren(arg as NodePath<t.Expression>, state, app, options);
 }
 
@@ -494,7 +501,7 @@ function parseIfStatementChildren(
   state: ParsedModule,
   app: ParsedApp,
   options: ParseJsValueOptions
-): ComponentChild[] | null {
+): ComponentChild[] | null | false {
   if (stmt.isBlockStatement()) {
     const body = stmt.get("body");
     if (body.length === 0) {
@@ -503,13 +510,13 @@ function parseIfStatementChildren(
         node: stmt.node,
         severity: "error",
       });
-      return null;
+      return false;
     }
 
-    let children: ComponentChild[] | null = null;
+    let children: ComponentChild[] | null | false = false;
     for (const st of body) {
       const maybeChildren = parseIfStatementChildren(st, state, app, options);
-      if (maybeChildren) {
+      if (maybeChildren !== false) {
         children = maybeChildren;
       }
     }
@@ -525,5 +532,5 @@ function parseIfStatementChildren(
     node: stmt.node,
     severity: "error",
   });
-  return null;
+  return false;
 }

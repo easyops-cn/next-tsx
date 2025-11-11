@@ -36,6 +36,7 @@ export function parseUseEffect(
       node: expr.node,
       severity: "error",
     });
+    return null;
   }
   const callback = args[0];
   const depArray = args[1];
@@ -80,7 +81,7 @@ export function parseUseEffect(
   const depElements = depArray.get("elements");
   if (depElements.length === 0) {
     state.errors.push({
-      message: `useEffect() dependency array can not be empty`,
+      message: `useEffect() dependency array cannot be empty`,
       node: depArray.node,
       severity: "warning",
     });
@@ -124,9 +125,6 @@ export function parseUseEffect(
     const component: ComponentChild = {
       name: "eo-batch-agent",
       portal: true,
-      ...(options.component!.type === "template"
-        ? { ref: id, properties: {} }
-        : { properties: { id } }),
       properties: {},
       events: {
         trigger: handlers,
