@@ -92,6 +92,7 @@ export interface BindingInfo {
     | "ref"
     | "app"
     | "query"
+    | "searchParams"
     | "pathParams"
     | "pathName"
     | "auth"

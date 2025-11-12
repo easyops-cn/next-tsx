@@ -29,6 +29,7 @@ export const IdentifierUseMap = new Map<string, BindingInfo["kind"]>([
 
   // Used as variables
   ["useQuery", "query"],
+  ["useSearchParams", "searchParams"],
   ["usePathParams", "pathParams"],
   ["usePathName", "pathName"],
   ["useApp", "app"],
@@ -40,6 +41,7 @@ export const IdentifierUseMap = new Map<string, BindingInfo["kind"]>([
 
 export const TransformBindingMap = new Map<BindingInfo["kind"], string>([
   ["query", "QUERY"],
+  ["searchParams", "PARAMS"],
   ["pathParams", "PATH"],
   ["pathName", "PATH_NAME"],
   ["app", "APP"],

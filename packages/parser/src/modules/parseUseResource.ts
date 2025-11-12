@@ -89,9 +89,13 @@ export function parseUseResource(
         });
         return null;
       }
-      if (key.node.name !== "enabled" && key.node.name !== "fallback") {
+      if (
+        key.node.name !== "enabled" &&
+        key.node.name !== "fallback" &&
+        key.node.name !== "async"
+      ) {
         state.errors.push({
-          message: `"useResource()" second argument property key must be "enabled" or "fallback", but got "${key.node.name}"`,
+          message: `"useResource()" second argument property key must be "enabled" or "fallback" or "async", but got "${key.node.name}"`,
           node: key.node,
           severity: "error",
         });

@@ -37,7 +37,7 @@ export function convertDataSource(resource: DataSource): ContextConf {
                 args: [tool, params],
               }
             : {
-                useProvider: `${api}:*`,
+                useProvider: `${api}${api.includes(":") ? "" : ":*"}`,
                 params: params as Record<string, unknown> | undefined,
                 // TODO: remove the temporary workaround below
                 ...(api === "easyops.api.data_exchange.olap@Query" &&
@@ -63,6 +63,7 @@ export function convertDataSource(resource: DataSource): ContextConf {
             if: config.enabled as string | boolean,
           }
         : null),
+      ...(config?.async === true ? { async: true } : null),
     },
     track: true,
     ...(hasEnabled
