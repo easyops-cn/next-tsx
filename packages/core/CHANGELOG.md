@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.3.1...@next-tsx/core@0.4.0) (2025-11-12)
+
+
+### Features
+
+* support useSearchParams and async useResource ([fe39942](https://github.com/easyops-cn/next-tsx/commit/fe39942045379e0ef770d6fd1c8a4aede41a5046))
+
+
+
+
+
 ## [0.3.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.3.0...@next-tsx/core@0.3.1) (2025-11-12)
 
 
