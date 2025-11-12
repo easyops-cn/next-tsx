@@ -37,7 +37,7 @@ export function parseEvent(
 ): EventHandler[] | null {
   if (!isGeneralFunctionExpression(path)) {
     state.errors.push({
-      message: `Event handler must be an function expression, but got ${path.type}`,
+      message: `Event handler must be a function expression, but got ${path.type}`,
       node: path.node,
       severity: "error",
     });
@@ -87,8 +87,8 @@ export function parseEventHandler(
   path: NodePath<t.Statement | t.Expression | null | undefined>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions,
-  handleReturn?: (returnPath: NodePath<t.ReturnStatement>) => void
+  options: ParseJsValueOptions /* ,
+  handleReturn?: (returnPath: NodePath<t.ReturnStatement>) => void */
 ): EventHandler | EventHandler[] | null {
   if (path.isBlockStatement()) {
     return path
@@ -124,9 +124,9 @@ export function parseEventHandler(
     return parseEventHandler(path.get("expression"), state, app, options);
   }
 
-  if (path.isReturnStatement() && handleReturn) {
-    handleReturn(path);
-  }
+  // if (path.isReturnStatement() && handleReturn) {
+  //   handleReturn(path);
+  // }
 
   if (isGeneralCallExpression(path)) {
     const callee = path.get("callee");

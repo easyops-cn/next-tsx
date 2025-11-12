@@ -196,13 +196,6 @@ export function parseCallApi(
     const valuePath = args[1];
 
     if (valuePath && !isNilPath(valuePath)) {
-      if (!valuePath.isObjectExpression()) {
-        state.errors.push({
-          message: `Data source "params" prefers an object literal, but got ${valuePath.type}`,
-          node: valuePath.node,
-          severity: "notice",
-        });
-      }
       const params = parseJsValue(valuePath, state, app, options);
       if (
         isExpressionString(params) ||
