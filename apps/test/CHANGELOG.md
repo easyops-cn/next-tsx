@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.3.0...@apps/test@0.4.0) (2025-11-12)
+
+
+### Features
+
+* use EVENT_BY_KEY ([baeac8e](https://github.com/easyops-cn/next-tsx/commit/baeac8ed44b4bf841f371673937ab901e035c7d5))
+
+
+
+
+
 # [0.3.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.2.1...@apps/test@0.3.0) (2025-11-11)
 
 
