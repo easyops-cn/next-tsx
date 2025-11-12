@@ -64,6 +64,9 @@ async function buildApp(watchMode) {
     let shouldBailout = false;
     for (const err of app.errors) {
       console.error(`[${err.severity}] ${err.message}`);
+      console.error(
+        `  at ${err.filePath}:${err.node?.loc?.start.line}:${err.node?.loc?.start.column}`
+      );
       if (
         !shouldBailout &&
         (err.severity === "error" || err.severity === "fatal")
@@ -94,6 +97,7 @@ async function buildApp(watchMode) {
     safeDump(
       {
         app: {
+          uiVersion: "8.2",
           ...appJson,
           standaloneMode: true,
           noPlaceholders: true,
