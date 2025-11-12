@@ -41,6 +41,7 @@ export interface ToolInfo {
 export interface DataSourceConfig {
   enabled?: unknown;
   fallback?: unknown;
+  async?: unknown;
 }
 
 export interface Events {

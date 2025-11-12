@@ -25,6 +25,9 @@ export function useResource<T = any>(
     // 不启用则直接返回 fallback
     enabled?: boolean;
     fallback?: unknown;
+    // 默认 `useResource` 的请求会阻塞渲染，
+    // 设置 async: true 时则不会阻塞。
+    async?: boolean;
   }
 ): [data: T, refetch: () => void];
 
@@ -79,10 +82,13 @@ export function useMedia(): {
   breakpoint: "xSmall" | "small" | "medium" | "large" | "xLarge";
 };
 
-/** 获取当前的 URL search 参数 */
+/** 获取当前的 URL query 参数 */
 export function useQuery(): {
   readonly [key: string]: string | undefined;
 };
+
+/** 获取当前的 URLSearchParams 原始对象 */
+export function useSearchParams(): URLSearchParams;
 
 /** 获取当前的 URL path 参数 */
 export function usePathParams(): {
