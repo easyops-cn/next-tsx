@@ -161,11 +161,17 @@ export function translateByRecord(record: Record<string, string>): string;
 /** 根据错误对象显示错误信息弹窗 */
 export function handleHttpError(error: unknown): void;
 
-/** 调用指定的 Provider 接口 */
+/** 调用指定的契约接口 */
 export function callApi<T extends keyof ContractMap>(
   api: T,
   params: Parameters<ContractMap[T]>[0]
 ): Promise<ReturnType<ContractMap[T]>>;
+
+/** 调用指定的 Provider 构件 */
+export function callProvider<T = any, P = unknown[]>(
+  provider: string,
+  ...params: P
+): Promise<T>;
 
 /** 调用指定的 HTTP 接口 */
 export function callHttp<T = any>(url: string, init?: RequestInit): Promise<T>;
