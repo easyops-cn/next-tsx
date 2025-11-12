@@ -133,11 +133,11 @@ export function createContext<T>(defaultValue?: T): Context<T>;
 
 export interface Context<T> {
   /** 提供 Context 数据的组件 */
-  Provider: (props: { value: T; children: React.ReactNode }) => ReactNode;
+  Provider: (props: { value: T; children: ReactNode }) => ReactNode;
 }
 
 /** 将 children 放置在统一提供的 portal 容器中渲染 */
-export function createPortal(children: any): any;
+export function createPortal(children: ReactNode): ReactNode;
 
 /**
  * 按 key 获取翻译后的文本。
@@ -159,7 +159,7 @@ export function translate(key: string, defaultValue?: string): string;
 export function translateByRecord(record: Record<string, string>): string;
 
 /** 根据错误对象显示错误信息弹窗 */
-export function handleHttpError(error: any): void;
+export function handleHttpError(error: unknown): void;
 
 /** 调用指定的 Provider 接口 */
 export function callApi<T extends keyof ContractMap>(

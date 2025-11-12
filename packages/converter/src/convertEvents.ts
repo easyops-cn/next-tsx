@@ -86,12 +86,14 @@ function convertEventHandler(
   switch (handler?.action) {
     case "update_variable":
       return {
+        key: handler.key,
         action:
           handler.payload.scope === "template" ? "state.set" : "context.set",
         args: [handler.payload.name, handler.payload.value],
       };
     case "refresh_data_source":
       return {
+        key: handler.key,
         action:
           handler.payload.scope === "template"
             ? "state.refresh"
@@ -110,6 +112,7 @@ function convertEventHandler(
         : undefined;
 
       return {
+        key: handler.key,
         ...(isRawProvider
           ? {
               useProvider: api,
@@ -137,6 +140,7 @@ function convertEventHandler(
     }
     case "call_ref":
       return {
+        key: handler.key,
         ...(handler.payload.scope === "template"
           ? {
               targetRef: handler.payload.ref,
@@ -149,37 +153,44 @@ function convertEventHandler(
       };
     case "call_selector":
       return {
+        key: handler.key,
         target: handler.payload.selector,
         method: handler.payload.method,
         args: handler.payload.args,
       };
     case "navigate":
       return {
+        key: handler.key,
         action: `history.${handler.payload.method}`,
         args: handler.payload.args,
       };
     case "store":
       return {
+        key: handler.key,
         action: `${handler.payload.type}Storage.${handler.payload.method}`,
         args: handler.payload.args,
       };
     case "show_message":
       return {
+        key: handler.key,
         action: `message.${handler.payload.type}` as "message.info",
         args: [handler.payload.content],
       };
     case "handle_http_error":
       return {
+        key: handler.key,
         action: "handleHttpError",
         args: [handler.payload],
       };
     case "dispatch_event":
       return {
+        key: handler.key,
         action: "tpl.dispatchEvent",
         args: [handler.payload.type, { detail: handler.payload.detail }],
       };
     case "conditional":
       return {
+        key: handler.key,
         if: handler.payload.test,
         then: convertEventHandlers(handler.payload.consequent, options) ?? [],
         else: convertEventHandlers(handler.payload.alternate, options),

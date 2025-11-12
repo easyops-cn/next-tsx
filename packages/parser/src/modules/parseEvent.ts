@@ -21,6 +21,7 @@ import {
 import { parseCallApi } from "./parseCallApi.js";
 import {
   isGeneralCallExpression,
+  isGeneralFunctionExpression,
   isGeneralMemberExpression,
   validateGlobalApi,
 } from "./validations.js";
@@ -34,9 +35,9 @@ export function parseEvent(
   options: ParseJsValueOptions,
   isCallback?: boolean
 ): EventHandler[] | null {
-  if (!path.isArrowFunctionExpression()) {
+  if (!isGeneralFunctionExpression(path)) {
     state.errors.push({
-      message: `Event handler must be an arrow function expression, but got ${path.type}`,
+      message: `Event handler must be an function expression, but got ${path.type}`,
       node: path.node,
       severity: "error",
     });
@@ -46,8 +47,8 @@ export function parseEvent(
   const params = path.get("params");
   if (params.length > 1) {
     state.errors.push({
-      message: `Event handler arrow function must have at most one parameter, but got ${params.length}`,
-      node: path.node,
+      message: `Event handler function must have at most one parameter, but got ${params.length}`,
+      node: params[1].node,
       severity: "error",
     });
     return null;
@@ -62,13 +63,15 @@ export function parseEvent(
   if (param) {
     if (!param.isIdentifier()) {
       state.errors.push({
-        message: `Event handler arrow function parameter must be an identifier, but got ${param.type}`,
+        message: `Event handler function parameter must be an identifier, but got ${param.type}`,
         node: param.node,
         severity: "error",
       });
       return null;
     }
     eventOptions.eventBinding = { id: param.node, isCallback };
+    eventOptions.eventKeyBindings ??= [];
+    eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
   }
 
   const body = path.get("body");
@@ -100,6 +103,7 @@ export function parseEventHandler(
       | boolean
       | undefined;
     return {
+      key: options.eventBinding?.id.name,
       action: "conditional",
       payload: {
         test,
@@ -139,6 +143,7 @@ export function parseEventHandler(
         }
         const payload = parseJsValue(args[0], state, app, options);
         return {
+          key: options.eventBinding?.id.name,
           action: "show_message",
           payload,
         } as TypeEventHandlerOfShowMessage;
@@ -155,6 +160,7 @@ export function parseEventHandler(
         }
         const payload = parseJsValue(args[0], state, app, options);
         return {
+          key: options.eventBinding?.id.name,
           action: "handle_http_error",
           payload,
         } as TypeEventHandlerOfHandleHttpError;
@@ -168,6 +174,7 @@ export function parseEventHandler(
           }
           state.contracts.add(payload.api);
           return {
+            key: options.eventBinding?.id.name,
             action: "call_api",
             payload,
           };
@@ -191,6 +198,7 @@ export function parseEventHandler(
       switch (binding.kind) {
         case "setState":
           return {
+            key: options.eventBinding?.id.name,
             action: "update_variable",
             payload: {
               name: binding.id.name,
@@ -207,6 +215,7 @@ export function parseEventHandler(
           };
         case "refetch":
           return {
+            key: options.eventBinding?.id.name,
             action: "refresh_data_source",
             payload: {
               name: binding.resourceId!.name,
@@ -216,6 +225,7 @@ export function parseEventHandler(
           };
         case "context":
           return {
+            key: options.eventBinding?.id.name,
             action: "call_selector",
             payload: {
               selector: `#${getContextReferenceEventAgentId(binding.contextProvider!.name)}`,
@@ -287,6 +297,7 @@ export function parseEventHandler(
             }
           }
           return {
+            key: options.eventBinding?.id.name,
             action: "dispatch_event",
             payload: {
               type: convertJsxEventAttr(binding.id.name),
@@ -354,6 +365,7 @@ export function parseEventHandler(
               return null;
             }
             return {
+              key: options.eventBinding?.id.name,
               action: "call_ref",
               payload: {
                 ref: refBinding.id.name,
@@ -395,6 +407,7 @@ export function parseEventHandler(
                 return null;
               }
               return {
+                key: options.eventBinding?.id.name,
                 action: "navigate",
                 payload: {
                   method,
@@ -429,6 +442,7 @@ export function parseEventHandler(
             return null;
           }
           return {
+            key: options.eventBinding?.id.name,
             action: "store",
             payload: {
               type: isLocalStore ? "local" : "session",
@@ -522,6 +536,7 @@ export function parseEventHandler(
           }
         }
         return {
+          key: options.eventBinding?.id.name,
           action: "call_api",
           payload,
           callback: {

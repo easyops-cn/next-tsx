@@ -1,4 +1,5 @@
 import {
+  callApi,
   createPortal,
   useState,
   useEffect,
@@ -53,6 +54,14 @@ export default function Layout() {
             render: (d) => <em>{d.age}</em>,
           },
         ]}
+        onTest={(e) => {
+          callApi("getUser", { id: 123 }).then((user) => {
+            showMessage({
+              type: "info",
+              content: `Fetched user: ${user.name}, ${e.detail.reason}`,
+            });
+          });
+        }}
       />
       <div>
         <Routes>

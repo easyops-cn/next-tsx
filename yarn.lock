@@ -1664,10 +1664,10 @@
     "@babel/preset-typescript" "^7.27.1"
     "@babel/runtime" "^7.27.6"
 
-"@next-core/brick-container@^3.23.7":
-  version "3.23.7"
-  resolved "https://registry.yarnpkg.com/@next-core/brick-container/-/brick-container-3.23.7.tgz#7e407be62433b495428c3368d4f5cc4d38438514"
-  integrity sha512-xj8yv4kM/Ik9ygiNgWjTIQXfmYyWD51xnVnA4XwlQ1mYW2U0U0HKhyBc8opWVNgkcux74HEjhFqhTpirLmoURA==
+"@next-core/brick-container@^3.23.8":
+  version "3.23.8"
+  resolved "https://registry.yarnpkg.com/@next-core/brick-container/-/brick-container-3.23.8.tgz#6deebbd1bbc3c4113dfe781441c18ff1a6e05a4c"
+  integrity sha512-4N2a2Xu1Lz1BzFrhLeTUhDi3+FXbEDI3ArMOHhU6GMHqF6aR5GSxLHf8VlqWcfrfEudWSC2lcKXkXBa4dnPXLQ==
   dependencies:
     "@next-core/serve-helpers" "^1.2.5"
     body-parser "^2.2.0"
@@ -1740,19 +1740,19 @@
     ts-jest-resolver "^2.0.1"
     typescript "^5.8.3"
 
-"@next-core/types@^1.18.0":
-  version "1.18.0"
-  resolved "https://registry.npmjs.org/@next-core/types/-/types-1.18.0.tgz"
-  integrity sha512-Hb+Dagh8zB1innpl9MLq1+L9g0qJ92ZAWbZTKLSPWuFAY5vaU299D5FsOlxTl8WeQ36mp1zyPDieIhz3shvUFQ==
+"@next-core/types@^1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@next-core/types/-/types-1.19.0.tgz#ba9a046b6fb959c9978b8fb422679894900c80ad"
+  integrity sha512-3Ogz/Tz221CJ57UYMpX9/d27kf0I8fsZACeHeat56liSihJ00WBwXolZUN5qWwLmzkwXw4wDXjVQjxJlsduSsA==
 
-"@next-core/utils@^1.8.7":
-  version "1.8.7"
-  resolved "https://registry.npmjs.org/@next-core/utils/-/utils-1.8.7.tgz"
-  integrity sha512-Uh1qEgUBDmezj9NCTJkMiuVfTYQazMse6N3qYKurmJ9s4kr2D4akytCLva6Yq9Nv9MlN06cdgAdV5I84X1rRLA==
+"@next-core/utils@^1.8.9":
+  version "1.8.9"
+  resolved "https://registry.yarnpkg.com/@next-core/utils/-/utils-1.8.9.tgz#a7891ce9aff20d1a40b46b6bc929a4f35d6f8a4d"
+  integrity sha512-GxLBE6UWZi0ed23zjSBsxwVWlDEUFZtwEM7OYVUNQgTpvSnK+PRSAtnLFGu45IacDEMyflv5XnQ8SKp3/D9Xfw==
   dependencies:
     "@microsoft/fetch-event-source" "^2.0.1"
     "@next-core/cook" "^2.5.12"
-    "@next-core/types" "^1.18.0"
+    "@next-core/types" "^1.19.0"
     file-saver "^2.0.5"
     lodash "^4.17.21"
 

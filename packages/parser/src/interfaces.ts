@@ -60,7 +60,12 @@ export type EventHandler =
   | TypeEventHandlerOfStore
   | TypeEventHandlerOfConditional;
 
-export interface TypeEventHandlerOfUpdateVariable {
+export interface EventHandlerBase {
+  action: string;
+  key?: string;
+}
+
+export interface TypeEventHandlerOfUpdateVariable extends EventHandlerBase {
   action: "update_variable";
   payload: {
     name: string;
@@ -69,7 +74,7 @@ export interface TypeEventHandlerOfUpdateVariable {
   };
 }
 
-export interface TypeEventHandlerOfRefreshDataSource {
+export interface TypeEventHandlerOfRefreshDataSource extends EventHandlerBase {
   action: "refresh_data_source";
   payload: {
     name: string;
@@ -77,7 +82,7 @@ export interface TypeEventHandlerOfRefreshDataSource {
   };
 }
 
-export interface TypeEventHandlerOfCallRef {
+export interface TypeEventHandlerOfCallRef extends EventHandlerBase {
   action: "call_ref";
   payload: {
     ref: string;
@@ -87,7 +92,7 @@ export interface TypeEventHandlerOfCallRef {
   };
 }
 
-export interface TypeEventHandlerOfCallSelector {
+export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
   action: "call_selector";
   payload: {
     selector: string;
@@ -96,7 +101,7 @@ export interface TypeEventHandlerOfCallSelector {
   };
 }
 
-export interface TypeEventHandlerOfShowMessage {
+export interface TypeEventHandlerOfShowMessage extends EventHandlerBase {
   action: "show_message";
   payload: {
     type: "info" | "success" | "warn" | "error";
@@ -104,12 +109,12 @@ export interface TypeEventHandlerOfShowMessage {
   };
 }
 
-export interface TypeEventHandlerOfHandleHttpError {
+export interface TypeEventHandlerOfHandleHttpError extends EventHandlerBase {
   action: "handle_http_error";
   payload: unknown;
 }
 
-export interface TypeEventHandlerOfCallAPI {
+export interface TypeEventHandlerOfCallAPI extends EventHandlerBase {
   action: "call_api";
   payload: {
     api: string;
@@ -122,7 +127,7 @@ export interface TypeEventHandlerOfCallAPI {
   callback?: TypeEventHandlerCallback;
 }
 
-export interface TypeEventHandlerOfDispatchEvent {
+export interface TypeEventHandlerOfDispatchEvent extends EventHandlerBase {
   action: "dispatch_event";
   payload: {
     type: string;
@@ -130,7 +135,7 @@ export interface TypeEventHandlerOfDispatchEvent {
   };
 }
 
-export interface TypeEventHandlerOfNavigate {
+export interface TypeEventHandlerOfNavigate extends EventHandlerBase {
   action: "navigate";
   payload: {
     method: "push" | "replace" | "reload" | "pushQuery" | "replaceQuery";
@@ -138,7 +143,7 @@ export interface TypeEventHandlerOfNavigate {
   };
 }
 
-export interface TypeEventHandlerOfStore {
+export interface TypeEventHandlerOfStore extends EventHandlerBase {
   action: "store";
   payload: {
     type: "local" | "session";
@@ -147,7 +152,7 @@ export interface TypeEventHandlerOfStore {
   };
 }
 
-export interface TypeEventHandlerOfConditional {
+export interface TypeEventHandlerOfConditional extends EventHandlerBase {
   action: "conditional";
   payload: {
     test: string | boolean | undefined;

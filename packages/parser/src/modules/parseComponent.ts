@@ -319,7 +319,7 @@ export function parseComponent(
         if (isGeneralFunctionExpression(init)) {
           const callbackBody = init.get("body");
           if (callbackBody.isBlockStatement()) {
-            // It's a event callback function
+            // It's an event callback function
             const funcBinding: BindingInfo = {
               id: declId.node,
               kind: "eventCallback",
