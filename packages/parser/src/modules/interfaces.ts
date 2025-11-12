@@ -155,6 +155,7 @@ export interface ParsedFunction {
 export interface ParseJsValueOptions {
   component?: ParsedComponent;
   eventBinding?: EventBindingInfo;
+  eventKeyBindings?: EventBindingInfo[];
   forEachBinding?: ForEachBindingInfo;
   dataBinding?: DataBindingInfo;
   functionBindings?: Set<t.Identifier>;

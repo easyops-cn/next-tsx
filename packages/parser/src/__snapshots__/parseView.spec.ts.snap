@@ -561,10 +561,12 @@ exports[`parseView should work 1`] = `
                       "search": [
                         {
                           "action": "conditional",
+                          "key": "event",
                           "payload": {
                             "alternate": [
                               {
                                 "action": "update_variable",
+                                "key": "event",
                                 "payload": {
                                   "name": "logId",
                                   "scope": "global",
@@ -575,6 +577,7 @@ exports[`parseView should work 1`] = `
                             "consequent": [
                               {
                                 "action": "update_variable",
+                                "key": "event",
                                 "payload": {
                                   "name": "logId",
                                   "scope": "global",
@@ -608,6 +611,7 @@ exports[`parseView should work 1`] = `
                           "click": [
                             {
                               "action": "update_variable",
+                              "key": "e",
                               "payload": {
                                 "name": "allExpanded",
                                 "scope": "global",
@@ -756,6 +760,7 @@ exports[`parseView should work 1`] = `
                                   "open.detail": [
                                     {
                                       "action": "update_variable",
+                                      "key": undefined,
                                       "payload": {
                                         "name": "detailLog",
                                         "scope": "global",
@@ -764,6 +769,7 @@ exports[`parseView should work 1`] = `
                                     },
                                     {
                                       "action": "call_ref",
+                                      "key": undefined,
                                       "payload": {
                                         "args": [],
                                         "method": "open",
@@ -775,6 +781,7 @@ exports[`parseView should work 1`] = `
                                   "toggle": [
                                     {
                                       "action": "update_variable",
+                                      "key": undefined,
                                       "payload": {
                                         "name": "expandedSet",
                                         "scope": "global",

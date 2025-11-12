@@ -683,6 +683,7 @@ exports[`parseApp should work 1`] = `
                 "onMount": [
                   {
                     "action": "call_selector",
+                    "key": undefined,
                     "payload": {
                       "args": [
                         {
@@ -698,6 +699,7 @@ exports[`parseApp should work 1`] = `
                 "onUnmount": [
                   {
                     "action": "call_selector",
+                    "key": undefined,
                     "payload": {
                       "args": [
                         {
