@@ -10,6 +10,7 @@ import type {
 import type {
   TypeEventHandlerOfShowMessage,
   TypeEventHandlerOfHandleHttpError,
+  TypeEventHandlerCallback,
 } from "../interfaces.js";
 import { parseJsValue } from "./parseJsValue.js";
 import {
@@ -17,11 +18,11 @@ import {
   CONSOLE_METHODS,
   EVENT_METHODS,
   HISTORY_METHODS,
-  type CallApiType,
   type HistoryMethodType,
 } from "./constants.js";
 import { parseCallApi } from "./parseCallApi.js";
 import {
+  isEventHandlerWithCallback,
   isGeneralCallExpression,
   isGeneralFunctionExpression,
   isGeneralMemberExpression,
@@ -77,7 +78,7 @@ export function parseEvent(
   }
 
   const body = path.get("body");
-  const handler = parseEventHandler(body, state, app, eventOptions);
+  const handler = parseEventHandlers(body, state, app, eventOptions);
   if (!handler) {
     return null;
   }
@@ -85,17 +86,16 @@ export function parseEvent(
   return ([] as EventHandler[]).concat(handler);
 }
 
-export function parseEventHandler(
+export function parseEventHandlers(
   path: NodePath<t.Statement | t.Expression | null | undefined>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions /* ,
-  handleReturn?: (returnPath: NodePath<t.ReturnStatement>) => void */
+  options: ParseJsValueOptions
 ): EventHandler | EventHandler[] | null {
   if (path.isBlockStatement()) {
     return path
       .get("body")
-      .flatMap((stmtPath) => parseEventHandler(stmtPath, state, app, options))
+      .flatMap((stmtPath) => parseEventHandlers(stmtPath, state, app, options))
       .filter((h): h is EventHandler => h !== null);
   }
 
@@ -109,14 +109,14 @@ export function parseEventHandler(
       action: "conditional",
       payload: {
         test,
-        consequent: parseEventHandler(
+        consequent: parseEventHandlers(
           path.get("consequent"),
           state,
           app,
           options
         ),
         alternate: path.node.alternate
-          ? parseEventHandler(path.get("alternate"), state, app, options)
+          ? parseEventHandlers(path.get("alternate"), state, app, options)
           : null,
       },
     };
@@ -126,10 +126,25 @@ export function parseEventHandler(
     return parseEventHandler(path.get("expression"), state, app, options);
   }
 
-  // if (path.isReturnStatement() && handleReturn) {
-  //   handleReturn(path);
-  // }
+  if (path.isExpression()) {
+    return parseEventHandler(path, state, app, options);
+  }
 
+  state.errors.push({
+    message: `Unsupported event handler`,
+    node: path.node,
+    severity: "error",
+  });
+
+  return null;
+}
+
+function parseEventHandler(
+  path: NodePath<t.Expression | null | undefined>,
+  state: ParsedModule,
+  app: ParsedApp,
+  options: ParseJsValueOptions
+): EventHandler | null {
   if (isGeneralCallExpression(path)) {
     const callee = path.get("callee");
     const args = path.get("arguments");
@@ -334,6 +349,11 @@ export function parseEventHandler(
         });
         return null;
       }
+      const method = property.node.name;
+
+      if (method === "then" || method === "catch" || method === "finally") {
+        return parseHandlerCallback(object, method, args, state, app, options);
+      }
 
       if (isGeneralMemberExpression(object)) {
         const objectProperty = object.get("property");
@@ -372,7 +392,7 @@ export function parseEventHandler(
               action: "call_ref",
               payload: {
                 ref: refBinding.refName!,
-                method: property.node.name,
+                method,
                 args: args.map((arg) => parseJsValue(arg, state, app, options)),
                 scope:
                   options.component!.type === "template"
@@ -389,7 +409,6 @@ export function parseEventHandler(
         const bindingId = object.scope.getBindingIdentifier(object.node.name);
         if (bindingId) {
           if (bindingId === options.eventBinding?.id) {
-            const method = property.node.name;
             if (!EVENT_METHODS.includes(method as "preventDefault")) {
               state.errors.push({
                 message: `"${object.node.name}.${method}()" is not supported in event handler`,
@@ -411,8 +430,7 @@ export function parseEventHandler(
           if (binding) {
             switch (binding.kind) {
               case "history": {
-                const method = property.node.name as HistoryMethodType;
-                if (!HISTORY_METHODS.includes(method)) {
+                if (!HISTORY_METHODS.includes(method as HistoryMethodType)) {
                   state.errors.push({
                     message: `"history.${method}()" is not supported in event handler`,
                     node: property.node,
@@ -424,7 +442,7 @@ export function parseEventHandler(
                   key: options.eventBinding?.id.name,
                   action: "navigate",
                   payload: {
-                    method,
+                    method: method as HistoryMethodType,
                     args: args.map((arg) =>
                       parseJsValue(arg, state, app, options)
                     ),
@@ -438,7 +456,6 @@ export function parseEventHandler(
           switch (object.node.name) {
             case "console": {
               // Parse `console.*(...)`
-              const method = property.node.name;
               if (!CONSOLE_METHODS.includes(method as "log")) {
                 state.errors.push({
                   message: `"console.${method}()" is not supported in event handler`,
@@ -460,7 +477,6 @@ export function parseEventHandler(
             }
             case "Object": {
               // Parse `Object.assign(ref.current, { ... })`
-              const method = property.node.name;
               if (method !== "assign") {
                 state.errors.push({
                   message: `"Object.${method}()" is not supported in event handler`,
@@ -579,7 +595,6 @@ export function parseEventHandler(
         const isSessionStore =
           !isLocalStore && validateGlobalApi(object, "sessionStore");
         if (isLocalStore || isSessionStore) {
-          const method = property.node.name;
           if (method !== "setItem" && method !== "removeItem") {
             state.errors.push({
               message: `"${object.node.name}.${method}()" is not supported in event handler`,
@@ -600,170 +615,41 @@ export function parseEventHandler(
         }
       }
 
-      if (!object.isCallExpression()) {
-        state.errors.push({
-          message: "Invalid usage in event handler",
-          node: object.node,
-          severity: "error",
-        });
-        return null;
-      }
-      const objectCallee = object.get("callee");
-      if (!objectCallee.isIdentifier()) {
-        state.errors.push({
-          message: `Member expression in event handler expects an identifier as callee, but got ${objectCallee.type}`,
-          node: objectCallee.node,
-          severity: "error",
-        });
-        return null;
-      }
-
-      const method = property.node.name;
-
-      const calleeBindingId = objectCallee.scope.getBindingIdentifier(
-        objectCallee.node.name
-      );
-      let calleeBinding: BindingInfo | undefined;
-      if (calleeBindingId) {
-        calleeBinding = options.component?.bindingMap.get(calleeBindingId);
-      }
-      if (calleeBinding) {
-        switch (calleeBinding.kind) {
-          case "refetch": {
-            if (method !== "then" && method !== "catch") {
-              state.errors.push({
-                message: `"${objectCallee.node.name}()" expects "then" or "catch" as its method, but got ${method}`,
-                node: property.node,
-                severity: "error",
-              });
-              return null;
-            }
-
-            if (method === "catch") {
-              if (args.length !== 1) {
-                state.errors.push({
-                  message: `".catch()" expects exactly 1 argument, but got ${args.length}`,
-                  node: args.length > 0 ? args[1].node : property.node,
-                  severity: "error",
-                });
-                return null;
-              }
-            } else {
-              if (args.length === 0 || args.length > 2) {
-                state.errors.push({
-                  message: `".then()" expects 1 or 2 arguments, but got ${args.length}`,
-                  node: args.length > 2 ? args[2].node : property.node,
-                  severity: "error",
-                });
-                return null;
-              }
-            }
-
-            let successCallback: EventHandler[] | null | undefined;
-            let errorCallback: EventHandler[] | null | undefined;
-            const callback = parseEvent(args[0], state, app, options, true);
-            if (method === "catch") {
-              errorCallback = callback;
-            } else {
-              successCallback = callback;
-              if (args.length > 1) {
-                errorCallback = parseEvent(args[1], state, app, options, true);
-              }
-            }
-            return {
-              key: options.eventBinding?.id.name,
-              action: "refresh_data_source",
-              payload: {
-                name: calleeBinding.resourceId!.name,
-                scope:
-                  options.component!.type === "template"
-                    ? "template"
-                    : "global",
-              },
-              callback: {
-                success: successCallback,
-                error: errorCallback,
-              },
-            };
-          }
-          default:
+      if (object.isCallExpression()) {
+        const innerCallee = object.get("callee");
+        if (
+          innerCallee.isIdentifier() &&
+          validateGlobalApi(innerCallee, "querySelector")
+        ) {
+          const innerArgs = object.get("arguments");
+          if (innerArgs.length !== 1) {
             state.errors.push({
-              message: `Invalid usage in event handler: calling "${objectCallee.node.name}().${method}()"`,
-              node: objectCallee.node,
-              severity: "error",
-            });
-            return null;
-        }
-      }
-
-      let calleeName: CallApiType | undefined;
-      for (const name of CALL_API_LIST) {
-        if (validateGlobalApi(objectCallee, name)) {
-          calleeName = name;
-          break;
-        }
-      }
-      if (calleeName) {
-        if (method !== "then" && method !== "catch") {
-          state.errors.push({
-            message: `"${calleeName}()" expects "then" or "catch" as its method, but got ${method}`,
-            node: property.node,
-            severity: "error",
-          });
-          return null;
-        }
-
-        if (method === "catch") {
-          if (args.length !== 1) {
-            state.errors.push({
-              message: `".catch()" expects exactly 1 argument, but got ${args.length}`,
-              node: args.length > 0 ? args[1].node : property.node,
+              message: `"querySelector()" expects exactly 1 argument, but got ${innerArgs.length}`,
+              node: object.node,
               severity: "error",
             });
             return null;
           }
-        } else {
-          if (args.length === 0 || args.length > 2) {
-            state.errors.push({
-              message: `".then()" expects 1 or 2 arguments, but got ${args.length}`,
-              node: args.length > 2 ? args[2].node : property.node,
-              severity: "error",
-            });
-            return null;
-          }
+          return {
+            key: options.eventBinding?.id.name,
+            action: "call_selector",
+            payload: {
+              selector: parseJsValue(
+                innerArgs[0],
+                state,
+                app,
+                options
+              ) as string,
+              method,
+              args: args.map((arg) => parseJsValue(arg, state, app, options)),
+            },
+          };
         }
-
-        const payload = parseCallApi(object, state, app, options);
-        if (!payload) {
-          return null;
-        }
-        state.contracts.add(payload.api);
-
-        let successCallback: EventHandler[] | null | undefined;
-        let errorCallback: EventHandler[] | null | undefined;
-        const callback = parseEvent(args[0], state, app, options, true);
-        if (method === "catch") {
-          errorCallback = callback;
-        } else {
-          successCallback = callback;
-          if (args.length > 1) {
-            errorCallback = parseEvent(args[1], state, app, options, true);
-          }
-        }
-        return {
-          key: options.eventBinding?.id.name,
-          action: "call_api",
-          payload,
-          callback: {
-            success: successCallback,
-            error: errorCallback,
-          },
-        };
       }
 
       state.errors.push({
-        message: `Unsupported action in event handler: ${objectCallee.node.name}`,
-        node: objectCallee.node,
+        message: "Invalid event handler",
+        node: callee.node,
         severity: "error",
       });
       return null;
@@ -886,10 +772,89 @@ export function parseEventHandler(
   }
 
   state.errors.push({
-    message: `Unsupported event handler`,
+    message: `Unsupported event handler: ${path.node?.type}`,
     node: path.node,
     severity: "error",
   });
 
   return null;
+}
+
+export function parseHandlerCallback(
+  object: NodePath<t.Expression>,
+  method: "then" | "catch" | "finally",
+  args: NodePath<t.Node>[],
+  state: ParsedModule,
+  app: ParsedApp,
+  options: ParseJsValueOptions
+): EventHandler | null {
+  const handler = parseEventHandler(object, state, app, options);
+  if (!handler) {
+    return null;
+  }
+
+  if (!isEventHandlerWithCallback(handler)) {
+    state.errors.push({
+      message: `Event handler "${handler.action}" does not support "${method}()" callback`,
+      node: object.node,
+      severity: "error",
+    });
+    return null;
+  }
+
+  if (method === "then" && (args.length === 0 || args.length > 2)) {
+    state.errors.push({
+      message: `"then()" expects 1 or 2 arguments, but got ${args.length}`,
+      node: object.node,
+      severity: "error",
+    });
+    return null;
+  }
+
+  if (method !== "then" && args.length !== 1) {
+    state.errors.push({
+      message: `"${method}()" expects exactly 1 argument, but got ${args.length}`,
+      node: object.node,
+      severity: "error",
+    });
+    return null;
+  }
+
+  let successCallback: EventHandler[] | null | undefined;
+  let errorCallback: EventHandler[] | null | undefined;
+  let finallyCallback: EventHandler[] | null | undefined;
+  const callback = parseEvent(args[0], state, app, options, true);
+  if (method === "catch") {
+    errorCallback = callback;
+  } else if (method === "finally") {
+    finallyCallback = callback;
+  } else {
+    successCallback = callback;
+    if (args.length > 1) {
+      errorCallback = parseEvent(args[1], state, app, options, true);
+    }
+  }
+  return {
+    ...handler,
+    callback: mergeCallbacks(handler.callback, {
+      success: successCallback,
+      error: errorCallback,
+      finally: finallyCallback,
+    }),
+  };
+}
+
+function mergeCallbacks(
+  previous: TypeEventHandlerCallback | undefined,
+  next: TypeEventHandlerCallback
+): TypeEventHandlerCallback {
+  if (!previous) {
+    return next;
+  }
+
+  return {
+    success: [...(previous.success ?? []), ...(next.success ?? [])],
+    error: [...(previous.error ?? []), ...(next.error ?? [])],
+    finally: [...(previous.finally ?? []), ...(next.finally ?? [])],
+  };
 }

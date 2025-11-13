@@ -64,6 +64,12 @@ export type EventHandler =
   | TypeEventHandlerOfEvent
   | TypeEventHandlerOfConditional;
 
+export type EventHandlerWithCallback =
+  | TypeEventHandlerOfCallAPI
+  | TypeEventHandlerOfRefreshDataSource
+  | TypeEventHandlerOfCallRef
+  | TypeEventHandlerOfCallSelector;
+
 export interface EventHandlerBase {
   action: string;
   key?: string;
@@ -104,6 +110,7 @@ export interface TypeEventHandlerOfCallRef extends EventHandlerBase {
     args?: any[];
     scope?: "global" | "template";
   };
+  callback?: TypeEventHandlerCallback;
 }
 
 export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
@@ -113,6 +120,7 @@ export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
     method: string;
     args?: any[];
   };
+  callback?: TypeEventHandlerCallback;
 }
 
 export interface TypeEventHandlerOfShowMessage extends EventHandlerBase {
@@ -191,9 +199,9 @@ export interface TypeEventHandlerOfConditional extends EventHandlerBase {
 }
 
 export interface TypeEventHandlerCallback {
-  success?: EventHandler | EventHandler[] | null;
-  error?: EventHandler | EventHandler[] | null;
-  finally?: EventHandler | EventHandler[] | null;
+  success?: EventHandler[] | null;
+  error?: EventHandler[] | null;
+  finally?: EventHandler[] | null;
 }
 
 export interface LifeCycle {

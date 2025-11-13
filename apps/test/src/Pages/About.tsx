@@ -2,6 +2,7 @@ import {
   callApi,
   createContext,
   handleHttpError,
+  querySelector,
   useContext,
   useRef,
   useResource,
@@ -32,6 +33,27 @@ export default function About() {
             },
             (err) => handleHttpError(err)
           );
+
+          querySelector("#my-modal")
+            ?.open()
+            .then(
+              () => {
+                // eslint-disable-next-line no-console
+                console.log("opened");
+              },
+              () => {
+                // eslint-disable-next-line no-console
+                console.log("failed to open");
+              }
+            )
+            .catch(() => {
+              // eslint-disable-next-line no-console
+              console.log("error occurred");
+            })
+            .finally(() => {
+              // eslint-disable-next-line no-console
+              console.log("finally");
+            });
         }}
       >
         About {params.get("id")} {aboutInfo}

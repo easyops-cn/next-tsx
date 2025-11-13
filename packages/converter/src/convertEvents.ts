@@ -156,6 +156,7 @@ function convertEventHandler(
             }),
         method: handler.payload.method,
         args: handler.payload.args,
+        callback: convertCallback(handler.callback, options),
       };
     case "call_selector":
       return {
@@ -163,6 +164,7 @@ function convertEventHandler(
         target: handler.payload.selector,
         method: handler.payload.method,
         args: handler.payload.args,
+        callback: convertCallback(handler.callback, options),
       };
     case "navigate":
       return {
@@ -230,8 +232,13 @@ function convertCallback(
     ? convertEventHandlers(callback.error, options)
     : undefined;
 
+  const finallyCallback = callback?.finally
+    ? convertEventHandlers(callback.finally, options)
+    : undefined;
+
   return {
     ...(success && { success }),
     ...(error && { error }),
+    ...(finallyCallback && { finally: finallyCallback }),
   };
 }

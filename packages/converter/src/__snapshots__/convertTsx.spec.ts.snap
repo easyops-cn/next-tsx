@@ -193,6 +193,7 @@ exports[`convertTsx should work 1`] = `
                           },
                           {
                             "args": [],
+                            "callback": {},
                             "key": undefined,
                             "method": "open",
                             "target": "[data-root-id="test-root"] [data-ref="modalRef-0"]",

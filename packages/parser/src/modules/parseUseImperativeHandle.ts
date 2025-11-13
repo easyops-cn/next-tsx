@@ -10,7 +10,7 @@ import {
   isGeneralFunctionExpression,
   validateFunction,
 } from "./validations.js";
-import { parseEventHandler } from "./parseEvent.js";
+import { parseEventHandlers } from "./parseEvent.js";
 import type { CustomTemplateProxyMethods } from "@next-core/types";
 
 export function parseUseImperativeHandle(
@@ -178,7 +178,7 @@ export function parseUseImperativeHandle(
       eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
     }
 
-    const handlers = parseEventHandler(body, state, app, eventOptions);
+    const handlers = parseEventHandlers(body, state, app, eventOptions);
 
     if (handlers && (!Array.isArray(handlers) || handlers.length > 0)) {
       const ref = `imperative-handle-ref-${key.node.name}`;
