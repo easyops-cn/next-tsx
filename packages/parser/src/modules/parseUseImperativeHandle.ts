@@ -91,6 +91,7 @@ export function parseUseImperativeHandle(
     }
 
     let body: NodePath<t.BlockStatement>;
+    let params: NodePath<t.FunctionParameter>[];
     if (prop.isObjectProperty()) {
       if (prop.node.computed || prop.node.shorthand) {
         state.errors.push({
@@ -122,6 +123,7 @@ export function parseUseImperativeHandle(
         continue;
       }
       body = fnBody;
+      params = value.get("params");
     } else if (prop.isObjectMethod()) {
       if (
         prop.node.computed ||
@@ -137,6 +139,7 @@ export function parseUseImperativeHandle(
         continue;
       }
       body = prop.get("body");
+      params = prop.get("params");
     } else {
       state.errors.push({
         message: `useImperativeHandle() object properties must be methods or properties, received ${prop.type}`,
@@ -146,7 +149,36 @@ export function parseUseImperativeHandle(
       continue;
     }
 
-    const handlers = parseEventHandler(body, state, app, options);
+    if (params.length > 1) {
+      state.errors.push({
+        message: `useImperativeHandle() object property functions can have at most one parameter, received ${params.length}`,
+        node: params[1].node,
+        severity: "error",
+      });
+      continue;
+    }
+
+    const param = params[0];
+    const eventOptions: ParseJsValueOptions = {
+      ...options,
+      modifier: undefined,
+      eventBinding: undefined,
+    };
+    if (param) {
+      if (!param.isIdentifier()) {
+        state.errors.push({
+          message: `useImperativeHandle() object property function parameter must be an identifier, received ${param.type}`,
+          node: param.node,
+          severity: "error",
+        });
+        continue;
+      }
+      eventOptions.eventBinding = { id: param.node, isCallback: true };
+      eventOptions.eventKeyBindings ??= [];
+      eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
+    }
+
+    const handlers = parseEventHandler(body, state, app, eventOptions);
 
     if (handlers && (!Array.isArray(handlers) || handlers.length > 0)) {
       const ref = `imperative-handle-ref-${key.node.name}`;
