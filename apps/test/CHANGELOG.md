@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.6.0...@apps/test@0.6.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* fix control children with slots ([8497064](https://github.com/easyops-cn/next-tsx/commit/84970641c4f8e47c39022c12af1862d8cfd30d98))
+
+
+
+
+
 # [0.6.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.5.1...@apps/test@0.6.0) (2025-11-13)
 
 
