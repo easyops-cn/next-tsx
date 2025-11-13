@@ -41,7 +41,15 @@ export default function Layout() {
   return (
     <LayoutContext.Provider value={{ handleClick }}>
       <button onClick={handleClick}>My App</button>
-      <pre>{JSON.stringify(sessionStore.getItem("myKey"), null, 2)}</pre>
+      <pre
+        onClick={(e) => {
+          e.preventDefault();
+          // eslint-disable-next-line no-console
+          console.log(e);
+        }}
+      >
+        {JSON.stringify(sessionStore.getItem("myKey"), null, 2)}
+      </pre>
       <eo-descriptions
         dataSource={dataSource}
         list={[

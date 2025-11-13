@@ -14,6 +14,8 @@ import type {
 import { parseJsValue } from "./parseJsValue.js";
 import {
   CALL_API_LIST,
+  CONSOLE_METHODS,
+  EVENT_METHODS,
   HISTORY_METHODS,
   type CallApiType,
   type HistoryMethodType,
@@ -323,12 +325,22 @@ export function parseEventHandler(
         return null;
       }
       const object = callee.get("object");
+      const property = callee.get("property");
+      if (!property.isIdentifier()) {
+        state.errors.push({
+          message: `Event handler call expression with non-identifier property is not supported`,
+          node: property.node,
+          severity: "error",
+        });
+        return null;
+      }
+
       if (isGeneralMemberExpression(object)) {
-        const property = object.get("property");
+        const objectProperty = object.get("property");
         if (
           !object.node.computed &&
-          property.isIdentifier() &&
-          property.node.name === "current"
+          objectProperty.isIdentifier() &&
+          objectProperty.node.name === "current"
         ) {
           const refObject = object.get("object");
           if (refObject.isIdentifier()) {
@@ -355,15 +367,6 @@ export function parseEventHandler(
               });
               return null;
             }
-            const property = callee.get("property");
-            if (!property.isIdentifier()) {
-              state.errors.push({
-                message: `Event handler call expression with non-identifier property is not supported`,
-                node: property.node,
-                severity: "error",
-              });
-              return null;
-            }
             return {
               key: options.eventBinding?.id.name,
               action: "call_ref",
@@ -385,18 +388,28 @@ export function parseEventHandler(
         // Assert: object.isReferencedIdentifier()
         const bindingId = object.scope.getBindingIdentifier(object.node.name);
         if (bindingId) {
+          if (bindingId === options.eventBinding?.id) {
+            const method = property.node.name;
+            if (!EVENT_METHODS.includes(method as "preventDefault")) {
+              state.errors.push({
+                message: `"${object.node.name}.${method}()" is not supported in event handler`,
+                node: property.node,
+                severity: "error",
+              });
+              return null;
+            }
+            return {
+              key: options.eventBinding?.id.name,
+              action: "event",
+              payload: {
+                method: method as "preventDefault",
+              },
+            };
+          }
+
           const binding = options.component?.bindingMap.get(bindingId);
           if (binding) {
             if (binding.kind === "history") {
-              const property = callee.get("property");
-              if (!property.isIdentifier()) {
-                state.errors.push({
-                  message: `Event handler call expression with non-identifier property is not supported`,
-                  node: property.node,
-                  severity: "error",
-                });
-                return null;
-              }
               const method = property.node.name as HistoryMethodType;
               if (!HISTORY_METHODS.includes(method)) {
                 state.errors.push({
@@ -418,20 +431,32 @@ export function parseEventHandler(
               };
             }
           }
+        } else {
+          // No binding id, it's a global object
+          if (object.node.name === "console") {
+            const method = property.node.name;
+            if (!CONSOLE_METHODS.includes(method as "log")) {
+              state.errors.push({
+                message: `"console.${method}()" is not supported in event handler`,
+                node: property.node,
+                severity: "error",
+              });
+              return null;
+            }
+            return {
+              key: options.eventBinding?.id.name,
+              action: "console",
+              payload: {
+                method: method as "log",
+                args: args.map((arg) => parseJsValue(arg, state, app, options)),
+              },
+            };
+          }
         }
         const isLocalStore = validateGlobalApi(object, "localStore");
         const isSessionStore =
           !isLocalStore && validateGlobalApi(object, "sessionStore");
         if (isLocalStore || isSessionStore) {
-          const property = callee.get("property");
-          if (!property.isIdentifier()) {
-            state.errors.push({
-              message: `Event handler call expression with non-identifier property is not supported`,
-              node: property.node,
-              severity: "error",
-            });
-            return null;
-          }
           const method = property.node.name;
           if (method !== "setItem" && method !== "removeItem") {
             state.errors.push({
@@ -466,15 +491,6 @@ export function parseEventHandler(
         state.errors.push({
           message: `Member expression in event handler expects an identifier as callee, but got ${objectCallee.type}`,
           node: objectCallee.node,
-          severity: "error",
-        });
-        return null;
-      }
-      const property = callee.get("property");
-      if (!property.isIdentifier()) {
-        state.errors.push({
-          message: `Member expression in event handler expects an identifier as property, but got ${property.type}`,
-          node: property.node,
           severity: "error",
         });
         return null;

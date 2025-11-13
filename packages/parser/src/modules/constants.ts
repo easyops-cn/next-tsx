@@ -21,6 +21,10 @@ export const HISTORY_METHODS = [
   "replaceQuery",
 ] as const;
 
+export const CONSOLE_METHODS = ["log", "info", "warn", "error"] as const;
+
+export const EVENT_METHODS = ["preventDefault", "stopPropagation"] as const;
+
 export type HistoryMethodType = (typeof HISTORY_METHODS)[number];
 
 export const IdentifierUseMap = new Map<string, BindingInfo["kind"]>([
