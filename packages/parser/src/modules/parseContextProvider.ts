@@ -95,6 +95,7 @@ export function parseContextProvider(
   const properties = expression.get("properties");
   const stateSetters = new Map<string, string>();
   const stateGetters = new Map<string, string>();
+  const refetchList = new Map<string, string>();
   const eventCallbacks = new Map<string, BindingInfo>();
   for (const prop of properties) {
     if (!prop.isObjectProperty()) {
@@ -140,7 +141,11 @@ export function parseContextProvider(
         stateSetters.set(value.node.name, binding.id.name);
         break;
       case "state":
+      case "resource":
         stateGetters.set(value.node.name, binding.id.name);
+        break;
+      case "refetch":
+        refetchList.set(value.node.name, binding.resourceId!.name);
         break;
       case "eventCallback": {
         const params = binding.callback!.get("params");
@@ -168,6 +173,7 @@ export function parseContextProvider(
   if (
     stateSetters.size === 0 &&
     stateGetters.size === 0 &&
+    refetchList.size === 0 &&
     eventCallbacks.size === 0
   ) {
     return elements;
@@ -194,6 +200,21 @@ export function parseContextProvider(
                     payload: {
                       name: stateName,
                       value: "<% EVENT.detail.value %>",
+                    },
+                  },
+                  alternate: null,
+                },
+              })
+            ),
+            ...[...refetchList].map<EventHandler>(
+              ([refetchName, stateName]) => ({
+                action: "conditional",
+                payload: {
+                  test: `<% EVENT.detail.name === ${JSON.stringify(refetchName)} %>`,
+                  consequent: {
+                    action: "refresh_data_source",
+                    payload: {
+                      name: stateName,
                     },
                   },
                   alternate: null,

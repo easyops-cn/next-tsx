@@ -65,7 +65,7 @@ async function buildApp(watchMode) {
     for (const err of app.errors) {
       console.error(`[${err.severity}] ${err.message}`);
       console.error(
-        `  at ${err.filePath}:${err.node?.loc?.start.line}:${err.node?.loc?.start.column}`
+        `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
       );
       if (
         !shouldBailout &&
