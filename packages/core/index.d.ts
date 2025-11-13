@@ -29,7 +29,7 @@ export function useResource<T = any>(
     // 设置 async: true 时则不会阻塞。
     async?: boolean;
   }
-): [data: T, refetch: () => void];
+): [data: T, refetch: () => Promise<void>];
 
 /**
  * 在依赖项数组变化时执行回调函数。
@@ -102,8 +102,8 @@ export function usePathName(): string;
 export function useHistory(): History;
 
 export interface History {
-  push: (url: string) => void;
-  replace: (url: string) => void;
+  push: (url: string, options?: HistoryOptions) => void;
+  replace: (url: string, options?: HistoryOptions) => void;
   reload: () => void;
   pushQuery: UpdateQuery;
   replaceQuery: UpdateQuery;
@@ -111,11 +111,15 @@ export interface History {
 
 export type UpdateQuery = (
   newQuery: Record<string, string | null>,
-  options?: {
+  options?: HistoryOptions & {
     clear?: boolean; // 是否清除已有参数，默认 false
-    notify?: boolean; // 是否通知路由变化，默认 true
   }
 ) => void;
+
+export interface HistoryOptions {
+  notify?: boolean; // 是否通知路由变化，默认 true
+  noIncremental?: boolean; // 是否禁止增量更新，默认 false
+}
 
 export function useLocation(): {
   href: string;

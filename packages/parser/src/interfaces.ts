@@ -84,6 +84,7 @@ export interface TypeEventHandlerOfRefreshDataSource extends EventHandlerBase {
     name: string;
     scope?: "global" | "template";
   };
+  callback?: TypeEventHandlerCallback;
 }
 
 export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {

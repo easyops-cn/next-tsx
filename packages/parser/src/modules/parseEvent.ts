@@ -409,26 +409,28 @@ export function parseEventHandler(
 
           const binding = options.component?.bindingMap.get(bindingId);
           if (binding) {
-            if (binding.kind === "history") {
-              const method = property.node.name as HistoryMethodType;
-              if (!HISTORY_METHODS.includes(method)) {
-                state.errors.push({
-                  message: `"history.${method}()" is not supported in event handler`,
-                  node: property.node,
-                  severity: "error",
-                });
-                return null;
+            switch (binding.kind) {
+              case "history": {
+                const method = property.node.name as HistoryMethodType;
+                if (!HISTORY_METHODS.includes(method)) {
+                  state.errors.push({
+                    message: `"history.${method}()" is not supported in event handler`,
+                    node: property.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+                return {
+                  key: options.eventBinding?.id.name,
+                  action: "navigate",
+                  payload: {
+                    method,
+                    args: args.map((arg) =>
+                      parseJsValue(arg, state, app, options)
+                    ),
+                  },
+                };
               }
-              return {
-                key: options.eventBinding?.id.name,
-                action: "navigate",
-                payload: {
-                  method,
-                  args: args.map((arg) =>
-                    parseJsValue(arg, state, app, options)
-                  ),
-                },
-              };
             }
           }
         } else {
@@ -616,6 +618,84 @@ export function parseEventHandler(
         return null;
       }
 
+      const method = property.node.name;
+
+      const calleeBindingId = objectCallee.scope.getBindingIdentifier(
+        objectCallee.node.name
+      );
+      let calleeBinding: BindingInfo | undefined;
+      if (calleeBindingId) {
+        calleeBinding = options.component?.bindingMap.get(calleeBindingId);
+      }
+      if (calleeBinding) {
+        switch (calleeBinding.kind) {
+          case "refetch": {
+            if (method !== "then" && method !== "catch") {
+              state.errors.push({
+                message: `"${objectCallee.node.name}()" expects "then" or "catch" as its method, but got ${method}`,
+                node: property.node,
+                severity: "error",
+              });
+              return null;
+            }
+
+            if (method === "catch") {
+              if (args.length !== 1) {
+                state.errors.push({
+                  message: `".catch()" expects exactly 1 argument, but got ${args.length}`,
+                  node: args.length > 0 ? args[1].node : property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+            } else {
+              if (args.length === 0 || args.length > 2) {
+                state.errors.push({
+                  message: `".then()" expects 1 or 2 arguments, but got ${args.length}`,
+                  node: args.length > 2 ? args[2].node : property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+            }
+
+            let successCallback: EventHandler[] | null | undefined;
+            let errorCallback: EventHandler[] | null | undefined;
+            const callback = parseEvent(args[0], state, app, options, true);
+            if (method === "catch") {
+              errorCallback = callback;
+            } else {
+              successCallback = callback;
+              if (args.length > 1) {
+                errorCallback = parseEvent(args[1], state, app, options, true);
+              }
+            }
+            return {
+              key: options.eventBinding?.id.name,
+              action: "refresh_data_source",
+              payload: {
+                name: calleeBinding.resourceId!.name,
+                scope:
+                  options.component!.type === "template"
+                    ? "template"
+                    : "global",
+              },
+              callback: {
+                success: successCallback,
+                error: errorCallback,
+              },
+            };
+          }
+          default:
+            state.errors.push({
+              message: `Invalid usage in event handler: calling "${objectCallee.node.name}().${method}()"`,
+              node: objectCallee.node,
+              severity: "error",
+            });
+            return null;
+        }
+      }
+
       let calleeName: CallApiType | undefined;
       for (const name of CALL_API_LIST) {
         if (validateGlobalApi(objectCallee, name)) {
@@ -624,7 +704,6 @@ export function parseEventHandler(
         }
       }
       if (calleeName) {
-        const method = property.node.name;
         if (method !== "then" && method !== "catch") {
           state.errors.push({
             message: `"${calleeName}()" expects "then" or "catch" as its method, but got ${method}`,
