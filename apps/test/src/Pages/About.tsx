@@ -1,5 +1,6 @@
 import {
   callApi,
+  createContext,
   handleHttpError,
   useContext,
   useRef,
@@ -8,17 +9,19 @@ import {
 } from "@next-tsx/core";
 import { LayoutContext } from "../Contexts/LayoutContext";
 
+const AboutContext = createContext();
+
 export default function About() {
   const { handleClick } = useContext(LayoutContext);
   const params = useSearchParams();
-  const [res, refetch] = useResource(
+  const [aboutInfo, refetch] = useResource(
     () => callApi("my.api@getAboutInfo:1.0.0", { id: params.get("id") }),
     { async: true, fallback: null }
   );
   const modalRef = useRef();
 
   return (
-    <>
+    <AboutContext.Provider value={{ aboutInfo, refetch }}>
       <div
         onMount={handleClick}
         onClick={() => {
@@ -31,10 +34,10 @@ export default function About() {
           );
         }}
       >
-        About {params.get("id")} {res}
+        About {params.get("id")} {aboutInfo}
       </div>
-      <div>{res ? <span slot="a">1</span> : <span slot="b">2</span>}</div>
+      <div>{aboutInfo ? <span slot="a">1</span> : <span slot="b">2</span>}</div>
       <eo-modal ref={modalRef} />
-    </>
+    </AboutContext.Provider>
   );
 }
