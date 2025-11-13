@@ -1,5 +1,9 @@
 import type { BrickEventHandler, BrickEventsMap } from "@next-core/types";
-import type { Component, EventHandler } from "@next-tsx/parser";
+import type {
+  Component,
+  EventHandler,
+  TypeEventHandlerCallback,
+} from "@next-tsx/parser";
 import type { ConvertOptions } from "./interfaces.js";
 
 export function convertEvents(component: Component, options: ConvertOptions) {
@@ -99,17 +103,10 @@ function convertEventHandler(
             ? "state.refresh"
             : "context.refresh",
         args: [handler.payload.name],
+        callback: convertCallback(handler.callback, options),
       };
     case "call_api": {
       const { api, http, tool, params, isRawProvider } = handler.payload;
-
-      const success = handler.callback?.success
-        ? convertEventHandlers(handler.callback.success, options)
-        : undefined;
-
-      const error = handler.callback?.error
-        ? convertEventHandlers(handler.callback.error, options)
-        : undefined;
 
       return {
         key: handler.key,
@@ -132,12 +129,21 @@ function convertEventHandler(
                   useProvider: `${api}${api.includes(":") ? "" : ":*"}`,
                   params,
                 }),
-        callback: {
-          ...(success && { success }),
-          ...(error && { error }),
-        },
+        callback: convertCallback(handler.callback, options),
       };
     }
+    case "update_ref":
+      return {
+        key: handler.key,
+        ...(handler.payload.scope === "template"
+          ? {
+              targetRef: handler.payload.ref,
+            }
+          : {
+              target: `${options.rootId ? `[data-root-id="${options.rootId}"] ` : ""}[data-ref="${handler.payload.ref}"]`,
+            }),
+        properties: handler.payload.properties,
+      };
     case "call_ref":
       return {
         key: handler.key,
@@ -207,4 +213,25 @@ function convertEventHandler(
         else: convertEventHandlers(handler.payload.alternate, options),
       };
   }
+}
+
+function convertCallback(
+  callback: TypeEventHandlerCallback | undefined,
+  options: ConvertOptions
+): {
+  success?: BrickEventHandler[];
+  error?: BrickEventHandler[];
+} {
+  const success = callback?.success
+    ? convertEventHandlers(callback.success, options)
+    : undefined;
+
+  const error = callback?.error
+    ? convertEventHandlers(callback.error, options)
+    : undefined;
+
+  return {
+    ...(success && { success }),
+    ...(error && { error }),
+  };
 }

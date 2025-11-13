@@ -1,6 +1,16 @@
 import type { ComponentChild } from "./interfaces";
 import type { ChildElement } from "./internal-interfaces";
 
+/**
+ * Unwinds control flow components (If/ForEach) when children have multiple slots.
+ * Creates separate control components for each slot to properly handle slot-based rendering.
+ *
+ * @param name - The control component type ("If" or "ForEach")
+ * @param dataSource - The condition or data source for the control component
+ * @param defaultChildren - Children to render in the default/true case
+ * @param elseChildren - Children to render in the else/false case (optional)
+ * @returns Array of control components, one per unique slot name
+ */
 export function unwindControlChildrenBySlots(
   name: "If" | "ForEach",
   dataSource: unknown,
@@ -46,6 +56,13 @@ export function unwindControlChildrenBySlots(
   return result;
 }
 
+/**
+ * Groups children by their slot names.
+ * Children without a slot are grouped under an empty string key.
+ *
+ * @param children - Array of component children to group
+ * @returns Map of slot names to arrays of children
+ */
 function groupChildrenBySlots(children?: ComponentChild[]) {
   const slotMap = new Map<string, ComponentChild[]>();
   for (const child of children ?? []) {

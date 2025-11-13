@@ -371,7 +371,7 @@ export function parseEventHandler(
               key: options.eventBinding?.id.name,
               action: "call_ref",
               payload: {
-                ref: refBinding.id.name,
+                ref: refBinding.refName!,
                 method: property.node.name,
                 args: args.map((arg) => parseJsValue(arg, state, app, options)),
                 scope:
@@ -409,11 +409,39 @@ export function parseEventHandler(
 
           const binding = options.component?.bindingMap.get(bindingId);
           if (binding) {
-            if (binding.kind === "history") {
-              const method = property.node.name as HistoryMethodType;
-              if (!HISTORY_METHODS.includes(method)) {
+            switch (binding.kind) {
+              case "history": {
+                const method = property.node.name as HistoryMethodType;
+                if (!HISTORY_METHODS.includes(method)) {
+                  state.errors.push({
+                    message: `"history.${method}()" is not supported in event handler`,
+                    node: property.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+                return {
+                  key: options.eventBinding?.id.name,
+                  action: "navigate",
+                  payload: {
+                    method,
+                    args: args.map((arg) =>
+                      parseJsValue(arg, state, app, options)
+                    ),
+                  },
+                };
+              }
+            }
+          }
+        } else {
+          // No binding id, it's a global object
+          switch (object.node.name) {
+            case "console": {
+              // Parse `console.*(...)`
+              const method = property.node.name;
+              if (!CONSOLE_METHODS.includes(method as "log")) {
                 state.errors.push({
-                  message: `"history.${method}()" is not supported in event handler`,
+                  message: `"console.${method}()" is not supported in event handler`,
                   node: property.node,
                   severity: "error",
                 });
@@ -421,36 +449,130 @@ export function parseEventHandler(
               }
               return {
                 key: options.eventBinding?.id.name,
-                action: "navigate",
+                action: "console",
                 payload: {
-                  method,
+                  method: method as "log",
                   args: args.map((arg) =>
                     parseJsValue(arg, state, app, options)
                   ),
                 },
               };
             }
-          }
-        } else {
-          // No binding id, it's a global object
-          if (object.node.name === "console") {
-            const method = property.node.name;
-            if (!CONSOLE_METHODS.includes(method as "log")) {
-              state.errors.push({
-                message: `"console.${method}()" is not supported in event handler`,
-                node: property.node,
-                severity: "error",
-              });
-              return null;
+            case "Object": {
+              // Parse `Object.assign(ref.current, { ... })`
+              const method = property.node.name;
+              if (method !== "assign") {
+                state.errors.push({
+                  message: `"Object.${method}()" is not supported in event handler`,
+                  node: property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              if (args.length !== 2) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects exactly 2 arguments, but got ${args.length}`,
+                  node: property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              const [refTarget, props] = args;
+              if (!isGeneralMemberExpression(refTarget)) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the first argument to be a member expression, but got ${refTarget.type}`,
+                  node: refTarget.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              if (refTarget.node.computed) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the first argument to be a non-computed member expression`,
+                  node: refTarget.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              const refTargetObject = refTarget.get("object");
+              if (!refTargetObject.isIdentifier()) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the first argument to have an identifier as object, but got ${refTargetObject.type}`,
+                  node: refTargetObject.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              const refBindingId = refTargetObject.scope.getBindingIdentifier(
+                refTargetObject.node.name
+              );
+              let refBinding: BindingInfo | undefined;
+              if (refBindingId) {
+                refBinding = options.component?.bindingMap.get(refBindingId);
+              }
+              if (!refBinding || refBinding.kind !== "ref") {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the first argument to be a ref binding, but got ${refBinding?.kind}`,
+                  node: refTargetObject.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              const refTargetProperty = refTarget.get("property");
+              if (
+                !refTargetProperty.isIdentifier() ||
+                refTargetProperty.node.name !== "current"
+              ) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the first argument to have "current" as property, but got ${
+                    refTargetProperty.type
+                  }${
+                    refTargetProperty.isIdentifier()
+                      ? ` (name: ${refTargetProperty.node.name})`
+                      : ""
+                  }`,
+                  node: refTargetProperty.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              if (!props.isObjectExpression()) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the second argument to be an object expression, but got ${props.type}`,
+                  node: props.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              const invalidProp = props.node.properties.find(
+                (p) => p.type !== "ObjectProperty"
+              );
+              if (invalidProp) {
+                state.errors.push({
+                  message: `"Object.${method}()" expects the second argument to have only object properties, but got ${invalidProp.type}`,
+                  node: invalidProp,
+                  severity: "error",
+                });
+                return null;
+              }
+              return {
+                key: options.eventBinding?.id.name,
+                action: "update_ref",
+                payload: {
+                  ref: refBinding.refName!,
+                  properties: parseJsValue(
+                    props,
+                    state,
+                    app,
+                    options
+                  ) as Record<string, any>,
+                  scope:
+                    options.component!.type === "template"
+                      ? "template"
+                      : "global",
+                },
+              };
             }
-            return {
-              key: options.eventBinding?.id.name,
-              action: "console",
-              payload: {
-                method: method as "log",
-                args: args.map((arg) => parseJsValue(arg, state, app, options)),
-              },
-            };
           }
         }
         const isLocalStore = validateGlobalApi(object, "localStore");
@@ -496,6 +618,84 @@ export function parseEventHandler(
         return null;
       }
 
+      const method = property.node.name;
+
+      const calleeBindingId = objectCallee.scope.getBindingIdentifier(
+        objectCallee.node.name
+      );
+      let calleeBinding: BindingInfo | undefined;
+      if (calleeBindingId) {
+        calleeBinding = options.component?.bindingMap.get(calleeBindingId);
+      }
+      if (calleeBinding) {
+        switch (calleeBinding.kind) {
+          case "refetch": {
+            if (method !== "then" && method !== "catch") {
+              state.errors.push({
+                message: `"${objectCallee.node.name}()" expects "then" or "catch" as its method, but got ${method}`,
+                node: property.node,
+                severity: "error",
+              });
+              return null;
+            }
+
+            if (method === "catch") {
+              if (args.length !== 1) {
+                state.errors.push({
+                  message: `".catch()" expects exactly 1 argument, but got ${args.length}`,
+                  node: args.length > 0 ? args[1].node : property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+            } else {
+              if (args.length === 0 || args.length > 2) {
+                state.errors.push({
+                  message: `".then()" expects 1 or 2 arguments, but got ${args.length}`,
+                  node: args.length > 2 ? args[2].node : property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+            }
+
+            let successCallback: EventHandler[] | null | undefined;
+            let errorCallback: EventHandler[] | null | undefined;
+            const callback = parseEvent(args[0], state, app, options, true);
+            if (method === "catch") {
+              errorCallback = callback;
+            } else {
+              successCallback = callback;
+              if (args.length > 1) {
+                errorCallback = parseEvent(args[1], state, app, options, true);
+              }
+            }
+            return {
+              key: options.eventBinding?.id.name,
+              action: "refresh_data_source",
+              payload: {
+                name: calleeBinding.resourceId!.name,
+                scope:
+                  options.component!.type === "template"
+                    ? "template"
+                    : "global",
+              },
+              callback: {
+                success: successCallback,
+                error: errorCallback,
+              },
+            };
+          }
+          default:
+            state.errors.push({
+              message: `Invalid usage in event handler: calling "${objectCallee.node.name}().${method}()"`,
+              node: objectCallee.node,
+              severity: "error",
+            });
+            return null;
+        }
+      }
+
       let calleeName: CallApiType | undefined;
       for (const name of CALL_API_LIST) {
         if (validateGlobalApi(objectCallee, name)) {
@@ -504,7 +704,6 @@ export function parseEventHandler(
         }
       }
       if (calleeName) {
-        const method = property.node.name;
         if (method !== "then" && method !== "catch") {
           state.errors.push({
             message: `"${calleeName}()" expects "then" or "catch" as its method, but got ${method}`,
@@ -569,6 +768,121 @@ export function parseEventHandler(
       });
       return null;
     }
+  }
+
+  // Parse `ref.current.prop = value` assignment
+  if (path.isAssignmentExpression()) {
+    if (path.node.operator !== "=") {
+      state.errors.push({
+        message: `Only simple assignment is supported in event handler, but got operator "${path.node.operator}"`,
+        node: path.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const left = path.get("left");
+    const right = path.get("right");
+    if (!left.isMemberExpression()) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must be a member expression, but got ${left.type}`,
+        node: left.node,
+        severity: "error",
+      });
+      return null;
+    }
+    if (left.node.computed) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must not be a computed member expression`,
+        node: left.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const object = left.get("object");
+    const property = left.get("property");
+    if (!property.isIdentifier()) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must be a member expression with identifier as its property, but got ${property.type}`,
+        node: property.node,
+        severity: "error",
+      });
+      return null;
+    }
+    if (!object.isMemberExpression()) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must be a member expression with member expression as its object, but got ${object.type}`,
+        node: object.node,
+        severity: "error",
+      });
+      return null;
+    }
+    if (object.node.computed) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must not be a computed member expression`,
+        node: object.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const objectProperty = object.get("property");
+    if (
+      !objectProperty.isIdentifier() ||
+      objectProperty.node.name !== "current"
+    ) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must be a member expression with "current" as its object property, but got ${objectProperty.type}${
+          objectProperty.isIdentifier()
+            ? ` (name: ${objectProperty.node.name})`
+            : ""
+        }`,
+        node: objectProperty.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const refObject = object.get("object");
+    if (!refObject.isIdentifier()) {
+      state.errors.push({
+        message: `Left side of assignment in event handler must be a member expression with identifier as its object, but got ${refObject.type}`,
+        node: refObject.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const refBindingId = refObject.scope.getBindingIdentifier(
+      refObject.node.name
+    );
+    let refBinding: BindingInfo | undefined;
+    if (refBindingId) {
+      refBinding = options.component?.bindingMap.get(refBindingId);
+    }
+    if (!refBinding) {
+      state.errors.push({
+        message: `Variable "${refObject.node.name}" is not defined`,
+        node: refObject.node,
+        severity: "error",
+      });
+      return null;
+    }
+    if (refBinding.kind !== "ref") {
+      state.errors.push({
+        message: `Variable "${refObject.node.name}" is not a ref, but a ${refBinding.kind}`,
+        node: refObject.node,
+        severity: "error",
+      });
+      return null;
+    }
+    return {
+      key: options.eventBinding?.id.name,
+      action: "update_ref",
+      payload: {
+        ref: refBinding.refName!,
+        properties: {
+          [property.node.name]: parseJsValue(right, state, app, options),
+        },
+        scope: options.component!.type === "template" ? "template" : "global",
+      },
+    };
   }
 
   state.errors.push({

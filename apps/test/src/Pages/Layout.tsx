@@ -7,6 +7,7 @@ import {
   sessionStore,
   Routes,
   Route,
+  useRef,
 } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
@@ -16,6 +17,7 @@ export default function Layout() {
   const [a, setA] = useState<string | null>(null);
   const b = a ? "value" : "null";
   const [c, setC] = useState<number>(0);
+  const modalRef = useRef();
 
   useEffect(() => {
     if (a) {
@@ -36,6 +38,11 @@ export default function Layout() {
   const handleClick = () => {
     setA("New Value by callback");
     setC((prev) => prev + 42);
+    modalRef.current?.open();
+    modalRef.current.width = 500;
+    Object.assign(modalRef.current, {
+      height: "auto",
+    });
   };
 
   return (
@@ -76,7 +83,7 @@ export default function Layout() {
           <Route path="/about" component={About} />
         </Routes>
       </div>
-      {createPortal(<MyModal />)}
+      {createPortal(<MyModal ref={modalRef} />)}
     </LayoutContext.Provider>
   );
 }

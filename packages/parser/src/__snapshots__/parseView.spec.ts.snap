@@ -349,6 +349,7 @@ exports[`parseView should work 1`] = `
               "type": "Identifier",
             },
             "kind": "ref",
+            "refName": "modalRef-0",
           },
           Node {
             "end": 1039,
@@ -775,7 +776,7 @@ exports[`parseView should work 1`] = `
                                       "payload": {
                                         "args": [],
                                         "method": "open",
-                                        "ref": "modalRef",
+                                        "ref": "modalRef-0",
                                         "scope": "global",
                                       },
                                     },
@@ -917,7 +918,7 @@ exports[`parseView should work 1`] = `
             : "" %>",
                   "width": "800px",
                 },
-                "ref": "modalRef",
+                "ref": "modalRef-0",
                 "reference": null,
                 "slot": undefined,
               },

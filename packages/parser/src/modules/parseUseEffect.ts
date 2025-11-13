@@ -12,12 +12,7 @@ import {
 } from "./validations.js";
 import { parseEventHandler } from "./parseEvent.js";
 import { CTX_BINDING_KINDS } from "./constants.js";
-
-let effectId = 0;
-
-function getEffectId() {
-  return `effect-batch-agent-${effectId++}`;
-}
+import { getUniqueId } from "./getUniqueId.js";
 
 export function parseUseEffect(
   expr: NodePath<t.CallExpression>,
@@ -121,7 +116,7 @@ export function parseUseEffect(
   const handlers = parseEventHandler(callbackBody, state, app, options);
 
   if (handlers && (!Array.isArray(handlers) || handlers.length > 0)) {
-    const id = getEffectId();
+    const id = getUniqueId("effect-batch-agent-");
     const component: ComponentChild = {
       name: "eo-batch-agent",
       portal: true,

@@ -23,6 +23,7 @@ import { parseUseContext } from "./parseUseContext.js";
 import { parseIdentifierUse } from "./parseIdentifierUse.js";
 import { parseUseImperativeHandle } from "./parseUseImperativeHandle.js";
 import { parseUseEffect } from "./parseUseEffect.js";
+import { getUniqueId } from "./getUniqueId.js";
 
 export function parseComponent(
   fn: NodePath<t.FunctionDeclaration>,
@@ -275,7 +276,14 @@ export function parseComponent(
                   severity: "warning",
                 });
               }
-              bindingMap.set(declId.node, { id: declId.node, kind: "ref" });
+              bindingMap.set(declId.node, {
+                id: declId.node,
+                kind: "ref",
+                refName:
+                  type === "template"
+                    ? declId.node.name
+                    : getUniqueId(`${declId.node.name}-`),
+              });
               continue;
             } else {
               const identifierUse = parseIdentifierUse(

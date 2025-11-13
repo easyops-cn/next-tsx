@@ -51,6 +51,7 @@ export interface Events {
 export type EventHandler =
   | TypeEventHandlerOfUpdateVariable
   | TypeEventHandlerOfRefreshDataSource
+  | TypeEventHandlerOfUpdateRef
   | TypeEventHandlerOfCallRef
   | TypeEventHandlerOfCallSelector
   | TypeEventHandlerOfShowMessage
@@ -81,6 +82,16 @@ export interface TypeEventHandlerOfRefreshDataSource extends EventHandlerBase {
   action: "refresh_data_source";
   payload: {
     name: string;
+    scope?: "global" | "template";
+  };
+  callback?: TypeEventHandlerCallback;
+}
+
+export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {
+  action: "update_ref";
+  payload: {
+    ref: string;
+    properties: Record<string, any>;
     scope?: "global" | "template";
   };
 }

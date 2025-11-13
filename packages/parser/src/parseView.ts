@@ -5,8 +5,11 @@ import { parseLegacyModule } from "./modules/parseLegacyModule.js";
 import type { ParsedApp } from "./modules/interfaces.js";
 import { parseFile } from "./modules/parseFile.js";
 import { collectModuleErrors } from "./modules/collectModuleErrors.js";
+import { resetUniqueIdCounter } from "./modules/getUniqueId.js";
 
 export function parseView(source: string, options?: ParseOptions): ParsedApp {
+  resetUniqueIdCounter();
+
   const app: ParsedApp = {
     appType: "view",
     modules: new Map(),
