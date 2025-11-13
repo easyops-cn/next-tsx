@@ -127,6 +127,7 @@ export interface BindingInfo {
 
 export interface EventBindingInfo {
   id: t.Identifier;
+  /** Will use `EVENT.detail` instead of `EVENT` in callback */
   isCallback?: boolean;
 }
 
