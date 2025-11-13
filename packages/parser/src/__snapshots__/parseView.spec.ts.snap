@@ -627,13 +627,14 @@ exports[`parseView should work 1`] = `
                         },
                         "ref": undefined,
                         "reference": null,
-                        "slot": undefined,
+                        "slot": "",
                       },
                     ],
                     "name": "If",
                     "properties": {
                       "dataSource": "<%= CTX.logs %>",
                     },
+                    "slot": "",
                   },
                 ],
                 "events": undefined,
@@ -713,7 +714,7 @@ exports[`parseView should work 1`] = `
                                     },
                                     "ref": undefined,
                                     "reference": null,
-                                    "slot": undefined,
+                                    "slot": "",
                                   },
                                   {
                                     "children": undefined,
@@ -739,6 +740,7 @@ exports[`parseView should work 1`] = `
                                 "properties": {
                                   "dataSource": "<%= CTX.allExpanded || CTX.expandedSet.has(r.logId) %>",
                                 },
+                                "slot": "",
                               },
                             ],
                             "params": [
@@ -825,13 +827,14 @@ exports[`parseView should work 1`] = `
                     },
                     "ref": undefined,
                     "reference": null,
-                    "slot": undefined,
+                    "slot": "",
                   },
                 ],
                 "name": "If",
                 "properties": {
                   "dataSource": "<%= CTX.logs %>",
                 },
+                "slot": "",
               },
               {
                 "children": [
@@ -880,7 +883,7 @@ exports[`parseView should work 1`] = `
                         },
                         "ref": undefined,
                         "reference": null,
-                        "slot": undefined,
+                        "slot": "",
                       },
                       {
                         "children": undefined,
@@ -893,13 +896,14 @@ exports[`parseView should work 1`] = `
                         },
                         "ref": undefined,
                         "reference": null,
-                        "slot": undefined,
+                        "slot": "",
                       },
                     ],
                     "name": "If",
                     "properties": {
                       "dataSource": "<%= CTX.detailLog %>",
                     },
+                    "slot": "",
                   },
                 ],
                 "events": undefined,
@@ -1195,13 +1199,14 @@ exports[`parseView should work 1`] = `
                       },
                       "ref": undefined,
                       "reference": null,
-                      "slot": undefined,
+                      "slot": "",
                     },
                   ],
                   "name": "If",
                   "properties": {
                     "dataSource": "<%= !STATE.allExpanded %>",
                   },
+                  "slot": "",
                 },
                 {
                   "children": undefined,

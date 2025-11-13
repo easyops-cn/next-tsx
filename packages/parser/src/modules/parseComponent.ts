@@ -394,7 +394,10 @@ export function parseComponent(
           }),
         },
         children: [
-          ...(consequentChildren ?? []),
+          ...(consequentChildren ?? []).map((child) => ({
+            ...child,
+            slot: "",
+          })),
           ...(alternateChildren ?? []).map((child) => ({
             ...child,
             slot: "else",

@@ -213,13 +213,14 @@ exports[`parseTemplate should work 1`] = `
                     },
                     "ref": undefined,
                     "reference": null,
-                    "slot": undefined,
+                    "slot": "",
                   },
                 ],
                 "name": "If",
                 "properties": {
                   "dataSource": "<%= !STATE.allExpanded %>",
                 },
+                "slot": "",
               },
               {
                 "children": undefined,

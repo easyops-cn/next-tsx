@@ -15,8 +15,11 @@ export default function About() {
   );
 
   return (
-    <div onMount={handleClick}>
-      About {params.get("id")} {res}
-    </div>
+    <>
+      <div onMount={handleClick}>
+        About {params.get("id")} {res}
+      </div>
+      <div>{res ? <span slot="a">1</span> : <span slot="b">2</span>}</div>
+    </>
   );
 }
