@@ -15,6 +15,7 @@ import type { ChildElement } from "./internal-interfaces.js";
 import { parseJSXElement } from "./parseJSXElement.js";
 import { parsePropValue } from "./parseJsValue.js";
 import { parseChildren } from "./parseChildren.js";
+import { unwindControlChildrenBySlots } from "./unwindControlChildrenBySlots.js";
 
 export function parseElement(
   path: NodePath<t.Node>,
@@ -134,24 +135,14 @@ export function parseElement(
                 };
               }
 
-              return {
-                type: "component",
-                component: {
-                  name: "ForEach",
-                  properties: {
-                    dataSource: parsePropValue(object, state, app, {
-                      ...options,
-                      modifier: "=",
-                    }),
-                  },
-                  children: parseChildren(
-                    func.get("body"),
-                    state,
-                    app,
-                    forEachOptions
-                  ),
-                },
-              };
+              return unwindControlChildrenBySlots(
+                "ForEach",
+                parsePropValue(object, state, app, {
+                  ...options,
+                  modifier: "=",
+                }),
+                parseChildren(body, state, app, forEachOptions)
+              );
             }
           }
         }
@@ -165,27 +156,15 @@ export function parseElement(
       if (!validateEmbeddedExpression(test.node, state)) {
         return null;
       }
-      return {
-        type: "component",
-        component: {
-          name: "If",
-          properties: {
-            dataSource: parsePropValue(test, state, app, {
-              ...options,
-              modifier: "=",
-            }),
-          },
-          children: [
-            ...parseChildren(consequent, state, app, options),
-            ...parseChildren(alternate, state, app, options).map(
-              (component) => ({
-                ...component,
-                slot: "else",
-              })
-            ),
-          ],
-        },
-      };
+      return unwindControlChildrenBySlots(
+        "If",
+        parsePropValue(test, state, app, {
+          ...options,
+          modifier: "=",
+        }),
+        parseChildren(consequent, state, app, options),
+        parseChildren(alternate, state, app, options)
+      );
     }
   } else if (path.isLogicalExpression()) {
     const left = path.get("left");
@@ -199,25 +178,15 @@ export function parseElement(
         return null;
       }
       const children = parseChildren(right, state, app, options);
-      return {
-        type: "component",
-        component: {
-          name: "If",
-          properties: {
-            dataSource: parsePropValue(left, state, app, {
-              ...options,
-              modifier: "=",
-            }),
-          },
-          children:
-            operator === "&&"
-              ? children
-              : children.map((component) => ({
-                  ...component,
-                  slot: "else",
-                })),
-        },
-      };
+      return unwindControlChildrenBySlots(
+        "If",
+        parsePropValue(left, state, app, {
+          ...options,
+          modifier: "=",
+        }),
+        operator === "&&" ? children : undefined,
+        operator === "||" ? children : undefined
+      );
     }
   }
 
