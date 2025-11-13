@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.4.0...@next-tsx/core@0.5.0) (2025-11-13)
+
+
+### Features
+
+* support context refresh callback ([a677b3c](https://github.com/easyops-cn/next-tsx/commit/a677b3c21fb04ef7ac3c7382b2f229a7d9b8df09))
+* support update brick properties in event handler ([cca0d6b](https://github.com/easyops-cn/next-tsx/commit/cca0d6b8ceb3f54ff84bf8cb8962129718059129))
+
+
+
+
+
 # [0.4.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.3.1...@next-tsx/core@0.4.0) (2025-11-12)
 
 
