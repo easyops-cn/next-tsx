@@ -41,7 +41,7 @@ export function useResource<T = any>(
 export function useEffect(callback: () => void, deps: unknown[]): void;
 
 /** 返回一个 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
-export function useRef<T>(initialValue: T): RefObject<T>;
+export function useRef<T = any>(initialValue?: T): RefObject<T>;
 
 export type Ref<T> = RefObject<T> | null;
 

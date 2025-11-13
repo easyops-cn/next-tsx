@@ -123,6 +123,9 @@ export interface BindingInfo {
 
   /** For kind "eventCallback" */
   callback?: NodePath<t.FunctionExpression | t.ArrowFunctionExpression>;
+
+  /** For kind "ref" */
+  refName?: string;
 }
 
 export interface EventBindingInfo {

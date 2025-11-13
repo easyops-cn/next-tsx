@@ -195,7 +195,7 @@ exports[`convertTsx should work 1`] = `
                             "args": [],
                             "key": undefined,
                             "method": "open",
-                            "target": "[data-root-id="test-root"] [data-ref="modalRef"]",
+                            "target": "[data-root-id="test-root"] [data-ref="modalRef-0"]",
                           },
                         ],
                         "toggle": [
@@ -311,7 +311,7 @@ exports[`convertTsx should work 1`] = `
           "cancelText": undefined,
           "confirmText": undefined,
           "dataset": {
-            "ref": "modalRef",
+            "ref": "modalRef-0",
           },
           "hideCancelButton": true,
           "keyboard": true,

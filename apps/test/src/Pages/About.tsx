@@ -1,6 +1,7 @@
 import {
   callApi,
   useContext,
+  useRef,
   useResource,
   useSearchParams,
 } from "@next-tsx/core";
@@ -13,6 +14,7 @@ export default function About() {
     () => callApi("my.api@getAboutInfo:1.0.0", { id: params.get("id") }),
     { async: true, fallback: null }
   );
+  const modalRef = useRef();
 
   return (
     <>
@@ -20,6 +22,7 @@ export default function About() {
         About {params.get("id")} {res}
       </div>
       <div>{res ? <span slot="a">1</span> : <span slot="b">2</span>}</div>
+      <eo-modal ref={modalRef} />
     </>
   );
 }

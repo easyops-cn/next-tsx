@@ -376,7 +376,7 @@ function parseRefAttribute(
     });
     return;
   }
-  return binding.id.name;
+  return binding.refName;
 }
 
 export function convertJsxEventAttr(attr: string): string {

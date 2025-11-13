@@ -138,6 +138,18 @@ function convertEventHandler(
         },
       };
     }
+    case "update_ref":
+      return {
+        key: handler.key,
+        ...(handler.payload.scope === "template"
+          ? {
+              targetRef: handler.payload.ref,
+            }
+          : {
+              target: `${options.rootId ? `[data-root-id="${options.rootId}"] ` : ""}[data-ref="${handler.payload.ref}"]`,
+            }),
+        properties: handler.payload.properties,
+      };
     case "call_ref":
       return {
         key: handler.key,
