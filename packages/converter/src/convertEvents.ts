@@ -188,6 +188,17 @@ function convertEventHandler(
         action: "tpl.dispatchEvent",
         args: [handler.payload.type, { detail: handler.payload.detail }],
       };
+    case "console":
+      return {
+        key: handler.key,
+        action: `console.${handler.payload.method}`,
+        args: handler.payload.args,
+      };
+    case "event":
+      return {
+        key: handler.key,
+        action: `event.${handler.payload.method}`,
+      };
     case "conditional":
       return {
         key: handler.key,

@@ -59,6 +59,8 @@ export type EventHandler =
   | TypeEventHandlerOfDispatchEvent
   | TypeEventHandlerOfNavigate
   | TypeEventHandlerOfStore
+  | TypeEventHandlerOfConsole
+  | TypeEventHandlerOfEvent
   | TypeEventHandlerOfConditional;
 
 export interface EventHandlerBase {
@@ -150,6 +152,21 @@ export interface TypeEventHandlerOfStore extends EventHandlerBase {
     type: "local" | "session";
     method: "setItem" | "removeItem";
     args: unknown[];
+  };
+}
+
+export interface TypeEventHandlerOfConsole extends EventHandlerBase {
+  action: "console";
+  payload: {
+    method: "log" | "info" | "warn" | "error";
+    args: unknown[];
+  };
+}
+
+export interface TypeEventHandlerOfEvent extends EventHandlerBase {
+  action: "event";
+  payload: {
+    method: "preventDefault" | "stopPropagation";
   };
 }
 
