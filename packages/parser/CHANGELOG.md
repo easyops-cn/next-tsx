@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.7.0...@next-tsx/parser@0.7.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* support resource as context value ([6d5929c](https://github.com/easyops-cn/next-tsx/commit/6d5929c0f5cb6ff300fda0f391ea3bd9fb979541))
+
+
+
+
+
 # [0.7.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.6.2...@next-tsx/parser@0.7.0) (2025-11-13)
 
 

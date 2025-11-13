@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.17...@next-tsx/builder@0.0.18) (2025-11-13)
+
+
+### Bug Fixes
+
+* support resource as context value ([6d5929c](https://github.com/easyops-cn/next-tsx/commit/6d5929c0f5cb6ff300fda0f391ea3bd9fb979541))
+
+
+
+
+
 ## [0.0.17](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.16...@next-tsx/builder@0.0.17) (2025-11-13)
 
 **Note:** Version bump only for package @next-tsx/builder
