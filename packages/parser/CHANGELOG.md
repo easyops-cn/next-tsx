@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.6.1...@next-tsx/parser@0.6.2) (2025-11-13)
+
+
+### Bug Fixes
+
+* ref methods support passing params ([f778f34](https://github.com/easyops-cn/next-tsx/commit/f778f34c42e34df8f3e725f3ea15289e179d93d6))
+
+
+
+
+
 ## [0.6.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.6.0...@next-tsx/parser@0.6.1) (2025-11-13)
 
 
