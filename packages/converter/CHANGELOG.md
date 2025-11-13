@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.4.1...@next-tsx/converter@0.5.0) (2025-11-13)
+
+
+### Features
+
+* support event.* and console.* ([f138ba6](https://github.com/easyops-cn/next-tsx/commit/f138ba6ece0583ac06597f9b78d272d2ceceb982))
+
+
+
+
+
 ## [0.4.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.4.0...@next-tsx/converter@0.4.1) (2025-11-12)
 
 **Note:** Version bump only for package @next-tsx/converter
