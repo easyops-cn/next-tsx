@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.5.0...@next-tsx/core@0.6.0) (2025-11-14)
+
+
+### Features
+
+* refine callback supports ([2a68b3c](https://github.com/easyops-cn/next-tsx/commit/2a68b3cba58db2e1b1213ad35b9800ee30d84a95))
+
+
+
+
+
 # [0.5.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.4.0...@next-tsx/core@0.5.0) (2025-11-13)
 
 

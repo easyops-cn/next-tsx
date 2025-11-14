@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.7.1...@next-tsx/parser@0.8.0) (2025-11-14)
+
+
+### Features
+
+* refine callback supports ([2a68b3c](https://github.com/easyops-cn/next-tsx/commit/2a68b3cba58db2e1b1213ad35b9800ee30d84a95))
+* support set brick props by querySelector ([5094813](https://github.com/easyops-cn/next-tsx/commit/5094813f84e0d0deb74a96a79694128f425fc7ea))
+
+
+
+
+
 ## [0.7.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.7.0...@next-tsx/parser@0.7.1) (2025-11-13)
 
 
