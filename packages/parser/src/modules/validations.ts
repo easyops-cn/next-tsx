@@ -2,10 +2,12 @@ import type { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
 import type {
   ComponentChild,
+  EventHandler,
   ParsedModule,
   RenderUseBrick,
 } from "./interfaces.js";
 import { MODULE_SOURCE, SYMBOL_RENDER_USE_BRICK } from "./constants.js";
+import type { EventHandlerWithCallback } from "../interfaces.js";
 
 export function validateFunction(
   fn: t.FunctionDeclaration | t.FunctionExpression | t.ArrowFunctionExpression,
@@ -131,4 +133,15 @@ export function isRenderUseBrick(
   value: Record<string, unknown> | RenderUseBrick
 ): value is RenderUseBrick {
   return (value as RenderUseBrick).type === SYMBOL_RENDER_USE_BRICK;
+}
+
+const EVENT_HANDLER_WITH_CALLBACK_ACTIONS: EventHandlerWithCallback["action"][] =
+  ["call_selector", "call_api", "call_ref", "refresh_data_source"];
+
+export function isEventHandlerWithCallback(
+  handler: EventHandler
+): handler is EventHandlerWithCallback {
+  return EVENT_HANDLER_WITH_CALLBACK_ACTIONS.includes(
+    handler.action as EventHandlerWithCallback["action"]
+  );
 }

@@ -116,9 +116,11 @@ export function parseModule(
           const decl = stmt.get("declaration");
           collectFunctions(decl, FunctionScope.NamedExportDeclaration);
         } else if (stmt.isImportDeclaration()) {
-          const importSource = stmt.node.source.value;
-          if (importSource.startsWith(".") || importSource.startsWith("/")) {
-            imports.push(importSource);
+          if (stmt.node.importKind === "value") {
+            const importSource = stmt.node.source.value;
+            if (importSource.startsWith(".") || importSource.startsWith("/")) {
+              imports.push(importSource);
+            }
           }
         } else if (
           !stmt.isTSInterfaceDeclaration &&

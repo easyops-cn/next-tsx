@@ -234,6 +234,11 @@ export interface Store {
 }
 
 /**
+ * 根据 CSS selector 查询并返回对应的元素/组件。
+ */
+export function querySelector<T = any>(selector: string): T;
+
+/**
  * 平台部署的基础路径，通常为 `/next/`。
  *
  * 对于大部分组件，设置 url 时不需要带上该前缀，但在某些需要使用完整 URL 的场景下需要使用该常量进行拼接。

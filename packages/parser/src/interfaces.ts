@@ -51,9 +51,10 @@ export interface Events {
 export type EventHandler =
   | TypeEventHandlerOfUpdateVariable
   | TypeEventHandlerOfRefreshDataSource
-  | TypeEventHandlerOfUpdateRef
   | TypeEventHandlerOfCallRef
   | TypeEventHandlerOfCallSelector
+  | TypeEventHandlerOfUpdateRef
+  | TypeEventHandlerOfUpdateSelector
   | TypeEventHandlerOfShowMessage
   | TypeEventHandlerOfHandleHttpError
   | TypeEventHandlerOfCallAPI
@@ -63,6 +64,12 @@ export type EventHandler =
   | TypeEventHandlerOfConsole
   | TypeEventHandlerOfEvent
   | TypeEventHandlerOfConditional;
+
+export type EventHandlerWithCallback =
+  | TypeEventHandlerOfCallAPI
+  | TypeEventHandlerOfRefreshDataSource
+  | TypeEventHandlerOfCallRef
+  | TypeEventHandlerOfCallSelector;
 
 export interface EventHandlerBase {
   action: string;
@@ -87,6 +94,27 @@ export interface TypeEventHandlerOfRefreshDataSource extends EventHandlerBase {
   callback?: TypeEventHandlerCallback;
 }
 
+export interface TypeEventHandlerOfCallRef extends EventHandlerBase {
+  action: "call_ref";
+  payload: {
+    ref: string;
+    method: string;
+    args?: any[];
+    scope?: "global" | "template";
+  };
+  callback?: TypeEventHandlerCallback;
+}
+
+export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
+  action: "call_selector";
+  payload: {
+    selector: string;
+    method: string;
+    args?: any[];
+  };
+  callback?: TypeEventHandlerCallback;
+}
+
 export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {
   action: "update_ref";
   payload: {
@@ -96,22 +124,12 @@ export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {
   };
 }
 
-export interface TypeEventHandlerOfCallRef extends EventHandlerBase {
-  action: "call_ref";
-  payload: {
-    ref: string;
-    method: string;
-    args?: any[];
-    scope?: "global" | "template";
-  };
-}
-
-export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
-  action: "call_selector";
+export interface TypeEventHandlerOfUpdateSelector extends EventHandlerBase {
+  action: "update_selector";
   payload: {
     selector: string;
-    method: string;
-    args?: any[];
+    properties: Record<string, any>;
+    scope?: "global" | "template";
   };
 }
 
@@ -191,9 +209,9 @@ export interface TypeEventHandlerOfConditional extends EventHandlerBase {
 }
 
 export interface TypeEventHandlerCallback {
-  success?: EventHandler | EventHandler[] | null;
-  error?: EventHandler | EventHandler[] | null;
-  finally?: EventHandler | EventHandler[] | null;
+  success?: EventHandler[] | null;
+  error?: EventHandler[] | null;
+  finally?: EventHandler[] | null;
 }
 
 export interface LifeCycle {

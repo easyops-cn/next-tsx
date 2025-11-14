@@ -10,7 +10,7 @@ import {
   isGeneralFunctionExpression,
   validateFunction,
 } from "./validations.js";
-import { parseEventHandler } from "./parseEvent.js";
+import { parseEventHandlers } from "./parseEvent.js";
 import { CTX_BINDING_KINDS } from "./constants.js";
 import { getUniqueId } from "./getUniqueId.js";
 
@@ -113,7 +113,7 @@ export function parseUseEffect(
     return null;
   }
 
-  const handlers = parseEventHandler(callbackBody, state, app, options);
+  const handlers = parseEventHandlers(callbackBody, state, app, options);
 
   if (handlers && (!Array.isArray(handlers) || handlers.length > 0)) {
     const id = getUniqueId("effect-batch-agent-");
