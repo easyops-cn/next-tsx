@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.8.0...@next-tsx/parser@0.8.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* convert to slots instead of children ([1424632](https://github.com/easyops-cn/next-tsx/commit/1424632d396b0667a0c33c40cf1859e458f847d2))
+* passthrough state for context ([95db667](https://github.com/easyops-cn/next-tsx/commit/95db66710e55a64a04c319624b101dd7fd1cd7f2))
+
+
+
+
+
 # [0.8.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.7.1...@next-tsx/parser@0.8.0) (2025-11-14)
 
 

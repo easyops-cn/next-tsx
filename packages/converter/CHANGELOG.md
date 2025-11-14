@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.7.0...@next-tsx/converter@0.7.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* convert to slots instead of children ([1424632](https://github.com/easyops-cn/next-tsx/commit/1424632d396b0667a0c33c40cf1859e458f847d2))
+
+
+
+
+
 # [0.7.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.6.1...@next-tsx/converter@0.7.0) (2025-11-14)
 
 
