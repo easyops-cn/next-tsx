@@ -44,13 +44,6 @@ exports[`convertApp should work 1`] = `
       "bricks": [
         {
           "brick": "eo-event-agent",
-          "context": [
-            {
-              "name": "CONTEXT_PROVIDER__LayoutContext__x",
-              "track": true,
-              "value": "<% CTX.x %>",
-            },
-          ],
           "events": {
             "trigger": [
               {
@@ -94,137 +87,80 @@ exports[`convertApp should work 1`] = `
         },
         {
           "brick": "tpl-nav",
-          "children": [
-            {
-              "brick": "ul",
-              "children": [
-                {
-                  "brick": "li",
-                  "children": [
-                    {
-                      "brick": "eo-link",
-                      "events": undefined,
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "inApp": true,
-                        "textContent": "Home",
-                        "themeVariant": "elevo",
-                        "url": "/",
-                      },
-                    },
-                  ],
-                  "events": undefined,
-                  "lifeCycle": undefined,
-                  "properties": {},
-                },
-                {
-                  "brick": "li",
-                  "children": [
-                    {
-                      "brick": "eo-link",
-                      "events": undefined,
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "inApp": true,
-                        "textContent": "About",
-                        "themeVariant": "elevo",
-                        "url": "/about",
-                      },
-                    },
-                  ],
-                  "events": undefined,
-                  "lifeCycle": undefined,
-                  "properties": {},
-                },
-              ],
-              "events": undefined,
-              "lifeCycle": undefined,
-              "properties": {},
-            },
-          ],
           "events": undefined,
           "lifeCycle": undefined,
           "properties": {},
+          "slots": {
+            "": {
+              "bricks": [
+                {
+                  "brick": "ul",
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "properties": {},
+                  "slots": {
+                    "": {
+                      "bricks": [
+                        {
+                          "brick": "li",
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "properties": {},
+                          "slots": {
+                            "": {
+                              "bricks": [
+                                {
+                                  "brick": "eo-link",
+                                  "events": undefined,
+                                  "lifeCycle": undefined,
+                                  "properties": {
+                                    "inApp": true,
+                                    "textContent": "Home",
+                                    "themeVariant": "elevo",
+                                    "url": "/",
+                                  },
+                                },
+                              ],
+                              "type": "bricks",
+                            },
+                          },
+                        },
+                        {
+                          "brick": "li",
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "properties": {},
+                          "slots": {
+                            "": {
+                              "bricks": [
+                                {
+                                  "brick": "eo-link",
+                                  "events": undefined,
+                                  "lifeCycle": undefined,
+                                  "properties": {
+                                    "inApp": true,
+                                    "textContent": "About",
+                                    "themeVariant": "elevo",
+                                    "url": "/about",
+                                  },
+                                },
+                              ],
+                              "type": "bricks",
+                            },
+                          },
+                        },
+                      ],
+                      "type": "bricks",
+                    },
+                  },
+                },
+              ],
+              "type": "bricks",
+            },
+          },
         },
         {
           "brick": "eo-card",
-          "children": [
-            {
-              "brick": "eo-content-layout",
-              "children": [
-                {
-                  "brick": "h2",
-                  "events": undefined,
-                  "lifeCycle": undefined,
-                  "properties": {
-                    "textContent": "Welcome",
-                  },
-                  "slot": "header",
-                },
-                {
-                  "alias": "About",
-                  "bricks": [
-                    {
-                      "brick": "h1",
-                      "events": undefined,
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "textContent": "This is about",
-                      },
-                    },
-                  ],
-                  "context": [],
-                  "incrementalSubRoutes": true,
-                  "path": "\${APP.homepage}/about",
-                },
-                {
-                  "alias": "Home",
-                  "bricks": [
-                    {
-                      "brick": "h1",
-                      "events": undefined,
-                      "lifeCycle": {
-                        "onMount": [
-                          {
-                            "args": [
-                              {
-                                "name": "setX",
-                                "value": 42,
-                              },
-                            ],
-                            "callback": {},
-                            "key": undefined,
-                            "method": "trigger",
-                            "target": "#context-agent-LayoutContext",
-                          },
-                        ],
-                        "onUnmount": [
-                          {
-                            "args": [
-                              {
-                                "name": "setX",
-                                "value": 0,
-                              },
-                            ],
-                            "callback": {},
-                            "key": undefined,
-                            "method": "trigger",
-                            "target": "#context-agent-LayoutContext",
-                          },
-                        ],
-                      },
-                      "properties": {
-                        "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"\\n      This is home-"}, {type:"expression",value:(CTX.CONTEXT_PROVIDER__LayoutContext__x)}) %>",
-                      },
-                    },
-                  ],
-                  "context": [],
-                  "incrementalSubRoutes": true,
-                  "path": "\${APP.homepage}",
-                },
-              ],
-            },
-          ],
           "events": undefined,
           "lifeCycle": undefined,
           "properties": {
@@ -232,6 +168,97 @@ exports[`convertApp should work 1`] = `
             "cardTitle": undefined,
             "outline": "background",
             "themeVariant": "elevo",
+          },
+          "slots": {
+            "": {
+              "bricks": [
+                {
+                  "brick": "eo-content-layout",
+                  "slots": {
+                    "": {
+                      "routes": [
+                        {
+                          "alias": "About",
+                          "bricks": [
+                            {
+                              "brick": "h1",
+                              "events": undefined,
+                              "lifeCycle": undefined,
+                              "properties": {
+                                "textContent": "This is about",
+                              },
+                            },
+                          ],
+                          "context": [],
+                          "incrementalSubRoutes": true,
+                          "path": "\${APP.homepage}/about",
+                        },
+                        {
+                          "alias": "Home",
+                          "bricks": [
+                            {
+                              "brick": "h1",
+                              "events": undefined,
+                              "lifeCycle": {
+                                "onMount": [
+                                  {
+                                    "args": [
+                                      {
+                                        "name": "setX",
+                                        "value": 42,
+                                      },
+                                    ],
+                                    "callback": {},
+                                    "key": undefined,
+                                    "method": "trigger",
+                                    "target": "#context-agent-LayoutContext",
+                                  },
+                                ],
+                                "onUnmount": [
+                                  {
+                                    "args": [
+                                      {
+                                        "name": "setX",
+                                        "value": 0,
+                                      },
+                                    ],
+                                    "callback": {},
+                                    "key": undefined,
+                                    "method": "trigger",
+                                    "target": "#context-agent-LayoutContext",
+                                  },
+                                ],
+                              },
+                              "properties": {
+                                "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"\\n      This is home-"}, {type:"expression",value:(CTX.x)}) %>",
+                              },
+                            },
+                          ],
+                          "context": [],
+                          "incrementalSubRoutes": true,
+                          "path": "\${APP.homepage}",
+                        },
+                      ],
+                      "type": "routes",
+                    },
+                    "header": {
+                      "bricks": [
+                        {
+                          "brick": "h2",
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "properties": {
+                            "textContent": "Welcome",
+                          },
+                        },
+                      ],
+                      "type": "bricks",
+                    },
+                  },
+                },
+              ],
+              "type": "bricks",
+            },
           },
         },
       ],
@@ -252,17 +279,22 @@ exports[`convertApp should work 1`] = `
       "bricks": [
         {
           "brick": "nav",
-          "children": [
-            {
-              "brick": "slot",
-              "events": undefined,
-              "lifeCycle": undefined,
-              "properties": {},
-            },
-          ],
           "events": undefined,
           "lifeCycle": undefined,
           "properties": {},
+          "slots": {
+            "": {
+              "bricks": [
+                {
+                  "brick": "slot",
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "properties": {},
+                },
+              ],
+              "type": "bricks",
+            },
+          },
         },
       ],
       "name": "tpl-nav",
