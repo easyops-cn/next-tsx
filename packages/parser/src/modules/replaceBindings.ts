@@ -6,7 +6,6 @@ import type {
   ParsedApp,
   ParsedModule,
 } from "./interfaces.js";
-import { getContextReferenceVariableName } from "./getContextReference.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
 import { CTX_BINDING_KINDS, TransformBindingMap } from "./constants.js";
@@ -283,7 +282,7 @@ export function replaceBindings(
             type: "id",
             start: idPath.node.start!,
             end: idPath.node.end!,
-            replacement: `CTX.${getContextReferenceVariableName(localBinding.contextProvider!.name, localBinding.contextKey!)}`,
+            replacement: `CTX.${localBinding.contextKey!}`,
             shorthand: shorthand ? varName : undefined,
           });
         } else {

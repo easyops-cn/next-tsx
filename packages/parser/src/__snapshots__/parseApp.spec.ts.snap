@@ -281,13 +281,6 @@ exports[`parseApp should work 1`] = `
           },
           "children": [
             {
-              "context": [
-                {
-                  "name": "CONTEXT_PROVIDER__LayoutContext__x",
-                  "track": true,
-                  "value": "<% CTX.x %>",
-                },
-              ],
               "events": {
                 "trigger": [
                   {
@@ -715,7 +708,7 @@ exports[`parseApp should work 1`] = `
               },
               "name": "h1",
               "properties": {
-                "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"\\n      This is home-"}, {type:"expression",value:(CTX.CONTEXT_PROVIDER__LayoutContext__x)}) %>",
+                "textContent": "<%= FN._helper_mergeTexts({"type":"text","text":"\\n      This is home-"}, {type:"expression",value:(CTX.x)}) %>",
               },
               "ref": undefined,
               "reference": null,

@@ -10,7 +10,6 @@ import type {
 import {
   getContextReference,
   getContextReferenceEventAgentId,
-  getContextReferenceVariableName,
 } from "./getContextReference.js";
 import { parseElement } from "./parseElement.js";
 import type { ChildElement } from "./internal-interfaces.js";
@@ -29,6 +28,16 @@ export function parseContextProvider(
     .flatMap((child) => parseElement(child, state, app, options));
 
   if (!contextReference) {
+    return elements;
+  }
+
+  if (options.component?.type === "template") {
+    state.errors.push({
+      message:
+        "Context Provider components are not supported in template components",
+      node: path.node,
+      severity: "error",
+    });
     return elements;
   }
 
@@ -94,7 +103,6 @@ export function parseContextProvider(
 
   const properties = expression.get("properties");
   const stateSetters = new Map<string, string>();
-  const stateGetters = new Map<string, string>();
   const refetchList = new Map<string, string>();
   const eventCallbacks = new Map<string, BindingInfo>();
   for (const prop of properties) {
@@ -142,7 +150,7 @@ export function parseContextProvider(
         break;
       case "state":
       case "resource":
-        stateGetters.set(value.node.name, binding.id.name);
+        // Passthrough, no-op
         break;
       case "refetch":
         refetchList.set(value.node.name, binding.resourceId!.name);
@@ -172,7 +180,6 @@ export function parseContextProvider(
 
   if (
     stateSetters.size === 0 &&
-    stateGetters.size === 0 &&
     refetchList.size === 0 &&
     eventCallbacks.size === 0
   ) {
@@ -238,18 +245,6 @@ export function parseContextProvider(
             ),
           ],
         },
-        ...(stateGetters.size > 0
-          ? {
-              context: [...stateGetters].map(([getterName, stateName]) => ({
-                name: getContextReferenceVariableName(
-                  contextReference.name,
-                  getterName
-                ),
-                value: `<% CTX.${stateName} %>`,
-                track: true,
-              })),
-            }
-          : undefined),
       },
     },
     ...elements,

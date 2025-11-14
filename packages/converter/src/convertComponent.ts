@@ -1,4 +1,10 @@
-import type { BrickConf, ContextConf, RouteConf } from "@next-core/types";
+import type {
+  BrickConf,
+  ContextConf,
+  RouteConf,
+  SlotConfOfBricks,
+  SlotsConf,
+} from "@next-core/types";
 import {
   isAnyOfficialComponent,
   type ComponentChild,
@@ -30,6 +36,7 @@ import { getAppTplName, getViewTplName } from "./modules/getTplName.js";
 import { convertRoutes } from "./modules/convertRoutes.js";
 import { convertLifeCycle } from "./convertLifeCycle.js";
 import { convertProperties } from "./convertProperties.js";
+import { hasOwnProperty } from "@next-core/utils/general";
 
 const PORTAL_COMPONENTS = [
   "eo-modal",
@@ -215,7 +222,7 @@ export async function convertComponent(
   brick.lifeCycle = convertLifeCycle(component, options);
 
   if (component.children?.length) {
-    brick.children = (
+    const children = (
       await Promise.all(
         component.children.map(
           (child) =>
@@ -226,16 +233,23 @@ export async function convertComponent(
       )
     ).flat();
 
+    brick.slots = childrenToSlots(children);
+
     if (
       (component.name === "Card" || component.name === "Modal") &&
-      brick.children.length > 0
+      brick.slots
     ) {
-      brick.children = [
-        {
-          brick: "eo-content-layout",
-          children: brick.children,
+      brick.slots = {
+        "": {
+          type: "bricks",
+          bricks: [
+            {
+              brick: "eo-content-layout",
+              slots: brick.slots,
+            },
+          ],
         },
-      ];
+      };
     }
   }
 
@@ -254,4 +268,35 @@ function convertComponentName(name: string) {
   return name.includes("-")
     ? name
     : `eo${name.replace(/([A-Z])/g, "-$1").toLowerCase()}`;
+}
+
+function isRouteConf(child: BrickConf | RouteConf): child is RouteConf {
+  return !!(child as RouteConf).path && !(child as BrickConf).brick;
+}
+
+function childrenToSlots(children: (BrickConf | RouteConf)[]) {
+  let newSlots: SlotsConf | undefined;
+
+  if (Array.isArray(children) && children.length > 0) {
+    newSlots = {};
+    for (const { slot: sl, ...child } of children) {
+      const slot = sl ?? "";
+      const type = isRouteConf(child) ? "routes" : "bricks";
+      if (hasOwnProperty(newSlots, slot)) {
+        const slotConf = newSlots[slot];
+        if (slotConf.type !== type) {
+          throw new Error(`Slot "${slot}" conflict between bricks and routes.`);
+        }
+        (slotConf as SlotConfOfBricks)[type as "bricks"].push(
+          child as BrickConf
+        );
+      } else {
+        newSlots[slot] = {
+          type: type as "bricks",
+          [type as "bricks"]: [child as BrickConf],
+        };
+      }
+    }
+  }
+  return newSlots;
 }

@@ -67,13 +67,6 @@ export function getContextReference(
   return null;
 }
 
-export function getContextReferenceVariableName(
-  refName: string,
-  getterName: string
-) {
-  return `CONTEXT_PROVIDER__${refName}__${getterName}`;
-}
-
 export function getContextReferenceEventAgentId(refName: string) {
   return `context-agent-${refName}`;
 }

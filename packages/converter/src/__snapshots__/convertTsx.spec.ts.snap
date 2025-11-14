@@ -7,304 +7,265 @@ exports[`convertTsx should work 1`] = `
     "children": [
       {
         "brick": "eo-flex-layout",
-        "children": [
-          {
-            "brick": "eo-search",
-            "events": {
-              "search": [
-                {
-                  "else": [
-                    {
-                      "action": "context.set",
-                      "args": [
-                        "logId",
-                        undefined,
-                      ],
-                      "key": "event",
-                    },
-                  ],
-                  "if": "<% EVENT.detail %>",
-                  "key": "event",
-                  "then": [
-                    {
-                      "action": "context.set",
-                      "args": [
-                        "logId",
-                        "<% EVENT.detail %>",
-                      ],
-                      "key": "event",
-                    },
-                  ],
-                },
-              ],
-            },
-            "lifeCycle": undefined,
-            "properties": {
-              "inputStyle": {
-                "width": "300px",
-              },
-              "placeholder": "输入任务 ID 并按回车",
-              "themeVariant": "elevo",
-              "trim": true,
-              "value": "<%= CTX.logId %>",
-            },
-          },
-          {
-            "brick": ":if",
-            "children": [
-              {
-                "brick": "eo-button",
-                "events": {
-                  "click": [
-                    {
-                      "action": "context.set",
-                      "args": [
-                        "allExpanded",
-                        "<% !CTX.allExpanded %>",
-                      ],
-                      "key": "e",
-                    },
-                  ],
-                },
-                "lifeCycle": undefined,
-                "properties": {
-                  "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CTX.allExpanded ? "全部收起" : "全部展开")}) %>",
-                  "themeVariant": "elevo",
-                },
-              },
-            ],
-            "dataSource": "<%= CTX.logs %>",
-            "events": undefined,
-            "lifeCycle": undefined,
-          },
-        ],
         "events": undefined,
         "lifeCycle": undefined,
         "properties": {
           "alignItems": "center",
           "gap": "0.5em",
         },
-      },
-      {
-        "brick": ":if",
-        "children": [
-          {
-            "brick": "eo-next-table",
-            "children": [],
-            "events": undefined,
-            "lifeCycle": undefined,
-            "properties": {
-              "columns": [
-                {
-                  "dataIndex": "time",
-                  "key": "time",
-                  "title": "时间",
-                  "useBrick": [
+        "slots": {
+          "": {
+            "bricks": [
+              {
+                "brick": "eo-search",
+                "events": {
+                  "search": [
                     {
-                      "brick": "span",
-                      "events": undefined,
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.cellData * 1000).format("HH:mm:ss"))}) %>",
-                      },
-                    },
-                  ],
-                },
-                {
-                  "dataIndex": "opType",
-                  "key": "opType",
-                  "title": "操作类型",
-                  "useBrick": [
-                    {
-                      "brick": "span",
-                      "events": undefined,
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(\`\${DATA.cellData}\${DATA.rowData.opSubType ? \` / \${DATA.rowData.opSubType}\` : ""}\`)}) %>",
-                      },
-                    },
-                  ],
-                },
-                {
-                  "dataIndex": "data",
-                  "key": "data",
-                  "title": "数据",
-                  "useBrick": [
-                    {
-                      "brick": "div",
-                      "children": [
+                      "else": [
                         {
-                          "brick": ":if",
-                          "children": [
-                            {
-                              "brick": "eo-code-block",
-                              "events": undefined,
-                              "lifeCycle": undefined,
-                              "properties": {
-                                "language": "json",
-                                "source": "<%= FN.prettierOutput(DATA.cellData) %>",
-                                "style": {
-                                  "maxWidth": "696px",
-                                },
-                                "themeVariant": "elevo",
-                              },
-                            },
-                            {
-                              "brick": "span",
-                              "events": undefined,
-                              "lifeCycle": undefined,
-                              "properties": {
-                                "style": {
-                                  "display": "block",
-                                  "maxWidth": "696px",
-                                  "overflow": "hidden",
-                                  "textOverflow": "ellipsis",
-                                  "whiteSpace": "nowrap",
-                                },
-                                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(DATA.cellData)}) %>",
-                              },
-                              "slot": "else",
-                            },
+                          "action": "context.set",
+                          "args": [
+                            "logId",
+                            undefined,
                           ],
-                          "dataSource": "<%= CTX.allExpanded || CTX.expandedSet.has(DATA.rowData.logId) %>",
-                          "events": undefined,
-                          "lifeCycle": undefined,
+                          "key": "event",
+                        },
+                      ],
+                      "if": "<% EVENT.detail %>",
+                      "key": "event",
+                      "then": [
+                        {
+                          "action": "context.set",
+                          "args": [
+                            "logId",
+                            "<% EVENT.detail %>",
+                          ],
+                          "key": "event",
                         },
                       ],
                     },
                   ],
                 },
-                {
-                  "dataIndex": "operation",
-                  "key": "operation",
-                  "title": "操作",
-                  "useBrick": [
+                "lifeCycle": undefined,
+                "properties": {
+                  "inputStyle": {
+                    "width": "300px",
+                  },
+                  "placeholder": "输入任务 ID 并按回车",
+                  "themeVariant": "elevo",
+                  "trim": true,
+                  "value": "<%= CTX.logId %>",
+                },
+              },
+              {
+                "brick": ":if",
+                "dataSource": "<%= CTX.logs %>",
+                "events": undefined,
+                "lifeCycle": undefined,
+                "slots": {
+                  "": {
+                    "bricks": [
+                      {
+                        "brick": "eo-button",
+                        "events": {
+                          "click": [
+                            {
+                              "action": "context.set",
+                              "args": [
+                                "allExpanded",
+                                "<% !CTX.allExpanded %>",
+                              ],
+                              "key": "e",
+                            },
+                          ],
+                        },
+                        "lifeCycle": undefined,
+                        "properties": {
+                          "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CTX.allExpanded ? "全部收起" : "全部展开")}) %>",
+                          "themeVariant": "elevo",
+                        },
+                      },
+                    ],
+                    "type": "bricks",
+                  },
+                },
+              },
+            ],
+            "type": "bricks",
+          },
+        },
+      },
+      {
+        "brick": ":if",
+        "dataSource": "<%= CTX.logs %>",
+        "events": undefined,
+        "lifeCycle": undefined,
+        "slots": {
+          "": {
+            "bricks": [
+              {
+                "brick": "eo-next-table",
+                "children": [],
+                "events": undefined,
+                "lifeCycle": undefined,
+                "properties": {
+                  "columns": [
                     {
-                      "brick": "isolated-tpl-0-operations",
-                      "events": {
-                        "open.detail": [
-                          {
-                            "action": "context.set",
-                            "args": [
-                              "detailLog",
-                              "<% DATA.rowData %>",
+                      "dataIndex": "time",
+                      "key": "time",
+                      "title": "时间",
+                      "useBrick": [
+                        {
+                          "brick": "span",
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "properties": {
+                            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.cellData * 1000).format("HH:mm:ss"))}) %>",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      "dataIndex": "opType",
+                      "key": "opType",
+                      "title": "操作类型",
+                      "useBrick": [
+                        {
+                          "brick": "span",
+                          "events": undefined,
+                          "lifeCycle": undefined,
+                          "properties": {
+                            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(\`\${DATA.cellData}\${DATA.rowData.opSubType ? \` / \${DATA.rowData.opSubType}\` : ""}\`)}) %>",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      "dataIndex": "data",
+                      "key": "data",
+                      "title": "数据",
+                      "useBrick": [
+                        {
+                          "brick": "div",
+                          "children": [
+                            {
+                              "brick": ":if",
+                              "dataSource": "<%= CTX.allExpanded || CTX.expandedSet.has(DATA.rowData.logId) %>",
+                              "events": undefined,
+                              "lifeCycle": undefined,
+                              "slots": {
+                                "": {
+                                  "bricks": [
+                                    {
+                                      "brick": "eo-code-block",
+                                      "events": undefined,
+                                      "lifeCycle": undefined,
+                                      "properties": {
+                                        "language": "json",
+                                        "source": "<%= FN.prettierOutput(DATA.cellData) %>",
+                                        "style": {
+                                          "maxWidth": "696px",
+                                        },
+                                        "themeVariant": "elevo",
+                                      },
+                                    },
+                                  ],
+                                  "type": "bricks",
+                                },
+                                "else": {
+                                  "bricks": [
+                                    {
+                                      "brick": "span",
+                                      "events": undefined,
+                                      "lifeCycle": undefined,
+                                      "properties": {
+                                        "style": {
+                                          "display": "block",
+                                          "maxWidth": "696px",
+                                          "overflow": "hidden",
+                                          "textOverflow": "ellipsis",
+                                          "whiteSpace": "nowrap",
+                                        },
+                                        "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(DATA.cellData)}) %>",
+                                      },
+                                    },
+                                  ],
+                                  "type": "bricks",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      "dataIndex": "operation",
+                      "key": "operation",
+                      "title": "操作",
+                      "useBrick": [
+                        {
+                          "brick": "isolated-tpl-0-operations",
+                          "events": {
+                            "open.detail": [
+                              {
+                                "action": "context.set",
+                                "args": [
+                                  "detailLog",
+                                  "<% DATA.rowData %>",
+                                ],
+                                "key": undefined,
+                              },
+                              {
+                                "args": [],
+                                "callback": {},
+                                "key": undefined,
+                                "method": "open",
+                                "target": "[data-root-id="test-root"] [data-ref="modalRef-0"]",
+                              },
                             ],
-                            "key": undefined,
-                          },
-                          {
-                            "args": [],
-                            "callback": {},
-                            "key": undefined,
-                            "method": "open",
-                            "target": "[data-root-id="test-root"] [data-ref="modalRef-0"]",
-                          },
-                        ],
-                        "toggle": [
-                          {
-                            "action": "context.set",
-                            "args": [
-                              "expandedSet",
-                              "<% new Set(
+                            "toggle": [
+                              {
+                                "action": "context.set",
+                                "args": [
+                                  "expandedSet",
+                                  "<% new Set(
                         CTX.expandedSet.has(DATA.rowData.logId)
                           ? [...CTX.expandedSet].filter((id) => id !== DATA.rowData.logId)
                           : [...CTX.expandedSet, DATA.rowData.logId]
                       ) %>",
+                                ],
+                                "key": undefined,
+                              },
                             ],
-                            "key": undefined,
                           },
-                        ],
-                      },
-                      "lifeCycle": undefined,
-                      "properties": {
-                        "allExpanded": "<%= CTX.allExpanded %>",
-                        "expanded": "<%= CTX.expandedSet.has(DATA.rowData.logId) %>",
-                      },
+                          "lifeCycle": undefined,
+                          "properties": {
+                            "allExpanded": "<%= CTX.allExpanded %>",
+                            "expanded": "<%= CTX.expandedSet.has(DATA.rowData.logId) %>",
+                          },
+                        },
+                      ],
                     },
                   ],
+                  "dataSource": {
+                    "list": "<%= CTX.logs %>",
+                  },
+                  "pagination": false,
+                  "rowKey": "logId",
+                  "scrollConfig": {
+                    "x": "max-content",
+                  },
+                  "size": "middle",
+                  "themeVariant": "elevo",
                 },
-              ],
-              "dataSource": {
-                "list": "<%= CTX.logs %>",
               },
-              "pagination": false,
-              "rowKey": "logId",
-              "scrollConfig": {
-                "x": "max-content",
-              },
-              "size": "middle",
-              "themeVariant": "elevo",
-            },
+            ],
+            "type": "bricks",
           },
-        ],
-        "dataSource": "<%= CTX.logs %>",
-        "events": undefined,
-        "lifeCycle": undefined,
+        },
       },
       {
         "brick": "eo-modal",
-        "children": [
-          {
-            "brick": "eo-content-layout",
-            "children": [
-              {
-                "brick": ":if",
-                "children": [
-                  {
-                    "brick": "eo-descriptions",
-                    "children": [],
-                    "events": undefined,
-                    "lifeCycle": undefined,
-                    "properties": {
-                      "column": 1,
-                      "dataSource": "<%= CTX.detailLog %>",
-                      "list": [
-                        {
-                          "field": "logId",
-                          "label": "日志 ID",
-                        },
-                        {
-                          "field": "conversationId",
-                          "label": "任务 ID",
-                        },
-                        {
-                          "field": "taskId",
-                          "label": "任务 ID",
-                        },
-                        {
-                          "label": "时间",
-                          "useBrick": [
-                            {
-                              "brick": "span",
-                              "events": undefined,
-                              "lifeCycle": undefined,
-                              "properties": {
-                                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.time * 1000).format("llll"))}) %>",
-                              },
-                            },
-                          ],
-                        },
-                      ],
-                      "themeVariant": "elevo",
-                    },
-                  },
-                  {
-                    "brick": "eo-code-block",
-                    "events": undefined,
-                    "lifeCycle": undefined,
-                    "properties": {
-                      "language": "json",
-                      "source": "<%= FN.prettierOutput(CTX.detailLog.data) %>",
-                      "themeVariant": "elevo",
-                    },
-                  },
-                ],
-                "dataSource": "<%= CTX.detailLog %>",
-                "events": undefined,
-                "lifeCycle": undefined,
-              },
-            ],
-          },
-        ],
         "events": undefined,
         "lifeCycle": undefined,
         "portal": true,
@@ -322,6 +283,84 @@ exports[`convertTsx should work 1`] = `
             : "" %>",
           "themeVariant": "elevo",
           "width": "800px",
+        },
+        "slots": {
+          "": {
+            "bricks": [
+              {
+                "brick": "eo-content-layout",
+                "slots": {
+                  "": {
+                    "bricks": [
+                      {
+                        "brick": ":if",
+                        "dataSource": "<%= CTX.detailLog %>",
+                        "events": undefined,
+                        "lifeCycle": undefined,
+                        "slots": {
+                          "": {
+                            "bricks": [
+                              {
+                                "brick": "eo-descriptions",
+                                "children": [],
+                                "events": undefined,
+                                "lifeCycle": undefined,
+                                "properties": {
+                                  "column": 1,
+                                  "dataSource": "<%= CTX.detailLog %>",
+                                  "list": [
+                                    {
+                                      "field": "logId",
+                                      "label": "日志 ID",
+                                    },
+                                    {
+                                      "field": "conversationId",
+                                      "label": "任务 ID",
+                                    },
+                                    {
+                                      "field": "taskId",
+                                      "label": "任务 ID",
+                                    },
+                                    {
+                                      "label": "时间",
+                                      "useBrick": [
+                                        {
+                                          "brick": "span",
+                                          "events": undefined,
+                                          "lifeCycle": undefined,
+                                          "properties": {
+                                            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(moment(DATA.time * 1000).format("llll"))}) %>",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                  "themeVariant": "elevo",
+                                },
+                              },
+                              {
+                                "brick": "eo-code-block",
+                                "events": undefined,
+                                "lifeCycle": undefined,
+                                "properties": {
+                                  "language": "json",
+                                  "source": "<%= FN.prettierOutput(CTX.detailLog.data) %>",
+                                  "themeVariant": "elevo",
+                                },
+                              },
+                            ],
+                            "type": "bricks",
+                          },
+                        },
+                      },
+                    ],
+                    "type": "bricks",
+                  },
+                },
+              },
+            ],
+            "type": "bricks",
+          },
         },
       },
     ],
@@ -392,10 +431,50 @@ exports[`convertTsx should work 1`] = `
       "bricks": [
         {
           "brick": "eo-flex-layout",
-          "children": [
-            {
-              "brick": ":if",
-              "children": [
+          "events": undefined,
+          "lifeCycle": undefined,
+          "properties": {
+            "alignItems": "center",
+            "gap": "0.5em",
+          },
+          "slots": {
+            "": {
+              "bricks": [
+                {
+                  "brick": ":if",
+                  "dataSource": "<%= !STATE.allExpanded %>",
+                  "events": undefined,
+                  "lifeCycle": undefined,
+                  "slots": {
+                    "": {
+                      "bricks": [
+                        {
+                          "brick": "eo-button",
+                          "events": {
+                            "click": [
+                              {
+                                "action": "tpl.dispatchEvent",
+                                "args": [
+                                  "toggle",
+                                  {
+                                    "detail": "<% EVENT.detail %>",
+                                  },
+                                ],
+                                "key": undefined,
+                              },
+                            ],
+                          },
+                          "lifeCycle": undefined,
+                          "properties": {
+                            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(STATE.expanded ? "收起" : "展开")}) %>",
+                            "themeVariant": "elevo",
+                          },
+                        },
+                      ],
+                      "type": "bricks",
+                    },
+                  },
+                },
                 {
                   "brick": "eo-button",
                   "events": {
@@ -403,7 +482,7 @@ exports[`convertTsx should work 1`] = `
                       {
                         "action": "tpl.dispatchEvent",
                         "args": [
-                          "toggle",
+                          "open.detail",
                           {
                             "detail": "<% EVENT.detail %>",
                           },
@@ -414,43 +493,13 @@ exports[`convertTsx should work 1`] = `
                   },
                   "lifeCycle": undefined,
                   "properties": {
-                    "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(STATE.expanded ? "收起" : "展开")}) %>",
+                    "textContent": "详情",
                     "themeVariant": "elevo",
                   },
                 },
               ],
-              "dataSource": "<%= !STATE.allExpanded %>",
-              "events": undefined,
-              "lifeCycle": undefined,
+              "type": "bricks",
             },
-            {
-              "brick": "eo-button",
-              "events": {
-                "click": [
-                  {
-                    "action": "tpl.dispatchEvent",
-                    "args": [
-                      "open.detail",
-                      {
-                        "detail": "<% EVENT.detail %>",
-                      },
-                    ],
-                    "key": undefined,
-                  },
-                ],
-              },
-              "lifeCycle": undefined,
-              "properties": {
-                "textContent": "详情",
-                "themeVariant": "elevo",
-              },
-            },
-          ],
-          "events": undefined,
-          "lifeCycle": undefined,
-          "properties": {
-            "alignItems": "center",
-            "gap": "0.5em",
           },
         },
       ],
