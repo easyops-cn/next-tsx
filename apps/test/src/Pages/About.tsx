@@ -54,6 +54,20 @@ export default function About() {
               // eslint-disable-next-line no-console
               console.log("finally");
             });
+
+          Object.assign(querySelector("#my-modal"), {
+            width: 600,
+            height: "auto",
+          });
+
+          querySelector("#my-modal").title = "About Modal";
+
+          Object.assign(modalRef.current, {
+            width: 600,
+            height: "auto",
+          });
+
+          modalRef.current.title = "About Modal";
         }}
       >
         About {params.get("id")} {aboutInfo}

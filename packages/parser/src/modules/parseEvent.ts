@@ -477,6 +477,7 @@ function parseEventHandler(
             }
             case "Object": {
               // Parse `Object.assign(ref.current, { ... })`
+              // Parse `Object.assign(querySelector("..."), { ... })`
               if (method !== "assign") {
                 state.errors.push({
                   message: `"Object.${method}()" is not supported in event handler`,
@@ -494,64 +495,8 @@ function parseEventHandler(
                 return null;
               }
               const [refTarget, props] = args;
-              if (!isGeneralMemberExpression(refTarget)) {
-                state.errors.push({
-                  message: `"Object.${method}()" expects the first argument to be a member expression, but got ${refTarget.type}`,
-                  node: refTarget.node,
-                  severity: "error",
-                });
-                return null;
-              }
-              if (refTarget.node.computed) {
-                state.errors.push({
-                  message: `"Object.${method}()" expects the first argument to be a non-computed member expression`,
-                  node: refTarget.node,
-                  severity: "error",
-                });
-                return null;
-              }
-              const refTargetObject = refTarget.get("object");
-              if (!refTargetObject.isIdentifier()) {
-                state.errors.push({
-                  message: `"Object.${method}()" expects the first argument to have an identifier as object, but got ${refTargetObject.type}`,
-                  node: refTargetObject.node,
-                  severity: "error",
-                });
-                return null;
-              }
-              const refBindingId = refTargetObject.scope.getBindingIdentifier(
-                refTargetObject.node.name
-              );
-              let refBinding: BindingInfo | undefined;
-              if (refBindingId) {
-                refBinding = options.component?.bindingMap.get(refBindingId);
-              }
-              if (!refBinding || refBinding.kind !== "ref") {
-                state.errors.push({
-                  message: `"Object.${method}()" expects the first argument to be a ref binding, but got ${refBinding?.kind}`,
-                  node: refTargetObject.node,
-                  severity: "error",
-                });
-                return null;
-              }
-              const refTargetProperty = refTarget.get("property");
-              if (
-                !refTargetProperty.isIdentifier() ||
-                refTargetProperty.node.name !== "current"
-              ) {
-                state.errors.push({
-                  message: `"Object.${method}()" expects the first argument to have "current" as property, but got ${
-                    refTargetProperty.type
-                  }${
-                    refTargetProperty.isIdentifier()
-                      ? ` (name: ${refTargetProperty.node.name})`
-                      : ""
-                  }`,
-                  node: refTargetProperty.node,
-                  severity: "error",
-                });
-                return null;
-              }
+
+              // Check props
               if (!props.isObjectExpression()) {
                 state.errors.push({
                   message: `"Object.${method}()" expects the second argument to be an object expression, but got ${props.type}`,
@@ -571,23 +516,119 @@ function parseEventHandler(
                 });
                 return null;
               }
-              return {
-                key: options.eventBinding?.id.name,
-                action: "update_ref",
-                payload: {
-                  ref: refBinding.refName!,
-                  properties: parseJsValue(
-                    props,
-                    state,
-                    app,
-                    options
-                  ) as Record<string, any>,
-                  scope:
-                    options.component!.type === "template"
-                      ? "template"
-                      : "global",
-                },
-              };
+
+              // Check target
+              if (isGeneralMemberExpression(refTarget)) {
+                if (refTarget.node.computed) {
+                  state.errors.push({
+                    message: `"Object.${method}()" expects the first argument to be a non-computed member expression`,
+                    node: refTarget.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+                const refTargetObject = refTarget.get("object");
+                if (!refTargetObject.isIdentifier()) {
+                  state.errors.push({
+                    message: `"Object.${method}()" expects the first argument to have an identifier as object, but got ${refTargetObject.type}`,
+                    node: refTargetObject.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+                const refBindingId = refTargetObject.scope.getBindingIdentifier(
+                  refTargetObject.node.name
+                );
+                let refBinding: BindingInfo | undefined;
+                if (refBindingId) {
+                  refBinding = options.component?.bindingMap.get(refBindingId);
+                }
+                if (!refBinding || refBinding.kind !== "ref") {
+                  state.errors.push({
+                    message: `"Object.${method}()" expects the first argument to be a ref binding, but got ${refBinding?.kind}`,
+                    node: refTargetObject.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+                const refTargetProperty = refTarget.get("property");
+                if (
+                  !refTargetProperty.isIdentifier() ||
+                  refTargetProperty.node.name !== "current"
+                ) {
+                  state.errors.push({
+                    message: `"Object.${method}()" expects the first argument to have "current" as property, but got ${
+                      refTargetProperty.type
+                    }${
+                      refTargetProperty.isIdentifier()
+                        ? ` (name: ${refTargetProperty.node.name})`
+                        : ""
+                    }`,
+                    node: refTargetProperty.node,
+                    severity: "error",
+                  });
+                  return null;
+                }
+
+                return {
+                  key: options.eventBinding?.id.name,
+                  action: "update_ref",
+                  payload: {
+                    ref: refBinding.refName!,
+                    properties: parseJsValue(
+                      props,
+                      state,
+                      app,
+                      options
+                    ) as Record<string, any>,
+                    scope:
+                      options.component!.type === "template"
+                        ? "template"
+                        : "global",
+                  },
+                };
+              } else if (isGeneralCallExpression(refTarget)) {
+                const innerCallee = refTarget.get("callee");
+                if (
+                  innerCallee.isIdentifier() &&
+                  validateGlobalApi(innerCallee, "querySelector")
+                ) {
+                  const innerArgs = refTarget.get("arguments");
+                  if (innerArgs.length !== 1) {
+                    state.errors.push({
+                      message: `"querySelector()" expects exactly 1 argument, but got ${innerArgs.length}`,
+                      node: refTarget.node,
+                      severity: "error",
+                    });
+                    return null;
+                  }
+                  return {
+                    key: options.eventBinding?.id.name,
+                    action: "update_selector",
+                    payload: {
+                      selector: parseJsValue(
+                        innerArgs[0],
+                        state,
+                        app,
+                        options
+                      ) as string,
+                      properties: parseJsValue(
+                        props,
+                        state,
+                        app,
+                        options
+                      ) as Record<string, any>,
+                    },
+                  };
+                }
+              }
+
+              state.errors.push({
+                message: `"Object.${method}()" expects the first argument to be a ref or querySelector call expression`,
+                node: refTarget.node,
+                severity: "error",
+              });
+              return null;
             }
           }
         }
@@ -615,7 +656,7 @@ function parseEventHandler(
         }
       }
 
-      if (object.isCallExpression()) {
+      if (isGeneralCallExpression(object)) {
         const innerCallee = object.get("callee");
         if (
           innerCallee.isIdentifier() &&
@@ -657,6 +698,7 @@ function parseEventHandler(
   }
 
   // Parse `ref.current.prop = value` assignment
+  // Parse `querySelector("...").prop = value` assignment
   if (path.isAssignmentExpression()) {
     if (path.node.operator !== "=") {
       state.errors.push({
@@ -694,81 +736,108 @@ function parseEventHandler(
       });
       return null;
     }
-    if (!object.isMemberExpression()) {
-      state.errors.push({
-        message: `Left side of assignment in event handler must be a member expression with member expression as its object, but got ${object.type}`,
-        node: object.node,
-        severity: "error",
-      });
-      return null;
-    }
-    if (object.node.computed) {
-      state.errors.push({
-        message: `Left side of assignment in event handler must not be a computed member expression`,
-        node: object.node,
-        severity: "error",
-      });
-      return null;
-    }
-    const objectProperty = object.get("property");
-    if (
-      !objectProperty.isIdentifier() ||
-      objectProperty.node.name !== "current"
-    ) {
-      state.errors.push({
-        message: `Left side of assignment in event handler must be a member expression with "current" as its object property, but got ${objectProperty.type}${
-          objectProperty.isIdentifier()
-            ? ` (name: ${objectProperty.node.name})`
-            : ""
-        }`,
-        node: objectProperty.node,
-        severity: "error",
-      });
-      return null;
-    }
-    const refObject = object.get("object");
-    if (!refObject.isIdentifier()) {
-      state.errors.push({
-        message: `Left side of assignment in event handler must be a member expression with identifier as its object, but got ${refObject.type}`,
-        node: refObject.node,
-        severity: "error",
-      });
-      return null;
-    }
-    const refBindingId = refObject.scope.getBindingIdentifier(
-      refObject.node.name
-    );
-    let refBinding: BindingInfo | undefined;
-    if (refBindingId) {
-      refBinding = options.component?.bindingMap.get(refBindingId);
-    }
-    if (!refBinding) {
-      state.errors.push({
-        message: `Variable "${refObject.node.name}" is not defined`,
-        node: refObject.node,
-        severity: "error",
-      });
-      return null;
-    }
-    if (refBinding.kind !== "ref") {
-      state.errors.push({
-        message: `Variable "${refObject.node.name}" is not a ref, but a ${refBinding.kind}`,
-        node: refObject.node,
-        severity: "error",
-      });
-      return null;
-    }
-    return {
-      key: options.eventBinding?.id.name,
-      action: "update_ref",
-      payload: {
-        ref: refBinding.refName!,
-        properties: {
-          [property.node.name]: parseJsValue(right, state, app, options),
+    if (object.isMemberExpression()) {
+      if (object.node.computed) {
+        state.errors.push({
+          message: `Left side of assignment in event handler must not be a computed member expression`,
+          node: object.node,
+          severity: "error",
+        });
+        return null;
+      }
+      const objectProperty = object.get("property");
+      if (
+        !objectProperty.isIdentifier() ||
+        objectProperty.node.name !== "current"
+      ) {
+        state.errors.push({
+          message: `Left side of assignment in event handler must be a member expression with "current" as its object property, but got ${objectProperty.type}${
+            objectProperty.isIdentifier()
+              ? ` (name: ${objectProperty.node.name})`
+              : ""
+          }`,
+          node: objectProperty.node,
+          severity: "error",
+        });
+        return null;
+      }
+      const refObject = object.get("object");
+      if (!refObject.isIdentifier()) {
+        state.errors.push({
+          message: `Left side of assignment in event handler must be a member expression with identifier as its object, but got ${refObject.type}`,
+          node: refObject.node,
+          severity: "error",
+        });
+        return null;
+      }
+      const refBindingId = refObject.scope.getBindingIdentifier(
+        refObject.node.name
+      );
+      let refBinding: BindingInfo | undefined;
+      if (refBindingId) {
+        refBinding = options.component?.bindingMap.get(refBindingId);
+      }
+      if (!refBinding) {
+        state.errors.push({
+          message: `Variable "${refObject.node.name}" is not defined`,
+          node: refObject.node,
+          severity: "error",
+        });
+        return null;
+      }
+      if (refBinding.kind !== "ref") {
+        state.errors.push({
+          message: `Variable "${refObject.node.name}" is not a ref, but a ${refBinding.kind}`,
+          node: refObject.node,
+          severity: "error",
+        });
+        return null;
+      }
+      return {
+        key: options.eventBinding?.id.name,
+        action: "update_ref",
+        payload: {
+          ref: refBinding.refName!,
+          properties: {
+            [property.node.name]: parseJsValue(right, state, app, options),
+          },
+          scope: options.component!.type === "template" ? "template" : "global",
         },
-        scope: options.component!.type === "template" ? "template" : "global",
-      },
-    };
+      };
+    } else if (isGeneralCallExpression(object)) {
+      const innerCallee = object.get("callee");
+      if (
+        innerCallee.isIdentifier() &&
+        validateGlobalApi(innerCallee, "querySelector")
+      ) {
+        const innerArgs = object.get("arguments");
+        if (innerArgs.length !== 1) {
+          state.errors.push({
+            message: `"querySelector()" expects exactly 1 argument, but got ${innerArgs.length}`,
+            node: object.node,
+            severity: "error",
+          });
+          return null;
+        }
+        return {
+          key: options.eventBinding?.id.name,
+          action: "update_selector",
+          payload: {
+            selector: parseJsValue(innerArgs[0], state, app, options) as string,
+            properties: {
+              [property.node.name]: parseJsValue(right, state, app, options),
+            },
+          },
+        };
+      }
+    }
+
+    state.errors.push({
+      message: `Left side of assignment in event handler must be a ref or querySelector call expression`,
+      node: left.node,
+      severity: "error",
+    });
+    return null;
   }
 
   state.errors.push({

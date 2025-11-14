@@ -144,6 +144,12 @@ function convertEventHandler(
             }),
         properties: handler.payload.properties,
       };
+    case "update_selector":
+      return {
+        key: handler.key,
+        target: handler.payload.selector,
+        properties: handler.payload.properties,
+      };
     case "call_ref":
       return {
         key: handler.key,

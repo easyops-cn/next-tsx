@@ -51,9 +51,10 @@ export interface Events {
 export type EventHandler =
   | TypeEventHandlerOfUpdateVariable
   | TypeEventHandlerOfRefreshDataSource
-  | TypeEventHandlerOfUpdateRef
   | TypeEventHandlerOfCallRef
   | TypeEventHandlerOfCallSelector
+  | TypeEventHandlerOfUpdateRef
+  | TypeEventHandlerOfUpdateSelector
   | TypeEventHandlerOfShowMessage
   | TypeEventHandlerOfHandleHttpError
   | TypeEventHandlerOfCallAPI
@@ -93,15 +94,6 @@ export interface TypeEventHandlerOfRefreshDataSource extends EventHandlerBase {
   callback?: TypeEventHandlerCallback;
 }
 
-export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {
-  action: "update_ref";
-  payload: {
-    ref: string;
-    properties: Record<string, any>;
-    scope?: "global" | "template";
-  };
-}
-
 export interface TypeEventHandlerOfCallRef extends EventHandlerBase {
   action: "call_ref";
   payload: {
@@ -121,6 +113,24 @@ export interface TypeEventHandlerOfCallSelector extends EventHandlerBase {
     args?: any[];
   };
   callback?: TypeEventHandlerCallback;
+}
+
+export interface TypeEventHandlerOfUpdateRef extends EventHandlerBase {
+  action: "update_ref";
+  payload: {
+    ref: string;
+    properties: Record<string, any>;
+    scope?: "global" | "template";
+  };
+}
+
+export interface TypeEventHandlerOfUpdateSelector extends EventHandlerBase {
+  action: "update_selector";
+  payload: {
+    selector: string;
+    properties: Record<string, any>;
+    scope?: "global" | "template";
+  };
 }
 
 export interface TypeEventHandlerOfShowMessage extends EventHandlerBase {
