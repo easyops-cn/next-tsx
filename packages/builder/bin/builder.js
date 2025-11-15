@@ -3,6 +3,7 @@ import { readdir, readFile, writeFile, watch } from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import jsYaml from "js-yaml";
+import chalk from "chalk";
 import { init as initRaw } from "../src/raw-loader/index.js";
 
 initRaw();
@@ -63,9 +64,15 @@ async function buildApp(watchMode) {
     console.error("Errors found during parsing the app:");
     let shouldBailout = false;
     for (const err of app.errors) {
-      console.error(`[${err.severity}] ${err.message}`);
+      const color =
+        err.severity === "notice" || err.severity === "warning"
+          ? "yellow"
+          : "red";
+      console.error(chalk[color](`[${err.severity}] ${err.message}`));
       console.error(
-        `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
+        chalk[color](
+          `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
+        )
       );
       if (
         !shouldBailout &&
@@ -120,7 +127,9 @@ async function buildApp(watchMode) {
     ),
     "utf-8"
   );
-  console.log(`Done in ${Math.ceil(performance.now() - start)} ms`);
+  console.log(
+    chalk.green(`Done in ${Math.ceil(performance.now() - start)} ms`)
+  );
 }
 
 // 任务队列管理函数
