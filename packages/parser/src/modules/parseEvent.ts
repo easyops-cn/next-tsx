@@ -9,7 +9,6 @@ import type {
 } from "./interfaces.js";
 import type {
   TypeEventHandlerOfShowMessage,
-  TypeEventHandlerOfHandleHttpError,
   TypeEventHandlerCallback,
 } from "../interfaces.js";
 import { parseJsValue } from "./parseJsValue.js";
@@ -38,9 +37,19 @@ export function parseEvent(
   options: ParseJsValueOptions,
   eventAccessor?: string
 ): EventHandler[] | null {
+  if (path.isIdentifier()) {
+    if (validateGlobalApi(path, "handleHttpError")) {
+      return [
+        {
+          action: "handle_http_error",
+        },
+      ];
+    }
+  }
+
   if (!isGeneralFunctionExpression(path)) {
     state.errors.push({
-      message: `Event handler must be a function expression, but got ${path.type}`,
+      message: `Event handler must be a function, but got ${path.type}`,
       node: path.node,
       severity: "error",
     });
@@ -241,12 +250,11 @@ function parseEventHandler(
           });
           return null;
         }
-        const payload = parseJsValue(args[0], state, app, options);
+        // TODO: check argument type
         return {
           key: options.eventBinding?.id.name,
           action: "handle_http_error",
-          payload,
-        } as TypeEventHandlerOfHandleHttpError;
+        };
       }
 
       for (const name of CALL_API_LIST) {
@@ -949,7 +957,7 @@ function parseEventHandler(
   return null;
 }
 
-export function parseHandlerCallback(
+function parseHandlerCallback(
   object: NodePath<t.Expression>,
   method: "then" | "catch" | "finally",
   args: NodePath<t.Node>[],

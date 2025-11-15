@@ -143,7 +143,6 @@ export interface TypeEventHandlerOfShowMessage extends EventHandlerBase {
 
 export interface TypeEventHandlerOfHandleHttpError extends EventHandlerBase {
   action: "handle_http_error";
-  payload: unknown;
 }
 
 export interface TypeEventHandlerOfCallAPI extends EventHandlerBase {
