@@ -234,7 +234,7 @@ export function replaceBindings(
       let specificReplacement: string | undefined;
       switch (bindingId) {
         case options.eventBinding?.id:
-          specificReplacement = `EVENT${options.eventBinding!.isCallback ? ".detail" : ""}`;
+          specificReplacement = `EVENT${options.eventBinding!.eventAccessor ?? ""}`;
           break;
         case options.forEachBinding?.item:
           specificReplacement = "ITEM";
@@ -248,7 +248,7 @@ export function replaceBindings(
         default:
           for (const keyBinding of options.eventKeyBindings ?? []) {
             if (bindingId === keyBinding.id) {
-              specificReplacement = `EVENT_BY_KEY.${keyBinding.id.name}${keyBinding.isCallback ? ".detail" : ""}`;
+              specificReplacement = `EVENT_BY_KEY.${keyBinding.id.name}${keyBinding.eventAccessor ?? ""}`;
               break;
             }
           }

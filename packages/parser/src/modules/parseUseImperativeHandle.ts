@@ -173,7 +173,7 @@ export function parseUseImperativeHandle(
         });
         continue;
       }
-      eventOptions.eventBinding = { id: param.node, isCallback: true };
+      eventOptions.eventBinding = { id: param.node, eventAccessor: ".detail" };
       eventOptions.eventKeyBindings ??= [];
       eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
     }

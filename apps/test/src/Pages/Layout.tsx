@@ -35,7 +35,14 @@ export default function Layout() {
     age: 30,
   };
 
-  const handleClick = () => {
+  const doSomething = (thing: any) => {
+    // eslint-disable-next-line no-console
+    console.log("Doing something with", thing);
+    thing.preventDefault();
+  };
+
+  const handleClick = (e?: any) => {
+    e.preventDefault();
     setA("New Value by callback");
     setC((prev) => prev + 42);
     modalRef.current?.open();
@@ -43,6 +50,7 @@ export default function Layout() {
     Object.assign(modalRef.current, {
       height: "auto",
     });
+    doSomething(e);
   };
 
   return (
@@ -53,6 +61,7 @@ export default function Layout() {
           e.preventDefault();
           // eslint-disable-next-line no-console
           console.log(e);
+          doSomething(e);
         }}
       >
         {JSON.stringify(sessionStore.getItem("myKey"), null, 2)}

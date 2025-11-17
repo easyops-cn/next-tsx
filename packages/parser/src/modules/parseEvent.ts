@@ -36,7 +36,7 @@ export function parseEvent(
   state: ParsedModule,
   app: ParsedApp,
   options: ParseJsValueOptions,
-  isCallback?: boolean
+  eventAccessor?: string
 ): EventHandler[] | null {
   if (!isGeneralFunctionExpression(path)) {
     state.errors.push({
@@ -72,7 +72,7 @@ export function parseEvent(
       });
       return null;
     }
-    eventOptions.eventBinding = { id: param.node, isCallback };
+    eventOptions.eventBinding = { id: param.node, eventAccessor };
     eventOptions.eventKeyBindings ??= [];
     eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
   }
@@ -250,7 +250,7 @@ function parseEventHandler(
               args: [
                 {
                   name: binding.contextKey!,
-                  value:
+                  payload:
                     args[0] === undefined
                       ? undefined
                       : parseJsValue(args[0], state, app, {
@@ -322,9 +322,36 @@ function parseEventHandler(
             },
           };
         }
+        case "eventCallback":
+          if (args.length > 1) {
+            state.errors.push({
+              message: `Event callback "${callee.node.name}" expects at most 1 argument, but got ${args.length}`,
+              node: path.node,
+              severity: "error",
+            });
+            return null;
+          }
+          return {
+            key: options.eventBinding?.id.name,
+            action: "call_ref",
+            payload: {
+              ref: binding.callbackRef!,
+              method: "trigger",
+              args: [
+                args.length > 0
+                  ? parseJsValue(args[0], state, app, {
+                      ...options,
+                      modifier: undefined,
+                    })
+                  : undefined,
+              ],
+              scope:
+                options.component!.type === "template" ? "template" : "global",
+            },
+          };
         default:
           state.errors.push({
-            message: `"${callee.node.name}" is invalid or not callable`,
+            message: `"${callee.node.name}" (${binding.kind}) is invalid or not callable`,
             node: callee.node,
             severity: "error",
           });
@@ -422,6 +449,13 @@ function parseEventHandler(
               action: "event",
               payload: {
                 method: method as "preventDefault",
+                ...(options.eventBinding.eventAccessor
+                  ? {
+                      args: [
+                        `<% EVENT${options.eventBinding.eventAccessor} %>`,
+                      ],
+                    }
+                  : null),
               },
             };
           }
@@ -892,7 +926,7 @@ export function parseHandlerCallback(
   let successCallback: EventHandler[] | null | undefined;
   let errorCallback: EventHandler[] | null | undefined;
   let finallyCallback: EventHandler[] | null | undefined;
-  const callback = parseEvent(args[0], state, app, options, true);
+  const callback = parseEvent(args[0], state, app, options, ".detail");
   if (method === "catch") {
     errorCallback = callback;
   } else if (method === "finally") {
@@ -900,7 +934,7 @@ export function parseHandlerCallback(
   } else {
     successCallback = callback;
     if (args.length > 1) {
-      errorCallback = parseEvent(args[1], state, app, options, true);
+      errorCallback = parseEvent(args[1], state, app, options, ".detail");
     }
   }
   return {
