@@ -93,4 +93,32 @@ export const NATIVE_EVENT_MAP = new Map<string, string>([
   ["onPointerOut", "pointerout"],
   ["onPointerOver", "pointerover"],
   ["onPointerUp", "pointerup"],
+
+  // Touch events
+  ["onTouchStart", "touchstart"],
+  ["onTouchEnd", "touchend"],
+  ["onTouchMove", "touchmove"],
+  ["onTouchCancel", "touchcancel"],
+
+  // Animation events
+  ["onAnimationStart", "animationstart"],
+  ["onAnimationEnd", "animationend"],
+  ["onAnimationIteration", "animationiteration"],
+
+  // Transition events
+  ["onTransitionEnd", "transitionend"],
+  ["onTransitionStart", "transitionstart"],
+  ["onTransitionRun", "transitionrun"],
+  ["onTransitionCancel", "transitioncancel"],
+
+  // Drag events
+  ["onDragStart", "dragstart"],
+  ["onDragEnd", "dragend"],
+  ["onDragEnter", "dragenter"],
+  ["onDragLeave", "dragleave"],
+  ["onDragOver", "dragover"],
+
+  // Focus events
+  ["onFocusIn", "focusin"],
+  ["onFocusOut", "focusout"],
 ]);
