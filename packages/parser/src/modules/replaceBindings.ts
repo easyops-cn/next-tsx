@@ -252,6 +252,13 @@ export function replaceBindings(
               break;
             }
           }
+          for (const exprBindingMap of options.eventExpressionBindings ?? []) {
+            const expr = exprBindingMap.get(bindingId);
+            if (expr) {
+              specificReplacement = `(${replaceBindings(expr, state, app, options, true)})`;
+              break;
+            }
+          }
       }
       if (specificReplacement) {
         replacements.push({
