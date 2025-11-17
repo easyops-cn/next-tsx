@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.7.1...@next-tsx/converter@0.7.2) (2025-11-17)
+
+
+### Bug Fixes
+
+* refine event callback ([a261c89](https://github.com/easyops-cn/next-tsx/commit/a261c89908787d6d677b65e9ab55c7740b7fd283))
+
+
+
+
+
 ## [0.7.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.7.0...@next-tsx/converter@0.7.1) (2025-11-14)
 
 
