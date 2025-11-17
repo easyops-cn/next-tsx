@@ -19,6 +19,7 @@ import { getComponentReference } from "./getComponentReference.js";
 import type { LifeCycle } from "../interfaces.js";
 import { parseContextProvider } from "./parseContextProvider.js";
 import { getContextReferenceEventAgentId } from "./getContextReference.js";
+import { NATIVE_EVENT_MAP } from "./constants.js";
 
 export function parseJSXElement(
   path: NodePath<t.JSXElement>,
@@ -392,8 +393,11 @@ function parseRefAttribute(
 }
 
 export function convertJsxEventAttr(attr: string): string {
-  return attr
-    .slice(2)
-    .replace(/([a-z])([A-Z])/g, "$1.$2")
-    .toLowerCase();
+  return (
+    NATIVE_EVENT_MAP.get(attr) ??
+    attr
+      .slice(2)
+      .replace(/([a-z])([A-Z])/g, "$1.$2")
+      .toLowerCase()
+  );
 }

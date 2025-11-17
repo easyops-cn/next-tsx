@@ -63,3 +63,62 @@ export const CTX_BINDING_KINDS: BindingInfo["kind"][] = [
 ];
 
 export const SYMBOL_RENDER_USE_BRICK = Symbol("renderUseBrick");
+
+// Native DOM events mapping (ignore single-word event names like onClick)
+export const NATIVE_EVENT_MAP = new Map<string, string>([
+  ["onCompositionEnd", "compositionend"],
+  ["onCompositionStart", "compositionstart"],
+  ["onCompositionUpdate", "compositionupdate"],
+
+  ["onContextMenu", "contextmenu"],
+  ["onDoubleClick", "dblclick"],
+
+  ["onKeyDown", "keydown"],
+  ["onKeyPress", "keypress"],
+  ["onKeyUp", "keyup"],
+
+  ["onMouseDown", "mousedown"],
+  ["onMouseEnter", "mouseenter"],
+  ["onMouseLeave", "mouseleave"],
+  ["onMouseMove", "mousemove"],
+  ["onMouseOut", "mouseout"],
+  ["onMouseOver", "mouseover"],
+  ["onMouseUp", "mouseup"],
+
+  ["onPointerCancel", "pointercancel"],
+  ["onPointerDown", "pointerdown"],
+  ["onPointerEnter", "pointerenter"],
+  ["onPointerLeave", "pointerleave"],
+  ["onPointerMove", "pointermove"],
+  ["onPointerOut", "pointerout"],
+  ["onPointerOver", "pointerover"],
+  ["onPointerUp", "pointerup"],
+
+  // Touch events
+  ["onTouchStart", "touchstart"],
+  ["onTouchEnd", "touchend"],
+  ["onTouchMove", "touchmove"],
+  ["onTouchCancel", "touchcancel"],
+
+  // Animation events
+  ["onAnimationStart", "animationstart"],
+  ["onAnimationEnd", "animationend"],
+  ["onAnimationIteration", "animationiteration"],
+
+  // Transition events
+  ["onTransitionEnd", "transitionend"],
+  ["onTransitionStart", "transitionstart"],
+  ["onTransitionRun", "transitionrun"],
+  ["onTransitionCancel", "transitioncancel"],
+
+  // Drag events
+  ["onDragStart", "dragstart"],
+  ["onDragEnd", "dragend"],
+  ["onDragEnter", "dragenter"],
+  ["onDragLeave", "dragleave"],
+  ["onDragOver", "dragover"],
+
+  // Focus events
+  ["onFocusIn", "focusin"],
+  ["onFocusOut", "focusout"],
+]);
