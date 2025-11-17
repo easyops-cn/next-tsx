@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.23...@next-tsx/builder@0.0.24) (2025-11-17)
+
+**Note:** Version bump only for package @next-tsx/builder
+
+
+
+
+
 ## [0.0.23](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.22...@next-tsx/builder@0.0.23) (2025-11-17)
 
 **Note:** Version bump only for package @next-tsx/builder

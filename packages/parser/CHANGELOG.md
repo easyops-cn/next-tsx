@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.9.0...@next-tsx/parser@0.9.1) (2025-11-17)
+
+
+### Bug Fixes
+
+* support variable declarations in block statements in event handlers ([b70de5d](https://github.com/easyops-cn/next-tsx/commit/b70de5db7392a25c6dabf375af4289f5409f93e1))
+
+
+
+
+
 # [0.9.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.8.3...@next-tsx/parser@0.9.0) (2025-11-17)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.1.0...@apps/demo@0.1.1) (2025-11-17)
+
+
+### Bug Fixes
+
+* support variable declarations in block statements in event handlers ([b70de5d](https://github.com/easyops-cn/next-tsx/commit/b70de5db7392a25c6dabf375af4289f5409f93e1))
+
+
+
+
+
 # [0.1.0](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.0.2...@apps/demo@0.1.0) (2025-11-17)
 
 
