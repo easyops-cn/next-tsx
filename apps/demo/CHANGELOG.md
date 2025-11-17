@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.2](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.0.1...@apps/demo@0.0.2) (2025-11-17)
+
+
+### Bug Fixes
+
+* mapping native events ([a29f149](https://github.com/easyops-cn/next-tsx/commit/a29f14924ec04e43df5dee1fb743fda97577b468))
+
+
+
+
+
 ## 0.0.1 (2025-11-17)
 
 

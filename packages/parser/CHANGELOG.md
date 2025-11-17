@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.3](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.8.2...@next-tsx/parser@0.8.3) (2025-11-17)
+
+
+### Bug Fixes
+
+* add more native event mappings ([f67d0dd](https://github.com/easyops-cn/next-tsx/commit/f67d0dd9cce1cd2f69d6c45de23c2b8ee6de7310))
+* mapping native events ([a29f149](https://github.com/easyops-cn/next-tsx/commit/a29f14924ec04e43df5dee1fb743fda97577b468))
+
+
+
+
+
 ## [0.8.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.8.1...@next-tsx/parser@0.8.2) (2025-11-17)
 
 
