@@ -13,7 +13,6 @@ import {
 } from "./getContextReference.js";
 import { parseElement } from "./parseElement.js";
 import type { ChildElement } from "./internal-interfaces.js";
-import { parseEvent } from "./parseEvent.js";
 
 export function parseContextProvider(
   path: NodePath<t.JSXElement>,
@@ -155,19 +154,9 @@ export function parseContextProvider(
       case "refetch":
         refetchList.set(value.node.name, binding.resourceId!.name);
         break;
-      case "eventCallback": {
-        const params = binding.callback!.get("params");
-        if (params.length > 0) {
-          state.errors.push({
-            message: `Event callback binding for Context Provider value property "${value.node.name}" must not have any parameters`,
-            node: params[0].node,
-            severity: "error",
-          });
-          continue;
-        }
+      case "eventCallback":
         eventCallbacks.set(value.node.name, binding);
         break;
-      }
       default:
         state.errors.push({
           message: `Unsupported binding kind "${binding.kind}" for Context Provider value property "${value.node.name}"`,
@@ -206,7 +195,7 @@ export function parseContextProvider(
                     action: "update_variable",
                     payload: {
                       name: stateName,
-                      value: "<% EVENT.detail.value %>",
+                      value: "<% EVENT.detail.payload %>",
                     },
                   },
                   alternate: null,
@@ -233,12 +222,20 @@ export function parseContextProvider(
                 action: "conditional",
                 payload: {
                   test: `<% EVENT.detail.name === ${JSON.stringify(callbackName)} %>`,
-                  consequent: parseEvent(
-                    binding.callback!,
-                    state,
-                    app,
-                    options
-                  ),
+                  consequent: [
+                    {
+                      action: "call_ref",
+                      payload: {
+                        ref: binding.callbackRef!,
+                        method: "trigger",
+                        args: [`<% EVENT.detail.payload %>`],
+                        scope:
+                          options.component?.type === "template"
+                            ? "template"
+                            : "global",
+                      },
+                    },
+                  ],
                   alternate: null,
                 },
               })

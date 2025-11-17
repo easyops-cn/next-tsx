@@ -291,7 +291,7 @@ exports[`parseApp should work 1`] = `
                         "action": "update_variable",
                         "payload": {
                           "name": "x",
-                          "value": "<% EVENT.detail.value %>",
+                          "value": "<% EVENT.detail.payload %>",
                         },
                       },
                       "test": "<% EVENT.detail.name === "setX" %>",
@@ -681,7 +681,7 @@ exports[`parseApp should work 1`] = `
                       "args": [
                         {
                           "name": "setX",
-                          "value": 42,
+                          "payload": 42,
                         },
                       ],
                       "method": "trigger",
@@ -697,7 +697,7 @@ exports[`parseApp should work 1`] = `
                       "args": [
                         {
                           "name": "setX",
-                          "value": 0,
+                          "payload": 0,
                         },
                       ],
                       "method": "trigger",

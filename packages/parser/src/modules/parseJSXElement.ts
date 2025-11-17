@@ -210,7 +210,6 @@ export function parseJSXElement(
         continue;
       }
       let handler: EventHandler[] | null = null;
-      let eventPath = exprPath;
       // Assert: exprPath.isReferencedIdentifier()
       if (exprPath.isIdentifier()) {
         const bindingId = exprPath.scope.getBindingIdentifier(
@@ -232,7 +231,20 @@ export function parseJSXElement(
                 ];
                 break;
               case "eventCallback":
-                eventPath = binding.callback!;
+                handler = [
+                  {
+                    action: "call_ref",
+                    payload: {
+                      ref: binding.callbackRef!,
+                      method: "trigger",
+                      args: ["<% EVENT %>"],
+                      scope:
+                        options.component?.type === "template"
+                          ? "template"
+                          : "global",
+                    },
+                  },
+                ];
                 break;
               case "context":
                 handler = [
@@ -255,7 +267,7 @@ export function parseJSXElement(
         }
       }
       if (!handler) {
-        handler = parseEvent(eventPath, state, app, options);
+        handler = parseEvent(exprPath, state, app, options);
       }
       if (handler) {
         if (attrName === "onMount" || attrName === "onUnmount") {

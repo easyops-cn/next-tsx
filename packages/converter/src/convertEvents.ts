@@ -212,6 +212,7 @@ function convertEventHandler(
       return {
         key: handler.key,
         action: `event.${handler.payload.method}`,
+        args: handler.payload.args,
       };
     case "conditional":
       return {

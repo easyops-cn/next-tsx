@@ -24,6 +24,7 @@ import { parseIdentifierUse } from "./parseIdentifierUse.js";
 import { parseUseImperativeHandle } from "./parseUseImperativeHandle.js";
 import { parseUseEffect } from "./parseUseEffect.js";
 import { getUniqueId } from "./getUniqueId.js";
+import { parseEvent } from "./parseEvent.js";
 
 export function parseComponent(
   fn: NodePath<t.FunctionDeclaration>,
@@ -328,12 +329,24 @@ export function parseComponent(
           const callbackBody = init.get("body");
           if (callbackBody.isBlockStatement()) {
             // It's an event callback function
+            const callbackRef = getUniqueId(`callback-${declId.node.name}-`);
             const funcBinding: BindingInfo = {
               id: declId.node,
               kind: "eventCallback",
-              callback: init,
+              callbackRef,
             };
             bindingMap.set(declId.node, funcBinding);
+
+            const eventAgentComponent: ComponentChild = {
+              name: "eo-event-agent",
+              properties: {},
+              ref: callbackRef,
+              events: {
+                trigger: parseEvent(init, state, app, options, ".detail") ?? [],
+              },
+            };
+            component.children ??= [];
+            component.children.push(eventAgentComponent);
             continue;
           }
         }

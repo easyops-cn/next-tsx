@@ -196,6 +196,7 @@ export interface TypeEventHandlerOfEvent extends EventHandlerBase {
   action: "event";
   payload: {
     method: "preventDefault" | "stopPropagation";
+    args?: unknown[];
   };
 }
 
