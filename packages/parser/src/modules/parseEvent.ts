@@ -81,12 +81,33 @@ export function parseEvent(
   const expressionBindingMap = new Map<t.Identifier, NodePath<t.Expression>>();
   eventOptions.eventExpressionBindings.push(expressionBindingMap);
 
-  const body = path.get("body");
+  const handlers = parseEventHandlers(
+    path.get("body"),
+    state,
+    app,
+    eventOptions
+  );
 
-  const handlers: EventHandler[] = [];
+  if (!handlers) {
+    return null;
+  }
 
-  if (body.isBlockStatement()) {
-    for (const stmt of body.get("body")) {
+  return ([] as EventHandler[]).concat(handlers);
+}
+
+export function parseEventHandlers(
+  path: NodePath<t.Statement | t.Expression | null | undefined>,
+  state: ParsedModule,
+  app: ParsedApp,
+  options: ParseJsValueOptions
+): EventHandler | EventHandler[] | null {
+  if (path.isBlockStatement()) {
+    const expressionBindingMap = new Map<
+      t.Identifier,
+      NodePath<t.Expression>
+    >();
+    const body = path.get("body");
+    for (const stmt of body) {
       if (stmt.isVariableDeclaration()) {
         if (stmt.node.kind !== "const") {
           state.errors.push({
@@ -117,34 +138,31 @@ export function parseEvent(
           }
           expressionBindingMap.set(declId.node, init as NodePath<t.Expression>);
         }
-      } else {
+      }
+    }
+
+    let eventOptions = options;
+    if (expressionBindingMap.size > 0) {
+      eventOptions = {
+        ...options,
+        eventExpressionBindings: [
+          ...(options.eventExpressionBindings ?? []),
+          expressionBindingMap,
+        ],
+      };
+    }
+
+    const handlers: EventHandler[] = [];
+    for (const stmt of body) {
+      if (!stmt.isVariableDeclaration()) {
         const handler = parseEventHandlers(stmt, state, app, eventOptions);
         if (handler) {
           handlers.push(...([] as EventHandler[]).concat(handler));
         }
       }
     }
-  } else {
-    const handler = parseEventHandlers(body, state, app, eventOptions);
-    if (handler) {
-      handlers.push(...([] as EventHandler[]).concat(handler));
-    }
-  }
 
-  return handlers;
-}
-
-export function parseEventHandlers(
-  path: NodePath<t.Statement | t.Expression | null | undefined>,
-  state: ParsedModule,
-  app: ParsedApp,
-  options: ParseJsValueOptions
-): EventHandler | EventHandler[] | null {
-  if (path.isBlockStatement()) {
-    return path
-      .get("body")
-      .flatMap((stmtPath) => parseEventHandlers(stmtPath, state, app, options))
-      .filter((h): h is EventHandler => h !== null);
+    return handlers;
   }
 
   if (path.isIfStatement()) {

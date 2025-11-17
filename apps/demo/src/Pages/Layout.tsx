@@ -3,10 +3,17 @@ import { showMessage } from "@next-tsx/core";
 export default function Layout() {
   const handleDoubleClick = (e: any) => {
     const detail = e.detail;
-    const d = detail.x;
-    e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log("Button clicked!", d);
+    if (e.type === "x") {
+      const d = detail.x;
+      e.preventDefault();
+      // eslint-disable-next-line no-console
+      console.log("X clicked!", d);
+    } else if (e.type === "y") {
+      const e = detail.y;
+      // e.stopPropagation();
+      // eslint-disable-next-line no-console
+      console.log("Y clicked!", e.y);
+    }
   };
 
   return (
