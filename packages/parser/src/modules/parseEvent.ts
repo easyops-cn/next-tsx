@@ -77,13 +77,61 @@ export function parseEvent(
     eventOptions.eventKeyBindings.push(eventOptions.eventBinding);
   }
 
+  eventOptions.eventExpressionBindings ??= [];
+  const expressionBindingMap = new Map<t.Identifier, NodePath<t.Expression>>();
+  eventOptions.eventExpressionBindings.push(expressionBindingMap);
+
   const body = path.get("body");
-  const handler = parseEventHandlers(body, state, app, eventOptions);
-  if (!handler) {
-    return null;
+
+  const handlers: EventHandler[] = [];
+
+  if (body.isBlockStatement()) {
+    for (const stmt of body.get("body")) {
+      if (stmt.isVariableDeclaration()) {
+        if (stmt.node.kind !== "const") {
+          state.errors.push({
+            message: `Only "const" variable declaration is allowed in event handler, but got "${stmt.node.kind}"`,
+            node: stmt.node,
+            severity: "error",
+          });
+          return null;
+        }
+        for (const decl of stmt.get("declarations")) {
+          const declId = decl.get("id");
+          if (!declId.isIdentifier()) {
+            state.errors.push({
+              message: `Variable declaration identifier in event handler must be an identifier`,
+              node: declId.node,
+              severity: "error",
+            });
+            return null;
+          }
+          const init = decl.get("init");
+          if (!init.node) {
+            state.errors.push({
+              message: `Variable declaration in event handler must have an initializer`,
+              node: decl.node,
+              severity: "error",
+            });
+            return null;
+          }
+          expressionBindingMap.set(declId.node, init as NodePath<t.Expression>);
+        }
+      } else {
+        const handler = parseEventHandlers(stmt, state, app, eventOptions);
+        if (handler) {
+          handlers.push(...([] as EventHandler[]).concat(handler));
+        }
+      }
+    }
+  } else {
+    const handler = parseEventHandlers(body, state, app, eventOptions);
+    if (handler) {
+      handlers.push(...([] as EventHandler[]).concat(handler));
+    }
   }
 
-  return ([] as EventHandler[]).concat(handler);
+  return handlers;
 }
 
 export function parseEventHandlers(
