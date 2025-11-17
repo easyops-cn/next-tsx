@@ -1,7 +1,7 @@
 import { showMessage } from "@next-tsx/core";
 
 export default function Layout() {
-  const handleClick = (e: any) => {
+  const handleDoubleClick = (e: any) => {
     e.preventDefault();
     // eslint-disable-next-line no-console
     console.log("Button clicked!", e);
@@ -14,7 +14,7 @@ export default function Layout() {
       }}
     >
       <p>Demo Page</p>
-      <button onClick={handleClick}>Demo Layout</button>
+      <button onDoubleClick={handleDoubleClick}>Demo Layout</button>
     </div>
   );
 }
