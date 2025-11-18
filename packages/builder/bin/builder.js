@@ -61,29 +61,8 @@ async function buildApp(watchMode) {
   const app = parseApp(files);
 
   if (app.errors.length > 0) {
-    console.error("Errors found during parsing the app:");
-    let shouldBailout = false;
-    for (const err of app.errors) {
-      const color =
-        err.severity === "notice" || err.severity === "warning"
-          ? "yellow"
-          : "red";
-      console.error(chalk[color](`[${err.severity}] ${err.message}`));
-      console.error(
-        chalk[color](
-          `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
-        )
-      );
-      if (
-        !shouldBailout &&
-        (err.severity === "error" || err.severity === "fatal")
-      ) {
-        shouldBailout = true;
-      }
-    }
-    if (shouldBailout && !watchMode) {
-      process.exit(1);
-    }
+    console.error(chalk.red("Errors found during parsing the app:"));
+    logErrors(app.errors, watchMode);
   }
 
   const i18nJsonPath = path.join(srcDir, "i18n.json");
@@ -94,9 +73,17 @@ async function buildApp(watchMode) {
     i18n = JSON.parse(i18nContent);
   }
 
-  const { routes, functions, templates, constants } = await convertApp(app, {
-    rootId: "",
-  });
+  const { routes, functions, templates, constants, errors } = await convertApp(
+    app,
+    {
+      rootId: "",
+    }
+  );
+
+  if (errors.length > 0) {
+    console.error(chalk.red("Errors found during converting the app:"));
+    logErrors(errors, watchMode);
+  }
 
   const targetPath = path.join(process.cwd(), "storyboard.yaml");
   await writeFile(
@@ -145,7 +132,7 @@ async function executeTask(watchMode) {
   try {
     await buildApp(watchMode);
   } catch (error) {
-    console.error("Build failed:", error);
+    console.error(chalk.red("Build failed:", error));
   } finally {
     isTaskRunning = false;
 
@@ -184,9 +171,41 @@ async function main() {
         }
       }
     } catch (error) {
-      console.error("Watching failed:", error);
+      console.error(chalk.red("Watching failed:", error));
     }
   }
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error(chalk.red("Unexpected error:", error));
+});
+
+/**
+ *
+ * @param {import("@next-tsx/parser").ParseError[]} errors
+ * @param {boolean} watchMode
+ */
+function logErrors(errors, watchMode) {
+  let shouldBailout = false;
+  for (const err of errors) {
+    const color =
+      err.severity === "notice" || err.severity === "warning"
+        ? "yellow"
+        : "red";
+    console.error(chalk[color](`[${err.severity}] ${err.message}`));
+    console.error(
+      chalk[color](
+        `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
+      )
+    );
+    if (
+      !shouldBailout &&
+      (err.severity === "error" || err.severity === "fatal")
+    ) {
+      shouldBailout = true;
+    }
+  }
+  if (shouldBailout && !watchMode) {
+    process.exit(1);
+  }
+}

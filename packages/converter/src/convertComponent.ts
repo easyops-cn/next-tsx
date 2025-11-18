@@ -138,8 +138,12 @@ export async function convertComponent(
         return convertRoutes(component.children, state, mod, options);
       case "Route":
         // Route is handled in convertRoutes
-        // eslint-disable-next-line no-console
-        console.error("<Route> should be a child of <Routes>.");
+        state.errors.push({
+          message: "<Route> must be a child of <Routes>.",
+          node: null,
+          severity: "error",
+          filePath: mod.filePath,
+        });
         break;
       default:
         // Allow any bricks in app mode or when allowAnyBricks is true
@@ -158,8 +162,12 @@ export async function convertComponent(
             ),
           };
         } else {
-          // eslint-disable-next-line no-console
-          console.error("Unknown component:", component.name);
+          state.errors.push({
+            message: `Unknown component "${component.name}".`,
+            node: null,
+            severity: "error",
+            filePath: mod.filePath,
+          });
         }
     }
   } else {
@@ -191,11 +199,20 @@ export async function convertComponent(
           scope
         ),
       };
+    } else if (refPart) {
+      state.errors.push({
+        message: `The referenced "${component.name}" is not a component, but a ${refPart.type}.`,
+        node: null,
+        severity: "error",
+        filePath: mod.filePath,
+      });
     } else {
-      // eslint-disable-next-line no-console
-      console.error(
-        `Cannot find the component "${component.reference!.name}".`
-      );
+      state.errors.push({
+        message: `Cannot find the component "${component.name}".`,
+        node: null,
+        severity: "error",
+        filePath: mod.filePath,
+      });
     }
   }
 

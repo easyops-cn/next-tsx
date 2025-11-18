@@ -5,7 +5,7 @@ import type {
   RouteConf,
   StoryboardFunction,
 } from "@next-core/types";
-import type { ParsedApp } from "@next-tsx/parser";
+import type { ParsedApp, ParseError } from "@next-tsx/parser";
 import type { ConvertedModule } from "./modules/convertModule";
 
 export interface ConvertOptions {
@@ -23,6 +23,7 @@ export interface ConvertResult {
   context?: ContextConf[];
   functions?: StoryboardFunction[];
   templates?: CustomTemplate[];
+  errors: ParseError[];
 }
 
 export interface ConvertState {
@@ -30,6 +31,7 @@ export interface ConvertState {
   readonly app: ParsedApp;
   readonly convertedModules: Map<string, ConvertedModule | null>;
   convertedEntry?: ConvertedModule;
+  errors: ParseError[];
 }
 
 export interface ConvertedApp {
@@ -37,4 +39,5 @@ export interface ConvertedApp {
   functions: StoryboardFunction[];
   templates: CustomTemplate[];
   constants?: Record<string, unknown>;
+  errors: ParseError[];
 }
