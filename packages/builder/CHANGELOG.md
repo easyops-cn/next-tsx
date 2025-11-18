@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.24...@next-tsx/builder@0.0.25) (2025-11-18)
+
+
+### Bug Fixes
+
+* add colors for terminal output ([1551e4b](https://github.com/easyops-cn/next-tsx/commit/1551e4b26553f9ec7025da473434a3e109c2b75b))
+* refine error reporting ([104a58a](https://github.com/easyops-cn/next-tsx/commit/104a58a56796335f85faa9b1955957c06a2460cb))
+* support identifier as event/callback ([2d419ab](https://github.com/easyops-cn/next-tsx/commit/2d419ab173342fdffd0695f44dfe28da67488b22))
+
+
+
+
+
 ## [0.0.24](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.0.23...@next-tsx/builder@0.0.24) (2025-11-17)
 
 **Note:** Version bump only for package @next-tsx/builder

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.9.1...@next-tsx/parser@0.9.2) (2025-11-18)
+
+
+### Bug Fixes
+
+* simplify event callback when possible ([70a6e36](https://github.com/easyops-cn/next-tsx/commit/70a6e3644bf46edc043321ee4788295d0b3a0f88))
+* support identifier as event/callback ([2d419ab](https://github.com/easyops-cn/next-tsx/commit/2d419ab173342fdffd0695f44dfe28da67488b22))
+
+
+
+
+
 ## [0.9.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.9.0...@next-tsx/parser@0.9.1) (2025-11-17)
 
 
