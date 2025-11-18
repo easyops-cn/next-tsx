@@ -405,6 +405,40 @@ function parseEventHandler(
             });
             return null;
           }
+
+          // If the event callback has the same argument as the event handler parameter, inline it
+          if (args.length === binding.callback!.node.params.length) {
+            let allArgsMatch = args.length === 0;
+            if (!allArgsMatch) {
+              const arg = args[0];
+              const param = binding.callback!.get("params")[0];
+              if (arg.isIdentifier() && param.isIdentifier()) {
+                const argBindingId = arg.scope.getBindingIdentifier(
+                  arg.node.name
+                );
+                if (argBindingId && argBindingId === options.eventBinding?.id) {
+                  allArgsMatch = true;
+                }
+              }
+            }
+            if (allArgsMatch) {
+              return {
+                key: options.eventBinding?.id.name,
+                action: "conditional",
+                payload: {
+                  test: true,
+                  consequent: parseEvent(
+                    binding.callback!,
+                    state,
+                    app,
+                    options
+                  ),
+                  alternate: null,
+                },
+              };
+            }
+          }
+
           return {
             key: options.eventBinding?.id.name,
             action: "call_ref",

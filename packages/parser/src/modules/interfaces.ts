@@ -123,6 +123,7 @@ export interface BindingInfo {
   contextKey?: string;
 
   /** For kind "eventCallback" */
+  callback?: NodePath<t.FunctionExpression | t.ArrowFunctionExpression>;
   callbackRef?: string;
 
   /** For kind "ref" */
