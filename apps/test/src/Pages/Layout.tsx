@@ -8,6 +8,8 @@ import {
   Routes,
   Route,
   useRef,
+  callProvider,
+  handleHttpError,
 } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
@@ -39,6 +41,12 @@ export default function Layout() {
     // eslint-disable-next-line no-console
     console.log("Doing something with", thing);
     thing.preventDefault();
+    callProvider("oops").then(() => {
+      showMessage({
+        type: "info",
+        content: thing.detail,
+      });
+    }, handleHttpError);
   };
 
   const handleClick = (e?: any) => {
@@ -50,7 +58,7 @@ export default function Layout() {
     Object.assign(modalRef.current, {
       height: "auto",
     });
-    doSomething(e);
+    // doSomething(e);
   };
 
   return (
@@ -61,8 +69,9 @@ export default function Layout() {
           e.preventDefault();
           // eslint-disable-next-line no-console
           console.log(e);
-          doSomething(e);
+          // doSomething(e);
         }}
+        onDoubleClick={doSomething}
       >
         {JSON.stringify(sessionStore.getItem("myKey"), null, 2)}
       </pre>

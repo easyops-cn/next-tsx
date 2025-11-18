@@ -89,6 +89,22 @@ function parsePromiseCallback(
   options: ParseJsValueOptions,
   method: "then" | "catch"
 ): string | null {
+  if (callback.isIdentifier()) {
+    const embed = replaceBindings(callback, state, app, options, true);
+    if (
+      typeof embed === "string" &&
+      /^FN\.[$_\p{ID_Start}][$\p{ID_Continue}]*$/u.test(embed)
+    ) {
+      return `<% ${embed}(DATA) %>`;
+    }
+    state.errors.push({
+      message: `Invalid ".${method}()" callback`,
+      node: callback.node,
+      severity: "error",
+    });
+    return null;
+  }
+
   if (!callback.isArrowFunctionExpression()) {
     state.errors.push({
       message: `".${method}()" callback expects an arrow function, but got ${callback.type}`,

@@ -407,6 +407,7 @@ exports[`convertTsx should work 1`] = `
       "value": null,
     },
   ],
+  "errors": [],
   "functions": [
     {
       "name": "prettierOutput",

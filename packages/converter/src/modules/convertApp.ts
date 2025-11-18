@@ -53,6 +53,7 @@ export async function convertApp(
     usedHelpers: new Set(),
     app,
     convertedModules: new Map(),
+    errors: [],
   };
 
   const convertingEntry = convertModule(entry, state, options);
@@ -126,5 +127,6 @@ export async function convertApp(
     functions: [...functions, ...helpers],
     templates,
     constants: Object.fromEntries(app.constants),
+    errors: state.errors,
   };
 }

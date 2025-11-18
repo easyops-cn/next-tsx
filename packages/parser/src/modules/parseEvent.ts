@@ -9,7 +9,6 @@ import type {
 } from "./interfaces.js";
 import type {
   TypeEventHandlerOfShowMessage,
-  TypeEventHandlerOfHandleHttpError,
   TypeEventHandlerCallback,
 } from "../interfaces.js";
 import { parseJsValue } from "./parseJsValue.js";
@@ -38,9 +37,19 @@ export function parseEvent(
   options: ParseJsValueOptions,
   eventAccessor?: string
 ): EventHandler[] | null {
+  if (path.isIdentifier()) {
+    if (validateGlobalApi(path, "handleHttpError")) {
+      return [
+        {
+          action: "handle_http_error",
+        },
+      ];
+    }
+  }
+
   if (!isGeneralFunctionExpression(path)) {
     state.errors.push({
-      message: `Event handler must be a function expression, but got ${path.type}`,
+      message: `Event handler must be a function, but got ${path.type}`,
       node: path.node,
       severity: "error",
     });
@@ -241,12 +250,11 @@ function parseEventHandler(
           });
           return null;
         }
-        const payload = parseJsValue(args[0], state, app, options);
+        // TODO: check argument type
         return {
           key: options.eventBinding?.id.name,
           action: "handle_http_error",
-          payload,
-        } as TypeEventHandlerOfHandleHttpError;
+        };
       }
 
       for (const name of CALL_API_LIST) {
@@ -397,6 +405,40 @@ function parseEventHandler(
             });
             return null;
           }
+
+          // If the event callback has the same argument as the event handler parameter, inline it
+          if (args.length === binding.callback!.node.params.length) {
+            let allArgsMatch = args.length === 0;
+            if (!allArgsMatch) {
+              const arg = args[0];
+              const param = binding.callback!.get("params")[0];
+              if (arg.isIdentifier() && param.isIdentifier()) {
+                const argBindingId = arg.scope.getBindingIdentifier(
+                  arg.node.name
+                );
+                if (argBindingId && argBindingId === options.eventBinding?.id) {
+                  allArgsMatch = true;
+                }
+              }
+            }
+            if (allArgsMatch) {
+              return {
+                key: options.eventBinding?.id.name,
+                action: "conditional",
+                payload: {
+                  test: true,
+                  consequent: parseEvent(
+                    binding.callback!,
+                    state,
+                    app,
+                    options
+                  ),
+                  alternate: null,
+                },
+              };
+            }
+          }
+
           return {
             key: options.eventBinding?.id.name,
             action: "call_ref",
@@ -949,7 +991,7 @@ function parseEventHandler(
   return null;
 }
 
-export function parseHandlerCallback(
+function parseHandlerCallback(
   object: NodePath<t.Expression>,
   method: "then" | "catch" | "finally",
   args: NodePath<t.Node>[],

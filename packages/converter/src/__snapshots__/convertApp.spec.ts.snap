@@ -8,6 +8,7 @@ exports[`convertApp should work 1`] = `
 }
 ",
   },
+  "errors": [],
   "functions": [
     {
       "name": "sayHello",

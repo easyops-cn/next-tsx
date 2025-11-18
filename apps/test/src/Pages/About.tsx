@@ -26,13 +26,10 @@ export default function About() {
       <div
         onMount={handleClick}
         onClick={() => {
-          refetch().then(
-            () => {
-              // eslint-disable-next-line no-console
-              console.log("ok");
-            },
-            (err) => handleHttpError(err)
-          );
+          refetch().then(() => {
+            // eslint-disable-next-line no-console
+            console.log("ok");
+          }, handleHttpError);
 
           querySelector("#my-modal")
             ?.open()
@@ -46,10 +43,7 @@ export default function About() {
                 console.log("failed to open");
               }
             )
-            .catch(() => {
-              // eslint-disable-next-line no-console
-              console.log("error occurred");
-            })
+            .catch(handleHttpError)
             .finally(() => {
               // eslint-disable-next-line no-console
               console.log("finally");

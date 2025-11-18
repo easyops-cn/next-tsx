@@ -201,7 +201,7 @@ export function parseJSXElement(
         });
         continue;
       }
-      const exprPath = attrValuePath.get("expression");
+      let exprPath = attrValuePath.get("expression");
       if (exprPath.isJSXEmptyExpression()) {
         state.errors.push({
           message: `Empty expression in events is not allowed`,
@@ -232,20 +232,7 @@ export function parseJSXElement(
                 ];
                 break;
               case "eventCallback":
-                handler = [
-                  {
-                    action: "call_ref",
-                    payload: {
-                      ref: binding.callbackRef!,
-                      method: "trigger",
-                      args: ["<% EVENT %>"],
-                      scope:
-                        options.component?.type === "template"
-                          ? "template"
-                          : "global",
-                    },
-                  },
-                ];
+                exprPath = binding.callback!;
                 break;
               case "context":
                 handler = [

@@ -194,7 +194,6 @@ function convertEventHandler(
       return {
         key: handler.key,
         action: "handleHttpError",
-        args: [handler.payload],
       };
     case "dispatch_event":
       return {

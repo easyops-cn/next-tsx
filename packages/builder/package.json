@@ -29,6 +29,7 @@
   "dependencies": {
     "@next-tsx/converter": "^0.7.5",
     "@next-tsx/parser": "^0.9.1",
+    "chalk": "^5.6.2",
     "js-yaml": "^3.14.1"
   }
 }

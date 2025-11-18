@@ -333,20 +333,33 @@ export function parseComponent(
             const funcBinding: BindingInfo = {
               id: declId.node,
               kind: "eventCallback",
+              callback: init,
               callbackRef,
             };
             bindingMap.set(declId.node, funcBinding);
 
-            const eventAgentComponent: ComponentChild = {
-              name: "eo-event-agent",
-              properties: {},
-              ref: callbackRef,
-              events: {
-                trigger: parseEvent(init, state, app, options, ".detail") ?? [],
-              },
-            };
-            component.children ??= [];
-            component.children.push(eventAgentComponent);
+            // If the event callback is only used as an direct event handler, no need to add event agent
+            let needsEventAgent = false;
+            const declBinding = declId.scope.getBinding(declId.node.name);
+            if (declBinding) {
+              needsEventAgent = declBinding.referencePaths.some((refPath) => {
+                return refPath.parent.type !== "JSXExpressionContainer";
+              });
+            }
+
+            if (needsEventAgent) {
+              const eventAgentComponent: ComponentChild = {
+                name: "eo-event-agent",
+                properties: {},
+                ref: callbackRef,
+                events: {
+                  trigger:
+                    parseEvent(init, state, app, options, ".detail") ?? [],
+                },
+              };
+              component.children ??= [];
+              component.children.push(eventAgentComponent);
+            }
             continue;
           }
         }

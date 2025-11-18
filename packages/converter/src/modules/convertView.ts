@@ -31,6 +31,7 @@ export async function convertView(
     usedHelpers: new Set(),
     app: view,
     convertedModules: new Map(),
+    errors: [],
   };
 
   const functions: StoryboardFunction[] = [];
@@ -116,5 +117,6 @@ export async function convertView(
     ],
     functions: [...functions, ...helpers],
     templates,
+    errors: state.errors,
   };
 }
