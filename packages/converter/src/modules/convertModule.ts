@@ -96,7 +96,7 @@ async function parseModulePart(
       conf = convertDataSource(binding.resource!);
     } else if (
       binding.kind === "state" ||
-      binding.kind === "constant" ||
+      binding.kind === "derived" ||
       binding.kind === "param"
     ) {
       conf = {

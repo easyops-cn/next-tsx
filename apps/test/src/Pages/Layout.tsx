@@ -71,8 +71,10 @@ export default function Layout() {
     // doSomething(e);
   };
 
+  const layoutContext = { handleClick };
+
   return (
-    <LayoutContext.Provider value={{ handleClick }}>
+    <LayoutContext.Provider value={layoutContext}>
       <button onClick={handleClick}>My App</button>
       <pre
         onClick={(e) => {

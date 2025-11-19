@@ -90,7 +90,29 @@ export function parseContextProvider(
     });
     return elements;
   }
-  const expression = attrValuePath.get("expression");
+  let expression = attrValuePath.get("expression");
+
+  if (expression.isIdentifier()) {
+    const bindingId = expression.scope.getBindingIdentifier(
+      expression.node.name
+    );
+    let binding: BindingInfo | undefined;
+    if (bindingId) {
+      binding = options.component?.bindingMap.get(bindingId);
+    }
+    if (binding && binding.kind === "contextValue" && binding.contextValue) {
+      expression = binding.contextValue;
+    } else {
+      state.errors.push({
+        message:
+          'Context Provider "value" identifier must refer to a context value object',
+        node: expression.node,
+        severity: "error",
+      });
+      return elements;
+    }
+  }
+
   if (!expression.isObjectExpression()) {
     state.errors.push({
       message: `Context Provider "value" must be an object expression, but got ${expression.node.type}`,

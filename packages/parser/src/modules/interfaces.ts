@@ -98,18 +98,18 @@ export interface BindingInfo {
     | "auth"
     | "history"
     | "location"
-    | "constant"
+    | "derived"
     | "flags"
     | "media"
     | "param"
     | "eventHandlerParam"
     | "eventCallback"
-    | "expression"
     | "component"
     | "context"
+    | "contextValue"
     | "function";
 
-  /** For kind "state" | "constant" | "param" */
+  /** For kind "state" | "derived" | "param" */
   initialValue?: unknown;
 
   /** For kind "resource" */
@@ -122,15 +122,15 @@ export interface BindingInfo {
   contextProvider?: ContextReference;
   contextKey?: string;
 
+  /** For kind "contextValue" */
+  contextValue?: NodePath<t.ObjectExpression>;
+
   /** For kind "eventCallback" */
   callback?: NodePath<t.FunctionExpression | t.ArrowFunctionExpression>;
   callbackRef?: string;
 
   /** For kind "ref" */
   refName?: string;
-
-  /** For kind "expression" */
-  expression?: NodePath<t.Expression>;
 }
 
 export interface EventBindingInfo {
