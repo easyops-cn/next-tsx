@@ -32,13 +32,23 @@ export function useResource<T = any>(
 ): [data: T, refetch: () => Promise<void>];
 
 /**
+ * 在组件挂载时执行回调函数，并在组件卸载时执行清理函数（如果有返回值的话）。
+ *
+ * 注意与 React 中的 useEffect 略有不同：deps 始终为空数组，不支持传入依赖。
+ */
+export function useEffect(callback: EffectCallback, deps: []): void;
+
+export type EffectCallback = () => void | Destructor;
+export type Destructor = () => void;
+
+/**
  * 在依赖项数组变化时执行回调函数。
  *
- * 注意与 React 中的 useEffect 行为略有不同：
- * - 初始渲染时不会执行 callback，仅在 deps 变化时执行 callback
+ * 注意与 useEffect 有所不同：
+ * - 初始渲染时不会执行 callback，仅在 deps 变化时才执行 callback
  * - 不支持返回清理函数
  */
-export function useEffect(callback: () => void, deps: unknown[]): void;
+export function useChangeEffect(callback: () => void, deps: unknown[]): void;
 
 /** 返回一个 ref 对象，其 `.current` 属性初始化为传入的参数 (`initialValue`) */
 export function useRef<T = any>(initialValue?: T): RefObject<T>;

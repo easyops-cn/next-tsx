@@ -3,6 +3,7 @@ import {
   createPortal,
   useState,
   useEffect,
+  useChangeEffect,
   showMessage,
   sessionStore,
   Routes,
@@ -21,7 +22,7 @@ export default function Layout() {
   const [c, setC] = useState<number>(0);
   const modalRef = useRef();
 
-  useEffect(() => {
+  useChangeEffect(() => {
     if (a) {
       showMessage({
         type: "success",
@@ -31,6 +32,15 @@ export default function Layout() {
       sessionStore.setItem("myKey", { a, b, c });
     }
   }, [a, b, c]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("Layout mounted");
+    return () => {
+      // eslint-disable-next-line no-console
+      console.log("Layout unmounted");
+    };
+  }, []);
 
   const dataSource = {
     name: "Tom",
