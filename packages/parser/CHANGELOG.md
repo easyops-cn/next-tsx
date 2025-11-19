@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.9.2...@next-tsx/parser@0.10.0) (2025-11-19)
+
+
+### Bug Fixes
+
+* support useEffect with no deps ([2e10110](https://github.com/easyops-cn/next-tsx/commit/2e10110396aabcb81b071a2a817fe89ee7c026c7))
+
+
+### Features
+
+* separate useEffect and useChangeEffect ([570a880](https://github.com/easyops-cn/next-tsx/commit/570a88069924a68235c85971214f0eedabef9c43))
+
+
+
+
+
 ## [0.9.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.9.1...@next-tsx/parser@0.9.2) (2025-11-18)
 
 

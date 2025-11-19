@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.8.6...@apps/test@0.9.0) (2025-11-19)
+
+
+### Bug Fixes
+
+* support useEffect with no deps ([2e10110](https://github.com/easyops-cn/next-tsx/commit/2e10110396aabcb81b071a2a817fe89ee7c026c7))
+
+
+### Features
+
+* separate useEffect and useChangeEffect ([570a880](https://github.com/easyops-cn/next-tsx/commit/570a88069924a68235c85971214f0eedabef9c43))
+
+
+
+
+
 ## [0.8.6](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.8.5...@apps/test@0.8.6) (2025-11-18)
 
 

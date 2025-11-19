@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.6.0...@next-tsx/core@0.7.0) (2025-11-19)
+
+
+### Features
+
+* separate useEffect and useChangeEffect ([570a880](https://github.com/easyops-cn/next-tsx/commit/570a88069924a68235c85971214f0eedabef9c43))
+
+
+
+
+
 # [0.6.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.5.0...@next-tsx/core@0.6.0) (2025-11-14)
 
 
