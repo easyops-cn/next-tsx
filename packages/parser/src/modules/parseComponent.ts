@@ -25,6 +25,7 @@ import { parseUseImperativeHandle } from "./parseUseImperativeHandle.js";
 import { parseUseEffect } from "./parseUseEffect.js";
 import { getUniqueId } from "./getUniqueId.js";
 import { parseEvent } from "./parseEvent.js";
+import { parseUseChangeEffect } from "./parseUseChangeEffect.js";
 
 export function parseComponent(
   fn: NodePath<t.FunctionDeclaration>,
@@ -463,6 +464,15 @@ export function parseComponent(
         }
         if (validateGlobalApi(callee, "useEffect")) {
           const result = parseUseEffect(expr, state, app, options);
+          if (result) {
+            component.children ??= [];
+            component.children.push(result);
+          }
+          continue;
+        }
+
+        if (validateGlobalApi(callee, "useChangeEffect")) {
+          const result = parseUseChangeEffect(expr, state, app, options);
           if (result) {
             component.children ??= [];
             component.children.push(result.component);

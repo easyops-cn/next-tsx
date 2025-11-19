@@ -2,7 +2,6 @@ import type { NodePath } from "@babel/traverse";
 import type * as t from "@babel/types";
 import type {
   ComponentChild,
-  EventHandler,
   ParsedApp,
   ParsedModule,
   ParseJsValueOptions,
@@ -12,13 +11,19 @@ import {
   validateFunction,
 } from "./validations.js";
 import { parseEventHandlers } from "./parseEvent.js";
+import { CTX_BINDING_KINDS } from "./constants.js";
+import { getUniqueId } from "./getUniqueId.js";
 
-export function parseUseEffect(
+export function parseUseChangeEffect(
   expr: NodePath<t.CallExpression>,
   state: ParsedModule,
   app: ParsedApp,
   options: ParseJsValueOptions
-): ComponentChild | null {
+): {
+  component: ComponentChild;
+  deps: t.Identifier[];
+  id: string;
+} | null {
   const args = expr.get("arguments");
   if (args.length !== 2) {
     state.errors.push({
@@ -69,73 +74,67 @@ export function parseUseEffect(
     return null;
   }
   const depElements = depArray.get("elements");
-  if (depElements.length !== 0) {
+  if (depElements.length === 0) {
     state.errors.push({
-      message: `useEffect() dependency array must be empty, received ${depElements.length} elements`,
-      node: depElements[0].node,
+      message: `useEffect() dependency array must have at least one element`,
+      node: depArray.node,
       severity: "error",
     });
     return null;
   }
 
-  // onMount/onUnmount effect, no dependencies
-  const onMountHandlers: EventHandler[] = [];
-  const onUnmountHandlers: EventHandler[] = [];
-  for (const stmt of callbackBody.get("body")) {
-    if (stmt.isReturnStatement()) {
-      const cleanup = stmt.get("argument");
-      if (!cleanup.node) {
-        break;
-      }
-      if (!isGeneralFunctionExpression(cleanup)) {
-        state.errors.push({
-          message: `useEffect() cleanup function must be a function expression, received ${cleanup.type}`,
-          node: cleanup.node,
-          severity: "error",
-        });
-        break;
-      }
-      const cleanupParams = cleanup.get("params");
-      if (cleanupParams.length > 0) {
-        state.errors.push({
-          message: `useEffect() cleanup function must not have parameters, received ${cleanupParams.length}`,
-          node: cleanupParams[0].node,
-          severity: "error",
-        });
-        break;
-      }
-      const cleanupBody = cleanup.get("body");
-      const handlers = parseEventHandlers(cleanupBody, state, app, options);
-      if (handlers) {
-        if (Array.isArray(handlers)) {
-          onUnmountHandlers.push(...handlers);
-        } else {
-          onUnmountHandlers.push(handlers);
-        }
-      }
+  // context/state onChange
+  const deps: t.Identifier[] = [];
+  for (const depElement of depElements) {
+    if (!depElement.isIdentifier()) {
+      state.errors.push({
+        message: `useEffect() dependency array elements must be identifiers, received ${depElement.type}`,
+        node: depElement.node,
+        severity: "error",
+      });
       break;
-    } else {
-      const handlers = parseEventHandlers(stmt, state, app, options);
-      if (handlers) {
-        if (Array.isArray(handlers)) {
-          onMountHandlers.push(...handlers);
-        } else {
-          onMountHandlers.push(handlers);
-        }
-      }
     }
+    const bindingId = depElement.scope.getBindingIdentifier(
+      depElement.node.name
+    );
+    const depBinding = bindingId
+      ? options.component?.bindingMap.get(bindingId)
+      : undefined;
+    if (!depBinding || !CTX_BINDING_KINDS.includes(depBinding.kind)) {
+      state.errors.push({
+        message: `useEffect() dependency "${depElement.node.name}" is invalid or not defined`,
+        node: depElement.node,
+        severity: "error",
+      });
+      break;
+    }
+    deps.push(depBinding.id);
   }
 
-  if (onMountHandlers.length > 0 || onUnmountHandlers.length > 0) {
-    return {
-      name: "eo-event-agent",
+  if (deps.length !== depElements.length) {
+    return null;
+  }
+
+  const handlers = parseEventHandlers(callbackBody, state, app, options);
+
+  if (handlers && (!Array.isArray(handlers) || handlers.length > 0)) {
+    const id = getUniqueId("effect-batch-agent-");
+    const component: ComponentChild = {
+      name: "eo-batch-agent",
       portal: true,
       properties: {},
-      lifeCycle: {
-        onMount: onMountHandlers,
-        onUnmount: onUnmountHandlers,
+      events: {
+        trigger: handlers,
       },
     };
+
+    if (options.component!.type === "template") {
+      component.ref = id;
+    } else {
+      component.properties.id = id;
+    }
+
+    return { component, deps, id };
   }
 
   return null;

@@ -3,6 +3,7 @@ import {
   createPortal,
   useState,
   useEffect,
+  useChangeEffect,
   showMessage,
   sessionStore,
   Routes,
@@ -21,7 +22,7 @@ export default function Layout() {
   const [c, setC] = useState<number>(0);
   const modalRef = useRef();
 
-  useEffect(() => {
+  useChangeEffect(() => {
     if (a) {
       showMessage({
         type: "success",
