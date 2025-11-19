@@ -32,6 +32,15 @@ export default function Layout() {
     }
   }, [a, b, c]);
 
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("Layout mounted");
+    return () => {
+      // eslint-disable-next-line no-console
+      console.log("Layout unmounted");
+    };
+  }, []);
+
   const dataSource = {
     name: "Tom",
     age: 30,

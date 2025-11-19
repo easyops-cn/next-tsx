@@ -2,6 +2,7 @@ import type { NodePath } from "@babel/traverse";
 import type * as t from "@babel/types";
 import type {
   ComponentChild,
+  EventHandler,
   ParsedApp,
   ParsedModule,
   ParseJsValueOptions,
@@ -50,7 +51,7 @@ export function parseUseEffect(
   if (callbackParams.length > 0) {
     state.errors.push({
       message: `useEffect() function must not have parameters, received ${callbackParams.length}`,
-      node: callback.node,
+      node: callbackParams[0].node,
       severity: "error",
     });
     return null;
@@ -75,13 +76,68 @@ export function parseUseEffect(
   }
   const depElements = depArray.get("elements");
   if (depElements.length === 0) {
-    state.errors.push({
-      message: `useEffect() dependency array cannot be empty`,
-      node: depArray.node,
-      severity: "warning",
-    });
+    // onMount/onUnmount effect, no dependencies
+    const onMountHandlers: EventHandler[] = [];
+    const onUnmountHandlers: EventHandler[] = [];
+    for (const stmt of callbackBody.get("body")) {
+      if (stmt.isReturnStatement()) {
+        const cleanup = stmt.get("argument");
+        if (!isGeneralFunctionExpression(cleanup)) {
+          state.errors.push({
+            message: `useEffect() cleanup function must be a function expression, received ${cleanup.type}`,
+            node: cleanup.node,
+            severity: "error",
+          });
+          break;
+        }
+        const cleanupParams = cleanup.get("params");
+        if (cleanupParams.length > 0) {
+          state.errors.push({
+            message: `useEffect() cleanup function must not have parameters, received ${cleanupParams.length}`,
+            node: cleanupParams[0].node,
+            severity: "error",
+          });
+          break;
+        }
+        const cleanupBody = cleanup.get("body");
+        const handlers = parseEventHandlers(cleanupBody, state, app, options);
+        if (handlers) {
+          if (Array.isArray(handlers)) {
+            onUnmountHandlers.push(...handlers);
+          } else {
+            onUnmountHandlers.push(handlers);
+          }
+        }
+        break;
+      } else {
+        const handlers = parseEventHandlers(stmt, state, app, options);
+        if (handlers) {
+          if (Array.isArray(handlers)) {
+            onMountHandlers.push(...handlers);
+          } else {
+            onMountHandlers.push(handlers);
+          }
+        }
+      }
+    }
+
+    if (onMountHandlers.length > 0 || onUnmountHandlers.length > 0) {
+      const component: ComponentChild = {
+        name: "eo-event-agent",
+        portal: true,
+        properties: {},
+        lifeCycle: {
+          onMount: onMountHandlers,
+          onUnmount: onUnmountHandlers,
+        },
+      };
+      return { component, deps: [], id: "" };
+    }
+
+    return null;
   }
 
+  // context/state onChange
   const deps: t.Identifier[] = [];
   for (const depElement of depElements) {
     if (!depElement.isIdentifier()) {
