@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.7.0...@next-tsx/core@0.8.0) (2025-11-20)
+
+
+### Features
+
+* support global constants ([377d1ef](https://github.com/easyops-cn/next-tsx/commit/377d1effbc8856e2424ad2f273d97e84dd510b67))
+
+
+
+
+
 # [0.7.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.6.0...@next-tsx/core@0.7.0) (2025-11-19)
 
 
