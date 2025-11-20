@@ -304,7 +304,7 @@ export function parseComponent(
             }
 
             if (validateGlobalApi(callee, "useContext")) {
-              const bindings = parseUseContext(decl, args, state, app, options);
+              const bindings = parseUseContext(decl, args, state, app);
               if (bindings) {
                 for (const binding of bindings) {
                   bindingMap.set(binding.id, binding);
@@ -365,7 +365,49 @@ export function parseComponent(
           }
         }
 
-        const binding: BindingInfo = { id: declId.node, kind: "constant" };
+        if (init.isObjectExpression()) {
+          const declBinding = declId.scope.getBinding(declId.node.name);
+          if (declBinding) {
+            const { referencePaths } = declBinding;
+            if (
+              referencePaths.length > 0 &&
+              referencePaths.every((refPath) => {
+                // Used as `<SomeContext.Provider value={val}>`
+                if (refPath.parent.type === "JSXExpressionContainer") {
+                  const grandParent = refPath.parentPath?.parent;
+                  if (
+                    grandParent &&
+                    grandParent.type === "JSXAttribute" &&
+                    grandParent.name.type === "JSXIdentifier" &&
+                    grandParent.name.name === "value"
+                  ) {
+                    const grandGrandParent =
+                      refPath.parentPath?.parentPath?.parent;
+                    if (
+                      grandGrandParent &&
+                      grandGrandParent.type === "JSXOpeningElement" &&
+                      grandGrandParent.name.type === "JSXMemberExpression" &&
+                      grandGrandParent.name.property.type === "JSXIdentifier" &&
+                      grandGrandParent.name.property.name === "Provider"
+                    ) {
+                      return true;
+                    }
+                  }
+                }
+                return false;
+              })
+            ) {
+              bindingMap.set(declId.node, {
+                id: declId.node,
+                kind: "contextValue",
+                contextValue: init,
+              });
+              continue;
+            }
+          }
+        }
+
+        const binding: BindingInfo = { id: declId.node, kind: "derived" };
         bindingMap.set(declId.node, binding);
         if (init.node) {
           binding.initialValue = parseJsValue(

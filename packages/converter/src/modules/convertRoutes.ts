@@ -65,6 +65,7 @@ export async function convertRoutes(
           ({ raw }) =>
             raw.type !== "function" &&
             raw.type !== "context" &&
+            raw.type !== "constant" &&
             raw.component.id &&
             raw.component.id.name === reference.name
         );

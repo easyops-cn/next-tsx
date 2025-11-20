@@ -9,6 +9,7 @@ import {
   useSearchParams,
 } from "@next-tsx/core";
 import { LayoutContext } from "../Contexts/LayoutContext";
+import { /* testA, */ XYZ } from "./Layout";
 
 const AboutContext = createContext();
 
@@ -40,7 +41,7 @@ export default function About() {
               },
               () => {
                 // eslint-disable-next-line no-console
-                console.log("failed to open");
+                console.log("failed to open", XYZ, testA());
               }
             )
             .catch(handleHttpError)

@@ -86,7 +86,7 @@ export function parseJSXElement(
       .flatMap((child) => parseElement(child, state, app, options));
   }
 
-  const reference = getComponentReference(tagName, state, app, options);
+  const reference = getComponentReference(tagName, state, app);
   const properties: Record<string, unknown> = {};
   // const ambiguousProps: Record<string, unknown> = {};
   let events: Events | undefined;
@@ -140,7 +140,7 @@ export function parseJSXElement(
           });
           continue;
         }
-        const reference = getComponentReference(exprPath, state, app, options);
+        const reference = getComponentReference(exprPath, state, app);
         if (!reference) {
           state.errors.push({
             message: `The component "${exprPath.node.name}" is not defined`,

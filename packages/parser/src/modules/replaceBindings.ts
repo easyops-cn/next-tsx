@@ -160,20 +160,33 @@ export function replaceBindings(
               modulePart = mod?.namedExports.get(importedName!);
             }
 
-            if (modulePart?.type === "function") {
-              replacements.push({
-                type: "id",
-                start: idPath.node.start!,
-                end: idPath.node.end!,
-                replacement: `FN.${modulePart.function.name}`,
-                shorthand: shorthand ? varName : undefined,
-              });
-            } else {
-              state.errors.push({
-                message: `Invalid usage: "${varName}"`,
-                node: idPath.node,
-                severity: "error",
-              });
+            const modulePartType = modulePart?.type;
+            switch (modulePartType) {
+              case "function":
+              case "constant":
+                replacements.push({
+                  type: "id",
+                  start: idPath.node.start!,
+                  end: idPath.node.end!,
+                  replacement:
+                    modulePartType === "function"
+                      ? `FN.${modulePart!.function.name}`
+                      : replaceBindings(
+                          modulePart!.value,
+                          mod!,
+                          app,
+                          options,
+                          true
+                        )!,
+                  shorthand: shorthand ? varName : undefined,
+                });
+                break;
+              default:
+                state.errors.push({
+                  message: `Invalid usage: "${varName}"`,
+                  node: idPath.node,
+                  severity: "error",
+                });
             }
           } else {
             // External modules
@@ -220,19 +233,8 @@ export function replaceBindings(
         return;
       }
 
-      if (options.functionBindings?.has(bindingId)) {
-        replacements.push({
-          type: "id",
-          start: idPath.node.start!,
-          end: idPath.node.end!,
-          replacement: `FN.${varName}`,
-          shorthand: shorthand ? varName : undefined,
-        });
-        return;
-      }
-
       let specificReplacement: string | undefined;
-      switch (bindingId) {
+      switchBinding: switch (bindingId) {
         case options.eventBinding?.id:
           specificReplacement = `EVENT${options.eventBinding!.eventAccessor ?? ""}`;
           break;
@@ -245,20 +247,38 @@ export function replaceBindings(
         case options.dataBinding?.id:
           specificReplacement = "DATA";
           break;
-        default:
+        default: {
           for (const keyBinding of options.eventKeyBindings ?? []) {
             if (bindingId === keyBinding.id) {
               specificReplacement = `EVENT_BY_KEY.${keyBinding.id.name}${keyBinding.eventAccessor ?? ""}`;
-              break;
+              break switchBinding;
             }
           }
           for (const exprBindingMap of options.eventExpressionBindings ?? []) {
             const expr = exprBindingMap.get(bindingId);
             if (expr) {
               specificReplacement = `(${replaceBindings(expr, state, app, options, true)})`;
-              break;
+              break switchBinding;
             }
           }
+          const expr = state.topLevelBindings.get(bindingId);
+          if (expr) {
+            switch (expr.kind) {
+              case "function":
+                specificReplacement = `FN.${bindingId.name}`;
+                break switchBinding;
+              case "constant":
+                specificReplacement = `(${replaceBindings(expr.value!, state, app, options, true)})`;
+                break switchBinding;
+            }
+            state.errors.push({
+              message: `Invalid reference to top-level binding kind: ${expr.kind}`,
+              node: idPath.node,
+              severity: "error",
+            });
+            return;
+          }
+        }
       }
       if (specificReplacement) {
         replacements.push({

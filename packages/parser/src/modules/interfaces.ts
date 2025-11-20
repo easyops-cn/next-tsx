@@ -38,6 +38,7 @@ export interface ParsedModule {
   defaultExport: ModulePart | null;
   namedExports: Map<string, ModulePart>;
   internals: ModulePart[];
+  topLevelBindings: BindingMap;
   render?: ParsedRender;
   errors: ParseError[];
   contracts: Set<string>;
@@ -55,7 +56,8 @@ export type ModuleType =
 export type ModulePart =
   | ModulePartOfComponent
   | ModulePartOfFunction
-  | ModulePartOfContext;
+  | ModulePartOfContext
+  | ModulePartOfConstant;
 
 export interface ModulePartOfComponent {
   type: "page" | "view" | "template";
@@ -72,6 +74,11 @@ export interface ModulePartOfFunction {
 export interface ModulePartOfContext {
   type: "context";
   context: string;
+}
+
+export interface ModulePartOfConstant {
+  type: "constant";
+  value: NodePath<t.Expression>;
 }
 
 export interface ParsedRender {
@@ -98,18 +105,19 @@ export interface BindingInfo {
     | "auth"
     | "history"
     | "location"
-    | "constant"
+    | "derived"
     | "flags"
     | "media"
     | "param"
     | "eventHandlerParam"
     | "eventCallback"
-    | "expression"
     | "component"
     | "context"
+    | "contextValue"
+    | "constant"
     | "function";
 
-  /** For kind "state" | "constant" | "param" */
+  /** For kind "state" | "derived" | "param" */
   initialValue?: unknown;
 
   /** For kind "resource" */
@@ -122,6 +130,9 @@ export interface BindingInfo {
   contextProvider?: ContextReference;
   contextKey?: string;
 
+  /** For kind "contextValue" */
+  contextValue?: NodePath<t.ObjectExpression>;
+
   /** For kind "eventCallback" */
   callback?: NodePath<t.FunctionExpression | t.ArrowFunctionExpression>;
   callbackRef?: string;
@@ -129,8 +140,8 @@ export interface BindingInfo {
   /** For kind "ref" */
   refName?: string;
 
-  /** For kind "expression" */
-  expression?: NodePath<t.Expression>;
+  /** For kind "constant" */
+  value?: NodePath<t.Expression>;
 }
 
 export interface EventBindingInfo {
@@ -173,9 +184,6 @@ export interface ParseJsValueOptions {
   eventExpressionBindings?: Map<t.Identifier, NodePath<t.Expression>>[];
   forEachBinding?: ForEachBindingInfo;
   dataBinding?: DataBindingInfo;
-  functionBindings?: Set<t.Identifier>;
-  componentBindings?: Set<t.Identifier>;
-  contextBindings?: Set<t.Identifier>;
   stateBindings?: string[];
   allowUseBrick?: boolean;
   ambiguous?: boolean;

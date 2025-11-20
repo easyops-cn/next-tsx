@@ -7,6 +7,7 @@ import {
   isOfficialComponent,
   type ComponentChild,
   type ModulePart,
+  type ModulePartOfConstant,
   type ModulePartOfContext,
   type ModulePartOfFunction,
   type ParsedModule,
@@ -30,7 +31,8 @@ export interface ConvertingPart {
 export type ConvertedPart =
   | ConvertedPartOfComponent
   | ModulePartOfFunction
-  | ModulePartOfContext;
+  | ModulePartOfContext
+  | ModulePartOfConstant;
 
 export interface ConvertedPartOfComponent {
   type: "page" | "view" | "template";
@@ -82,7 +84,11 @@ async function parseModulePart(
   state: ConvertState,
   options: ConvertOptions
 ): Promise<ConvertedPart> {
-  if (part.type === "function" || part.type === "context") {
+  if (
+    part.type === "function" ||
+    part.type === "context" ||
+    part.type === "constant"
+  ) {
     return part;
   }
 
@@ -96,7 +102,7 @@ async function parseModulePart(
       conf = convertDataSource(binding.resource!);
     } else if (
       binding.kind === "state" ||
-      binding.kind === "constant" ||
+      binding.kind === "derived" ||
       binding.kind === "param"
     ) {
       conf = {

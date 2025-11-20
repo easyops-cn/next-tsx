@@ -4,15 +4,13 @@ import type {
   ContextReference,
   ParsedApp,
   ParsedModule,
-  ParseJsValueOptions,
 } from "./interfaces.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 
 export function getContextReference(
   path: NodePath<t.Identifier | t.JSXIdentifier>,
   state: ParsedModule,
-  app: ParsedApp,
-  options: ParseJsValueOptions
+  app: ParsedApp
 ): ContextReference | null {
   if (!path.isReferencedIdentifier()) {
     return null;
@@ -24,11 +22,20 @@ export function getContextReference(
     return null;
   }
 
-  if (options.contextBindings?.has(binding.identifier)) {
-    return {
-      type: "local",
-      name: contextName,
-    };
+  const topLevelBinding = state.topLevelBindings.get(binding.identifier);
+  if (topLevelBinding) {
+    if (topLevelBinding.kind === "context") {
+      return {
+        type: "local",
+        name: contextName,
+      };
+    }
+    state.errors.push({
+      message: `The identifier "${contextName}" is not a context.`,
+      node: binding.identifier,
+      severity: "error",
+    });
+    return null;
   }
 
   if (binding.kind === "module") {

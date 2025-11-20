@@ -58,7 +58,7 @@ export const TransformBindingMap = new Map<BindingInfo["kind"], string>([
 export const CTX_BINDING_KINDS: BindingInfo["kind"][] = [
   "state",
   "resource",
-  "constant",
+  "derived",
   "param",
 ];
 

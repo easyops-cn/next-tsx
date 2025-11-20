@@ -11,7 +11,10 @@ import type {
   ParsedModule,
 } from "./interfaces.js";
 import { parseFunction } from "./parseFunction.js";
-import { validateGlobalApi } from "./validations.js";
+import {
+  validateEmbeddedExpression,
+  validateGlobalApi,
+} from "./validations.js";
 import { parseChildren } from "./parseChildren.js";
 import { parseFile } from "./parseFile.js";
 import { resolveImportSource } from "./resolveImportSource.js";
@@ -34,13 +37,7 @@ export function parseModule(
   ast: BabelParseResult<t.File>,
   options?: ParseModuleOptions
 ): void {
-  const functionBindings = new Set<t.Identifier>();
-  const componentBindings = new Set<t.Identifier>();
-  const contextBindings = new Set<t.Identifier>();
   const globalOptions: ParseJsValueOptions = {
-    functionBindings,
-    componentBindings,
-    contextBindings,
     stateBindings: options?.withContexts,
   };
 
@@ -67,9 +64,15 @@ export function parseModule(
           const id = stmt.node.id;
           if (id) {
             if (isComponent(id, mod)) {
-              componentBindings.add(id);
+              mod.topLevelBindings.set(id, {
+                id: id,
+                kind: "component",
+              });
             } else {
-              functionBindings.add(id);
+              mod.topLevelBindings.set(id, {
+                id: id,
+                kind: "function",
+              });
             }
           }
           if (scope === FunctionScope.DefaultExportDeclaration) {
@@ -172,51 +175,71 @@ export function parseModule(
           continue;
         }
         for (const declarator of decl.get("declarations")) {
-          const init = declarator.get("init");
-          if (!init.isCallExpression()) {
-            mod.errors.push({
-              message: `Global variables must be initialized with a call expression, but got: ${init.type}`,
-              node: init.node,
-              severity: "error",
-            });
-            continue;
-          }
-          const callee = init.get("callee");
-          if (!callee.isIdentifier()) {
-            mod.errors.push({
-              message: `Unsupported variable initializer type: ${callee.type}`,
-              node: callee.node,
-              severity: "error",
-            });
-            continue;
-          }
-          if (!validateGlobalApi(callee, "createContext")) {
-            mod.errors.push({
-              message: `Global variables must be initialized with createContext, but got: ${callee.node.name}`,
-              node: callee.node,
-              severity: "error",
-            });
-            continue;
-          }
-
           const id = declarator.get("id");
           if (!id.isIdentifier()) {
             mod.errors.push({
-              message: `Unsupported context identifier type: ${id.type}`,
+              message: `Variable declarator must be an identifier.`,
               node: id.node,
               severity: "error",
             });
             continue;
           }
-          const part: ModulePart = {
-            type: "context",
-            context: id.node.name,
-          };
-          contextBindings.add(id.node);
-          if (exported) {
-            mod.namedExports.set(id.node.name, part);
+          const init = declarator.get("init");
+          if (init.isCallExpression()) {
+            const callee = init.get("callee");
+            if (!callee.isIdentifier()) {
+              mod.errors.push({
+                message: `Unsupported variable initializer callee type: ${callee.type}`,
+                node: callee.node,
+                severity: "error",
+              });
+              continue;
+            }
+            if (!validateGlobalApi(callee, "createContext")) {
+              mod.errors.push({
+                message: `Invalid usage: ${callee.node.name}()`,
+                node: callee.node,
+                severity: "error",
+              });
+              continue;
+            }
+
+            mod.topLevelBindings.set(id.node, {
+              id: id.node,
+              kind: "context",
+            });
+            const part: ModulePart = {
+              type: "context",
+              context: id.node.name,
+            };
+            if (exported) {
+              mod.namedExports.set(id.node.name, part);
+            } else {
+              mod.internals.push(part);
+            }
+          } else if (init.node) {
+            if (validateEmbeddedExpression(init.node, mod)) {
+              mod.topLevelBindings.set(id.node, {
+                id: id.node,
+                kind: "constant",
+                value: init as NodePath<t.Expression>,
+              });
+              const part: ModulePart = {
+                type: "constant",
+                value: init as NodePath<t.Expression>,
+              };
+              if (exported) {
+                mod.namedExports.set(id.node.name, part);
+              } else {
+                mod.internals.push(part);
+              }
+            }
           } else {
-            mod.internals.push(part);
+            mod.errors.push({
+              message: `Variable declarator must have an initializer.`,
+              node: declarator.node,
+              severity: "error",
+            });
           }
         }
       }

@@ -62,6 +62,7 @@ export function parseLegacyModule(
     },
     internals: [],
     namedExports: new Map(),
+    topLevelBindings: bindingMap,
     errors,
     contracts: new Set(),
     usedHelpers: new Set(),
@@ -100,7 +101,7 @@ export function parseLegacyModule(
               continue;
             }
 
-            const binding: BindingInfo = { id: declId.node, kind: "constant" };
+            const binding: BindingInfo = { id: declId.node, kind: "derived" };
             const init = decl.get("init");
             if (init.node) {
               binding.initialValue = parseJsValue(
