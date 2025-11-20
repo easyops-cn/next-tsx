@@ -38,6 +38,7 @@ export interface ParsedModule {
   defaultExport: ModulePart | null;
   namedExports: Map<string, ModulePart>;
   internals: ModulePart[];
+  topLevelBindings: BindingMap;
   render?: ParsedRender;
   errors: ParseError[];
   contracts: Set<string>;
@@ -55,7 +56,8 @@ export type ModuleType =
 export type ModulePart =
   | ModulePartOfComponent
   | ModulePartOfFunction
-  | ModulePartOfContext;
+  | ModulePartOfContext
+  | ModulePartOfConstant;
 
 export interface ModulePartOfComponent {
   type: "page" | "view" | "template";
@@ -72,6 +74,11 @@ export interface ModulePartOfFunction {
 export interface ModulePartOfContext {
   type: "context";
   context: string;
+}
+
+export interface ModulePartOfConstant {
+  type: "constant";
+  value: NodePath<t.Expression>;
 }
 
 export interface ParsedRender {
@@ -107,6 +114,7 @@ export interface BindingInfo {
     | "component"
     | "context"
     | "contextValue"
+    | "constant"
     | "function";
 
   /** For kind "state" | "derived" | "param" */
@@ -131,6 +139,9 @@ export interface BindingInfo {
 
   /** For kind "ref" */
   refName?: string;
+
+  /** For kind "constant" */
+  value?: NodePath<t.Expression>;
 }
 
 export interface EventBindingInfo {
@@ -173,9 +184,6 @@ export interface ParseJsValueOptions {
   eventExpressionBindings?: Map<t.Identifier, NodePath<t.Expression>>[];
   forEachBinding?: ForEachBindingInfo;
   dataBinding?: DataBindingInfo;
-  functionBindings?: Set<t.Identifier>;
-  componentBindings?: Set<t.Identifier>;
-  contextBindings?: Set<t.Identifier>;
   stateBindings?: string[];
   allowUseBrick?: boolean;
   ambiguous?: boolean;

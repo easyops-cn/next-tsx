@@ -46,6 +46,7 @@ export type Destructor = () => void;
  *
  * 注意与 useEffect 有所不同：
  * - 初始渲染时不会执行 callback，仅在 deps 变化时才执行 callback
+ * - 仅支持监听 state / resource / context / prop 变化
  * - 不支持返回清理函数
  */
 export function useChangeEffect(callback: () => void, deps: unknown[]): void;

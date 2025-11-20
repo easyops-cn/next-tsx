@@ -1285,6 +1285,92 @@ exports[`parseView should work 1`] = `
     "moduleType": "entry",
     "namedExports": Map {},
     "source": undefined,
+    "topLevelBindings": Map {
+      Node {
+        "end": 186,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 19,
+            "index": 186,
+            "line": 13,
+          },
+          "filename": undefined,
+          "identifierName": "Operations",
+          "start": Position {
+            "column": 9,
+            "index": 176,
+            "line": 13,
+          },
+        },
+        "name": "Operations",
+        "start": 176,
+        "type": "Identifier",
+      } => {
+        "id": Node {
+          "end": 186,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 19,
+              "index": 186,
+              "line": 13,
+            },
+            "filename": undefined,
+            "identifierName": "Operations",
+            "start": Position {
+              "column": 9,
+              "index": 176,
+              "line": 13,
+            },
+          },
+          "name": "Operations",
+          "start": 176,
+          "type": "Identifier",
+        },
+        "kind": "component",
+      },
+      Node {
+        "end": 576,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 23,
+            "index": 576,
+            "line": 34,
+          },
+          "filename": undefined,
+          "identifierName": "prettierOutput",
+          "start": Position {
+            "column": 9,
+            "index": 562,
+            "line": 34,
+          },
+        },
+        "name": "prettierOutput",
+        "start": 562,
+        "type": "Identifier",
+      } => {
+        "id": Node {
+          "end": 576,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 23,
+              "index": 576,
+              "line": 34,
+            },
+            "filename": undefined,
+            "identifierName": "prettierOutput",
+            "start": Position {
+              "column": 9,
+              "index": 562,
+              "line": 34,
+            },
+          },
+          "name": "prettierOutput",
+          "start": 562,
+          "type": "Identifier",
+        },
+        "kind": "function",
+      },
+    },
     "usedHelpers": Set {
       "_helper_mergeTexts",
     },

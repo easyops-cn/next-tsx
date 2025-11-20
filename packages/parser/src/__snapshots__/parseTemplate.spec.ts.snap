@@ -285,6 +285,50 @@ exports[`parseTemplate should work 1`] = `
     "moduleType": "entry",
     "namedExports": Map {},
     "source": undefined,
+    "topLevelBindings": Map {
+      Node {
+        "end": 49,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 34,
+            "index": 49,
+            "line": 2,
+          },
+          "filename": undefined,
+          "identifierName": "Operations",
+          "start": Position {
+            "column": 24,
+            "index": 39,
+            "line": 2,
+          },
+        },
+        "name": "Operations",
+        "start": 39,
+        "type": "Identifier",
+      } => {
+        "id": Node {
+          "end": 49,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 34,
+              "index": 49,
+              "line": 2,
+            },
+            "filename": undefined,
+            "identifierName": "Operations",
+            "start": Position {
+              "column": 24,
+              "index": 39,
+              "line": 2,
+            },
+          },
+          "name": "Operations",
+          "start": 39,
+          "type": "Identifier",
+        },
+        "kind": "component",
+      },
+    },
     "usedHelpers": Set {
       "_helper_mergeTexts",
     },

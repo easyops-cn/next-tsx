@@ -95,6 +95,50 @@ exports[`parseApp should work 1`] = `
       "type": "render",
     },
     "source": undefined,
+    "topLevelBindings": Map {
+      Node {
+        "end": 339,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 17,
+            "index": 339,
+            "line": 16,
+          },
+          "filename": undefined,
+          "identifierName": "sayHello",
+          "start": Position {
+            "column": 9,
+            "index": 331,
+            "line": 16,
+          },
+        },
+        "name": "sayHello",
+        "start": 331,
+        "type": "Identifier",
+      } => {
+        "id": Node {
+          "end": 339,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "index": 339,
+              "line": 16,
+            },
+            "filename": undefined,
+            "identifierName": "sayHello",
+            "start": Position {
+              "column": 9,
+              "index": 331,
+              "line": 16,
+            },
+          },
+          "name": "sayHello",
+          "start": 331,
+          "type": "Identifier",
+        },
+        "kind": "function",
+      },
+    },
     "usedHelpers": Set {},
   },
   "errors": [],
@@ -186,6 +230,50 @@ exports[`parseApp should work 1`] = `
         "type": "render",
       },
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 339,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "index": 339,
+              "line": 16,
+            },
+            "filename": undefined,
+            "identifierName": "sayHello",
+            "start": Position {
+              "column": 9,
+              "index": 331,
+              "line": 16,
+            },
+          },
+          "name": "sayHello",
+          "start": 331,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 339,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 17,
+                "index": 339,
+                "line": 16,
+              },
+              "filename": undefined,
+              "identifierName": "sayHello",
+              "start": Position {
+                "column": 9,
+                "index": 331,
+                "line": 16,
+              },
+            },
+            "name": "sayHello",
+            "start": 331,
+            "type": "Identifier",
+          },
+          "kind": "function",
+        },
+      },
       "usedHelpers": Set {},
     },
     "/Pages/Layout.tsx" => {
@@ -558,6 +646,92 @@ exports[`parseApp should work 1`] = `
       "moduleType": "page",
       "namedExports": Map {},
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 263,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 30,
+              "index": 263,
+              "line": 9,
+            },
+            "filename": undefined,
+            "identifierName": "Layout",
+            "start": Position {
+              "column": 24,
+              "index": 257,
+              "line": 9,
+            },
+          },
+          "name": "Layout",
+          "start": 257,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 263,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 30,
+                "index": 263,
+                "line": 9,
+              },
+              "filename": undefined,
+              "identifierName": "Layout",
+              "start": Position {
+                "column": 24,
+                "index": 257,
+                "line": 9,
+              },
+            },
+            "name": "Layout",
+            "start": 257,
+            "type": "Identifier",
+          },
+          "kind": "component",
+        },
+        Node {
+          "end": 1303,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "index": 1303,
+              "line": 57,
+            },
+            "filename": undefined,
+            "identifierName": "Nav",
+            "start": Position {
+              "column": 9,
+              "index": 1300,
+              "line": 57,
+            },
+          },
+          "name": "Nav",
+          "start": 1300,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 1303,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 12,
+                "index": 1303,
+                "line": 57,
+              },
+              "filename": undefined,
+              "identifierName": "Nav",
+              "start": Position {
+                "column": 9,
+                "index": 1300,
+                "line": 57,
+              },
+            },
+            "name": "Nav",
+            "start": 1300,
+            "type": "Identifier",
+          },
+          "kind": "component",
+        },
+      },
       "usedHelpers": Set {
         "_helper_mergeTexts",
       },
@@ -746,6 +920,50 @@ exports[`parseApp should work 1`] = `
       "moduleType": "page",
       "namedExports": Map {},
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 124,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 28,
+              "index": 124,
+              "line": 5,
+            },
+            "filename": undefined,
+            "identifierName": "Home",
+            "start": Position {
+              "column": 24,
+              "index": 120,
+              "line": 5,
+            },
+          },
+          "name": "Home",
+          "start": 120,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 124,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 28,
+                "index": 124,
+                "line": 5,
+              },
+              "filename": undefined,
+              "identifierName": "Home",
+              "start": Position {
+                "column": 24,
+                "index": 120,
+                "line": 5,
+              },
+            },
+            "name": "Home",
+            "start": 120,
+            "type": "Identifier",
+          },
+          "kind": "component",
+        },
+      },
       "usedHelpers": Set {
         "_helper_mergeTexts",
       },
@@ -764,6 +982,50 @@ exports[`parseApp should work 1`] = `
         },
       },
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 193,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 26,
+              "index": 193,
+              "line": 10,
+            },
+            "filename": undefined,
+            "identifierName": "LayoutContext",
+            "start": Position {
+              "column": 13,
+              "index": 180,
+              "line": 10,
+            },
+          },
+          "name": "LayoutContext",
+          "start": 180,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 193,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 26,
+                "index": 193,
+                "line": 10,
+              },
+              "filename": undefined,
+              "identifierName": "LayoutContext",
+              "start": Position {
+                "column": 13,
+                "index": 180,
+                "line": 10,
+              },
+            },
+            "name": "LayoutContext",
+            "start": 180,
+            "type": "Identifier",
+          },
+          "kind": "context",
+        },
+      },
       "usedHelpers": Set {},
     },
     "/Pages/About.tsx" => {
@@ -816,6 +1078,50 @@ exports[`parseApp should work 1`] = `
       "moduleType": "page",
       "namedExports": Map {},
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 29,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 29,
+              "index": 29,
+              "line": 1,
+            },
+            "filename": undefined,
+            "identifierName": "About",
+            "start": Position {
+              "column": 24,
+              "index": 24,
+              "line": 1,
+            },
+          },
+          "name": "About",
+          "start": 24,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 29,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 29,
+                "index": 29,
+                "line": 1,
+              },
+              "filename": undefined,
+              "identifierName": "About",
+              "start": Position {
+                "column": 24,
+                "index": 24,
+                "line": 1,
+              },
+            },
+            "name": "About",
+            "start": 24,
+            "type": "Identifier",
+          },
+          "kind": "component",
+        },
+      },
       "usedHelpers": Set {},
     },
     "/Pages/Layout.css" => {
@@ -827,6 +1133,7 @@ exports[`parseApp should work 1`] = `
       "moduleType": "css",
       "namedExports": Map {},
       "source": undefined,
+      "topLevelBindings": Map {},
       "usedHelpers": Set {},
     },
     "/Pages/Page404.tsx" => {
@@ -879,6 +1186,50 @@ exports[`parseApp should work 1`] = `
       "moduleType": "page",
       "namedExports": Map {},
       "source": undefined,
+      "topLevelBindings": Map {
+        Node {
+          "end": 31,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 31,
+              "index": 31,
+              "line": 1,
+            },
+            "filename": undefined,
+            "identifierName": "Page404",
+            "start": Position {
+              "column": 24,
+              "index": 24,
+              "line": 1,
+            },
+          },
+          "name": "Page404",
+          "start": 24,
+          "type": "Identifier",
+        } => {
+          "id": Node {
+            "end": 31,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 31,
+                "index": 31,
+                "line": 1,
+              },
+              "filename": undefined,
+              "identifierName": "Page404",
+              "start": Position {
+                "column": 24,
+                "index": 24,
+                "line": 1,
+              },
+            },
+            "name": "Page404",
+            "start": 24,
+            "type": "Identifier",
+          },
+          "kind": "component",
+        },
+      },
       "usedHelpers": Set {},
     },
   },

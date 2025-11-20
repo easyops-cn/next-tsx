@@ -304,7 +304,7 @@ export function parseComponent(
             }
 
             if (validateGlobalApi(callee, "useContext")) {
-              const bindings = parseUseContext(decl, args, state, app, options);
+              const bindings = parseUseContext(decl, args, state, app);
               if (bindings) {
                 for (const binding of bindings) {
                   bindingMap.set(binding.id, binding);

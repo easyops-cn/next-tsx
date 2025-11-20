@@ -62,6 +62,7 @@ export function parseLegacyModule(
     },
     internals: [],
     namedExports: new Map(),
+    topLevelBindings: bindingMap,
     errors,
     contracts: new Set(),
     usedHelpers: new Set(),

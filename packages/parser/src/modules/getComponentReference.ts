@@ -2,7 +2,6 @@ import type { NodePath } from "@babel/traverse";
 import type * as t from "@babel/types";
 import type {
   ComponentReference,
-  ParseJsValueOptions,
   ParsedApp,
   ParsedModule,
 } from "./interfaces.js";
@@ -11,8 +10,7 @@ import { resolveImportSource } from "./resolveImportSource.js";
 export function getComponentReference(
   path: NodePath<t.Identifier | t.JSXIdentifier>,
   state: ParsedModule,
-  app: ParsedApp,
-  options: ParseJsValueOptions
+  app: ParsedApp
 ): ComponentReference | null {
   if (!path.isReferencedIdentifier()) {
     return null;
@@ -24,11 +22,20 @@ export function getComponentReference(
     return null;
   }
 
-  if (options.componentBindings?.has(binding.identifier)) {
-    return {
-      type: "local",
-      name: componentName,
-    };
+  const topLevelBinding = state.topLevelBindings.get(binding.identifier);
+  if (topLevelBinding) {
+    if (topLevelBinding.kind === "component") {
+      return {
+        type: "local",
+        name: componentName,
+      };
+    }
+    state.errors.push({
+      message: `The identifier "${componentName}" is not a component.`,
+      node: binding.identifier,
+      severity: "error",
+    });
+    return null;
   }
 
   if (binding.kind === "module") {

@@ -21,7 +21,7 @@ export function parseContextProvider(
   app: ParsedApp,
   options: ParseJsValueOptions
 ): (ChildElement | null)[] {
-  const contextReference = getContextReference(context, state, app, options);
+  const contextReference = getContextReference(context, state, app);
   const elements = path
     .get("children")
     .flatMap((child) => parseElement(child, state, app, options));

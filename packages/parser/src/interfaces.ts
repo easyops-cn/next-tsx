@@ -235,4 +235,5 @@ export type {
   ModulePartOfComponent,
   ModulePartOfFunction,
   ModulePartOfContext,
+  ModulePartOfConstant,
 } from "./modules/interfaces.js";

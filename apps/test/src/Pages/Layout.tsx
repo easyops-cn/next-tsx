@@ -16,6 +16,21 @@ import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
 import About from "./About";
 
+const ABC = 42;
+export const XYZ = ABC * 2 + testB("C");
+
+export function testA() {
+  return testB("A" + XYZ);
+}
+
+function testB(a: string) {
+  return a + "B";
+}
+
+function Temp() {
+  return <div>Temp Component</div>;
+}
+
 export default function Layout() {
   const [a, setA] = useState<string | null>(null);
   const b = a ? "value" : "null";
@@ -35,7 +50,7 @@ export default function Layout() {
 
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log("Layout mounted");
+    console.log("Layout mounted", ABC, XYZ, testA());
     return () => {
       // eslint-disable-next-line no-console
       console.log("Layout unmounted");
@@ -113,6 +128,7 @@ export default function Layout() {
           <Route path="/about" component={About} />
         </Routes>
       </div>
+      <Temp />
       {createPortal(<MyModal ref={modalRef} />)}
     </LayoutContext.Provider>
   );

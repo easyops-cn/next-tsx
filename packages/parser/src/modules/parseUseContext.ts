@@ -1,19 +1,13 @@
 import type { NodePath } from "@babel/traverse";
 import type * as t from "@babel/types";
-import type {
-  ParsedModule,
-  BindingInfo,
-  ParsedApp,
-  ParseJsValueOptions,
-} from "./interfaces.js";
+import type { ParsedModule, BindingInfo, ParsedApp } from "./interfaces.js";
 import { getContextReference } from "./getContextReference.js";
 
 export function parseUseContext(
   decl: NodePath<t.VariableDeclarator>,
   args: NodePath<t.Expression | t.SpreadElement | t.ArgumentPlaceholder>[],
   state: ParsedModule,
-  app: ParsedApp,
-  options: ParseJsValueOptions
+  app: ParsedApp
 ): BindingInfo[] | null {
   if (args.length !== 1) {
     state.errors.push({
@@ -33,7 +27,7 @@ export function parseUseContext(
     return null;
   }
 
-  const contextRef = getContextReference(firstArg, state, app, options);
+  const contextRef = getContextReference(firstArg, state, app);
   if (!contextRef) {
     return null;
   }

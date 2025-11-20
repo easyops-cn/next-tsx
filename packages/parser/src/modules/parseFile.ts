@@ -74,6 +74,7 @@ export function parseFile(
     defaultExport: null,
     namedExports: new Map(),
     internals: [],
+    topLevelBindings: new Map(),
     errors: [],
     contracts: new Set(),
     usedHelpers: new Set(),
