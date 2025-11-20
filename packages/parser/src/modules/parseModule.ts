@@ -121,6 +121,14 @@ export function parseModule(
         } else if (stmt.isImportDeclaration()) {
           if (stmt.node.importKind === "value") {
             const importSource = stmt.node.source.value;
+            if (importSource === "react" || importSource.startsWith("react/")) {
+              mod.errors.push({
+                message: `Import values from 'react' are not supported.`,
+                node: stmt.node,
+                severity: "error",
+              });
+              return;
+            }
             if (importSource.startsWith(".") || importSource.startsWith("/")) {
               imports.push(importSource);
             }
