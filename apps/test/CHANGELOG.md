@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.10.0...@apps/test@0.10.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* check translations ([beb1931](https://github.com/easyops-cn/next-tsx/commit/beb1931b49f62d02e4d0969a13e73bb99526262b))
+
+
+
+
+
 # [0.10.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.9.0...@apps/test@0.10.0) (2025-11-20)
 
 

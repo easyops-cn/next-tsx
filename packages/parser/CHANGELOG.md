@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.11.0...@next-tsx/parser@0.11.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* check translations ([beb1931](https://github.com/easyops-cn/next-tsx/commit/beb1931b49f62d02e4d0969a13e73bb99526262b))
+* disallow import values from react ([212a920](https://github.com/easyops-cn/next-tsx/commit/212a9206cbd57d1264e7cd5efe944ba441abaa14))
+
+
+
+
+
 # [0.11.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.10.0...@next-tsx/parser@0.11.0) (2025-11-20)
 
 
