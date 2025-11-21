@@ -143,6 +143,7 @@ exports[`parseApp should work 1`] = `
   },
   "errors": [],
   "files": undefined,
+  "i18nKeys": Set {},
   "modules": Map {
     "/index.tsx" => {
       "contracts": Set {},

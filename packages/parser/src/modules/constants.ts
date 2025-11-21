@@ -2,6 +2,15 @@ import type { BindingInfo } from "./interfaces.js";
 
 export const MODULE_SOURCE = "@next-tsx/core";
 
+export const GlobalVariables = new Map([
+  ["BASE_URL", "BASE_URL"],
+  ["translate", "I18N"],
+  ["translateByRecord", "I18N_TEXT"],
+  ["localStore", "LOCAL_STORAGE"],
+  ["sessionStore", "SESSION_STORAGE"],
+  ["language", "LANGUAGE"],
+]);
+
 export const CALL_API_LIST = [
   "callApi",
   "callHttp",

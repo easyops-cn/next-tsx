@@ -3,6 +3,7 @@ import {
   createContext,
   handleHttpError,
   querySelector,
+  translate,
   useContext,
   useRef,
   useResource,
@@ -65,7 +66,7 @@ export default function About() {
           modalRef.current.title = "About Modal";
         }}
       >
-        About {params.get("id")} {aboutInfo}
+        {translate("ABOUT")} {params.get("id")} {aboutInfo}
       </div>
       <div>{aboutInfo ? <span slot="a">1</span> : <span slot="b">2</span>}</div>
       <eo-modal ref={modalRef} />

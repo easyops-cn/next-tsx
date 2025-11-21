@@ -1428,6 +1428,7 @@ exports[`parseView should work 1`] = `
     },
   ],
   "files": undefined,
+  "i18nKeys": Set {},
   "modules": [],
 }
 `;

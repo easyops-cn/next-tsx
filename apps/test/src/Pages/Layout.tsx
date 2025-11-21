@@ -11,6 +11,7 @@ import {
   useRef,
   callProvider,
   handleHttpError,
+  translate,
 } from "@next-tsx/core";
 import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
@@ -90,7 +91,7 @@ export default function Layout() {
 
   return (
     <LayoutContext.Provider value={layoutContext}>
-      <button onClick={handleClick}>My App</button>
+      <button onClick={handleClick}>{translate("MY_APP")}</button>
       <pre
         onClick={(e) => {
           e.preventDefault();

@@ -8,7 +8,11 @@ import type {
 } from "./interfaces.js";
 import { resolveImportSource } from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
-import { CTX_BINDING_KINDS, TransformBindingMap } from "./constants.js";
+import {
+  CTX_BINDING_KINDS,
+  GlobalVariables,
+  TransformBindingMap,
+} from "./constants.js";
 
 type Replacement = IdReplacement | Annotation;
 
@@ -25,14 +29,6 @@ interface Annotation {
   start: number;
   end: number;
 }
-
-const GlobalVariables = new Map([
-  ["BASE_URL", "BASE_URL"],
-  ["translate", "I18N"],
-  ["translateByRecord", "I18N_TEXT"],
-  ["localStore", "LOCAL_STORAGE"],
-  ["sessionStore", "SESSION_STORAGE"],
-]);
 
 export function replaceBindings(
   path: NodePath<t.Expression | t.FunctionDeclaration>,
@@ -56,6 +52,15 @@ export function replaceBindings(
         start: tsPath.node.expression.end!,
         end: tsPath.node.end!,
       });
+    },
+    CallExpression(callPath) {
+      const callee = callPath.get("callee");
+      if (callee.isIdentifier() && validateGlobalApi(callee, "translate")) {
+        const firstArg = callPath.get("arguments")[0];
+        if (firstArg.isStringLiteral()) {
+          app.i18nKeys.add(firstArg.node.value);
+        }
+      }
     },
     Identifier(idPath) {
       if (!idPath.isReferencedIdentifier()) {
@@ -354,6 +359,8 @@ export function replaceBindings(
 
   if (path.isIdentifier()) {
     (visitor.Identifier as any)(path);
+  } else if (path.isCallExpression()) {
+    (visitor.CallExpression as any)(path);
   }
   path.traverse(visitor);
 

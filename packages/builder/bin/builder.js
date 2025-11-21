@@ -4,11 +4,13 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import jsYaml from "js-yaml";
 import chalk from "chalk";
+import _ from "lodash";
 import { init as initRaw } from "../src/raw-loader/index.js";
 
 initRaw();
 
 const { safeDump, JSON_SCHEMA } = jsYaml;
+const { difference, isObject } = _;
 
 const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".css", ".json"];
 const EXCLUDED_EXTENSIONS = [".d.ts", ".spec.ts", ".spec.tsx"];
@@ -71,6 +73,83 @@ async function buildApp(watchMode) {
   if (existsSync(i18nJsonPath)) {
     const i18nContent = await readFile(i18nJsonPath, "utf-8");
     i18n = JSON.parse(i18nContent);
+  }
+
+  if (app.i18nKeys.size > 0) {
+    if (!i18n) {
+      logErrors(
+        [
+          {
+            severity: "warning",
+            message: `i18n.json not found but translate() are used in the app.`,
+            filePath: "/i18n.json",
+          },
+        ],
+        watchMode
+      );
+    } else if (!isObject(i18n)) {
+      logErrors(
+        [
+          {
+            severity: "error",
+            message: `i18n.json is not a valid object.`,
+            filePath: "/i18n.json",
+          },
+        ],
+        watchMode
+      );
+    } else if (Object.keys(i18n).length === 0) {
+      logErrors(
+        [
+          {
+            severity: "warning",
+            message: `i18n.json does not contain any locale but translate() are used in the app.`,
+            filePath: "/i18n.json",
+          },
+        ],
+        watchMode
+      );
+    } else {
+      for (const [key, translations] of Object.entries(i18n)) {
+        if (!isObject(translations)) {
+          logErrors(
+            [
+              {
+                severity: "error",
+                message: `Translations for locale "${key}" is not a valid object.`,
+                filePath: "/i18n.json",
+              },
+            ],
+            watchMode
+          );
+          continue;
+        }
+        const translatedKeys = Object.keys(translations);
+
+        const missingKeys = difference(
+          Array.from(app.i18nKeys),
+          translatedKeys
+        );
+        if (missingKeys.length > 0) {
+          const plural = missingKeys.length > 1 ? "s" : "";
+          const hasRest = missingKeys.length > 3;
+          logErrors(
+            [
+              {
+                severity: "warning",
+                message: `Missing translations for ${missingKeys.length} key${plural} in locale "${key}": ${
+                  hasRest
+                    ? `${missingKeys.slice(0, 3).join(", ")}, ...`
+                    : missingKeys.join(", ")
+                }`,
+                filePath: "/i18n.json",
+              },
+            ],
+            watchMode
+          );
+        }
+      }
+    }
   }
 
   const { routes, functions, templates, constants, errors } = await convertApp(

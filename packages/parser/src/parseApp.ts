@@ -11,6 +11,7 @@ export function parseApp(files: SourceFile[]) {
     modules: new Map(),
     files,
     constants: new Map(),
+    i18nKeys: new Set<string>(),
     errors: [],
   };
 
