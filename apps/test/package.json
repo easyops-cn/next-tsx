@@ -1,7 +1,7 @@
 {
   "name": "@apps/test",
   "private": true,
-  "version": "0.10.1",
+  "version": "0.11.0",
   "type": "module",
   "scripts": {
     "start": "builder --watch",
@@ -20,7 +20,7 @@
     "@next-bricks/basic": "^1.62.1",
     "@next-bricks/containers": "^1.16.1",
     "@next-bricks/icons": "^1.6.1",
-    "@next-tsx/builder": "^0.0.28",
+    "@next-tsx/builder": "^0.0.29",
     "@next-tsx/core": "^0.8.0"
   }
 }

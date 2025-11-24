@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.10.1...@apps/test@0.11.0) (2025-11-24)
+
+
+### Features
+
+* support window.open ([6340964](https://github.com/easyops-cn/next-tsx/commit/6340964522ffbba32fae0f62da2b9769e8747809))
+
+
+
+
+
 ## [0.10.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.10.0...@apps/test@0.10.1) (2025-11-21)
 
 
