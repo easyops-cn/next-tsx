@@ -62,6 +62,7 @@ export type EventHandler =
   | TypeEventHandlerOfNavigate
   | TypeEventHandlerOfStore
   | TypeEventHandlerOfConsole
+  | TypeEventHandlerOfWindow
   | TypeEventHandlerOfEvent
   | TypeEventHandlerOfConditional;
 
@@ -187,6 +188,14 @@ export interface TypeEventHandlerOfConsole extends EventHandlerBase {
   action: "console";
   payload: {
     method: "log" | "info" | "warn" | "error";
+    args: unknown[];
+  };
+}
+
+export interface TypeEventHandlerOfWindow extends EventHandlerBase {
+  action: "window";
+  payload: {
+    method: "open";
     args: unknown[];
   };
 }
