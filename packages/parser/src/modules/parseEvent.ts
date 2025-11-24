@@ -617,6 +617,27 @@ function parseEventHandler(
                 },
               };
             }
+            case "window": {
+              // Parse `window.*(...)`
+              if (method !== "open") {
+                state.errors.push({
+                  message: `"window.${method}()" is not supported in event handler`,
+                  node: property.node,
+                  severity: "error",
+                });
+                return null;
+              }
+              return {
+                key: options.eventBinding?.id.name,
+                action: "window",
+                payload: {
+                  method: method,
+                  args: args.map((arg) =>
+                    parseJsValue(arg, state, app, options)
+                  ),
+                },
+              };
+            }
             case "Object": {
               // Parse `Object.assign(ref.current, { ... })`
               // Parse `Object.assign(querySelector("..."), { ... })`

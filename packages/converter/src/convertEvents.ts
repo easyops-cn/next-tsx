@@ -207,6 +207,12 @@ function convertEventHandler(
         action: `console.${handler.payload.method}`,
         args: handler.payload.args,
       };
+    case "window":
+      return {
+        key: handler.key,
+        action: `window.${handler.payload.method}`,
+        args: handler.payload.args,
+      };
     case "event":
       return {
         key: handler.key,

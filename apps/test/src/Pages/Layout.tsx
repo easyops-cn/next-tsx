@@ -85,6 +85,7 @@ export default function Layout() {
       height: "auto",
     });
     // doSomething(e);
+    window.open(e.detail?.url);
   };
 
   const layoutContext = { handleClick };
