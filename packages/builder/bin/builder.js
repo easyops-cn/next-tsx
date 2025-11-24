@@ -6,6 +6,7 @@ import jsYaml from "js-yaml";
 import chalk from "chalk";
 import _ from "lodash";
 import { init as initRaw } from "../src/raw-loader/index.js";
+import { transformCssFiles } from "./transformCssFiles.js";
 
 initRaw();
 
@@ -152,7 +153,7 @@ async function buildApp(watchMode) {
     }
   }
 
-  const { routes, functions, templates, constants, errors } = await convertApp(
+  const { routes, functions, templates, cssFiles, errors } = await convertApp(
     app,
     {
       rootId: "",
@@ -162,6 +163,14 @@ async function buildApp(watchMode) {
   if (errors.length > 0) {
     console.error(chalk.red("Errors found during converting the app:"));
     logErrors(errors, watchMode);
+  }
+
+  const cssErrors = [];
+  const transformedCssFiles = await transformCssFiles(cssFiles, cssErrors);
+
+  if (cssErrors.length > 0) {
+    console.error(chalk.red("Errors found during transforming CSS files:"));
+    logErrors(cssErrors, watchMode);
   }
 
   const targetPath = path.join(process.cwd(), "storyboard.yaml");
@@ -174,7 +183,7 @@ async function buildApp(watchMode) {
           ...appJson,
           standaloneMode: true,
           noPlaceholders: true,
-          constants,
+          constants: transformedCssFiles,
         },
         routes,
         meta: {

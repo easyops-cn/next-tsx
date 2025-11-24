@@ -10,7 +10,7 @@ export function parseApp(files: SourceFile[]) {
     appType: "app",
     modules: new Map(),
     files,
-    constants: new Map(),
+    cssFiles: new Map(),
     i18nKeys: new Set<string>(),
     errors: [],
   };

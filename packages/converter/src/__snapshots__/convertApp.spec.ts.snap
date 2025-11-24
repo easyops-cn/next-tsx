@@ -2,8 +2,8 @@
 
 exports[`convertApp should work 1`] = `
 {
-  "constants": {
-    "/Pages/Layout.css": "* {
+  "cssFiles": Map {
+    "/Pages/Layout.css" => "* {
   box-sizing: border-box;
 }
 ",

@@ -126,7 +126,7 @@ export async function convertApp(
     routes,
     functions: [...functions, ...helpers],
     templates,
-    constants: Object.fromEntries(app.constants),
+    cssFiles: app.cssFiles,
     errors: state.errors,
   };
 }

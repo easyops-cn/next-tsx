@@ -15,7 +15,7 @@ export function parseTemplate(source: string): ParsedApp {
         content: source,
       },
     ],
-    constants: new Map(),
+    cssFiles: new Map(),
     i18nKeys: new Set<string>(),
     errors: [],
   };

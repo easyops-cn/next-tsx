@@ -16,6 +16,7 @@ import {
 import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
 import About from "./About";
+import style from "./Layout.css";
 
 const ABC = 42;
 export const XYZ = ABC * 2 + testB("C");
@@ -92,6 +93,7 @@ export default function Layout() {
 
   return (
     <LayoutContext.Provider value={layoutContext}>
+      <style>{style}</style>
       <button onClick={handleClick}>{translate("MY_APP")}</button>
       <pre
         onClick={(e) => {

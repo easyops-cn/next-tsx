@@ -17,7 +17,7 @@ export interface ParsedApp {
   entry?: ParsedModule;
   modules: Map<string, ParsedModule | null>;
   files: SourceFile[];
-  constants: Map<string, unknown>;
+  cssFiles: Map<string, string>;
   i18nKeys: Set<string>;
   errors: ParseError[];
 }

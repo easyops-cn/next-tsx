@@ -3,7 +3,7 @@
 exports[`parseView should work 1`] = `
 {
   "appType": "view",
-  "constants": Map {},
+  "cssFiles": Map {},
   "entry": {
     "contracts": Set {
       "<% \`logs/\${CTX.logId}\` %>",

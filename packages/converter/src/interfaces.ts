@@ -38,6 +38,6 @@ export interface ConvertedApp {
   routes: RouteConf[];
   functions: StoryboardFunction[];
   templates: CustomTemplate[];
-  constants?: Record<string, unknown>;
+  cssFiles?: Map<string, string>;
   errors: ParseError[];
 }
