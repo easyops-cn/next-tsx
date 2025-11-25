@@ -21,6 +21,7 @@ export function parseView(source: string, options?: ParseOptions): ParsedApp {
       ...(options?.libs ?? []),
     ],
     cssFiles: new Map(),
+    imageFiles: new Set(),
     i18nKeys: new Set<string>(),
     errors: [],
   };

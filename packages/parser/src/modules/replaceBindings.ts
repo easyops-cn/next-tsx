@@ -158,6 +158,26 @@ export function replaceBindings(
               return;
             }
 
+            if (mod?.moduleType === "image") {
+              if (isImportDefault) {
+                replacements.push({
+                  type: "id",
+                  start: idPath.node.start!,
+                  end: idPath.node.end!,
+                  replacement: `IMG.get(${JSON.stringify(mod.assetName!)})`,
+                  shorthand: shorthand ? varName : undefined,
+                });
+                return;
+              } else {
+                state.errors.push({
+                  message: `Named imports are not supported for image modules`,
+                  node: idPath.node,
+                  severity: "error",
+                });
+                return;
+              }
+            }
+
             let modulePart: ModulePart | null | undefined;
             if (isImportDefault) {
               modulePart = mod?.defaultExport;

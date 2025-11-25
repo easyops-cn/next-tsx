@@ -39,5 +39,6 @@ export interface ConvertedApp {
   functions: StoryboardFunction[];
   templates: CustomTemplate[];
   cssFiles?: Map<string, string>;
+  imageFiles?: Set<string>;
   errors: ParseError[];
 }

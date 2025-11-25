@@ -17,6 +17,7 @@ import MyModal from "../Components/MyModal";
 import { LayoutContext } from "../Contexts/LayoutContext";
 import About from "./About";
 import style from "./Layout.css";
+import LogoutSvg from "../images/logout.svg";
 
 const ABC = 42;
 export const XYZ = ABC * 2 + testB("C");
@@ -110,6 +111,7 @@ export default function Layout() {
         {a === "connectors" && translate("MY_APP")}
         {a === "personal-info" && translate("MY_APP")}
       </div>
+      <img src={LogoutSvg} alt="Logout" />
       <eo-descriptions
         dataSource={dataSource}
         list={[

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>退出登录</title>
+    <g id="退出登录" stroke="none" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+        <g id="编组" transform="translate(2.25, 2.25)" stroke="#333333">
+            <path d="M6.7468875,0 L2,0 C0.8954305,2.22044605e-16 0,0.8954305 0,2 L0,11.5 C2.22044605e-16,12.6045695 0.8954305,13.5 2,13.5 L6.75,13.5 L6.75,13.5" id="路径"></path>
+            <polyline id="路径" points="10.125 10.125 13.5 6.75 10.125 3.375"></polyline>
+            <line x1="3.75" y1="6.7468875" x2="13.5" y2="6.7468875" id="路径"></line>
+        </g>
+    </g>
+</svg>

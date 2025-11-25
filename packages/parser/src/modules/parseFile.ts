@@ -7,6 +7,11 @@ import type {
   ParseModuleOptions,
   ParsedModule,
 } from "./interfaces.js";
+import {
+  CSS_EXTENSIONS,
+  IMAGE_EXTENSIONS,
+  SCRIPT_EXTENSIONS,
+} from "./constants.js";
 
 export interface SourceFile {
   filePath: string;
@@ -30,8 +35,13 @@ export function parseFile(
 
   app.modules.set(filePath, null);
 
-  const isScript = filePath.endsWith(".ts") || filePath.endsWith(".tsx");
-  const isCss = !isScript && file.filePath.endsWith(".css");
+  const isScript = SCRIPT_EXTENSIONS.some((ext) => file.filePath.endsWith(ext));
+  const isCss =
+    !isScript && CSS_EXTENSIONS.some((ext) => file.filePath.endsWith(ext));
+  const isImage =
+    !isScript &&
+    !isCss &&
+    IMAGE_EXTENSIONS.some((ext) => filePath.endsWith(ext));
 
   if (!ast && isScript) {
     try {
@@ -57,18 +67,21 @@ export function parseFile(
     ? "entry"
     : isCss
       ? "css"
-      : !isScript
-        ? "unknown"
-        : file.filePath.startsWith("/Pages/")
-          ? "page"
-          : file.filePath.startsWith("/Components/")
-            ? "template"
-            : file.filePath.startsWith("/Utils/")
-              ? "function"
-              : "unknown";
+      : isImage
+        ? "image"
+        : !isScript
+          ? "unknown"
+          : file.filePath.startsWith("/Pages/")
+            ? "page"
+            : file.filePath.startsWith("/Components/")
+              ? "template"
+              : file.filePath.startsWith("/Utils/")
+                ? "function"
+                : "unknown";
 
   const mod: ParsedModule = {
     source: file.content,
+    assetName: file.assetName,
     filePath,
     moduleType,
     defaultExport: null,
@@ -100,5 +113,7 @@ export function parseFile(
     parseModule(mod, app, ast, options);
   } else if (isCss) {
     app.cssFiles.set(filePath, file.content);
+  } else if (isImage) {
+    app.imageFiles.add(filePath);
   }
 }

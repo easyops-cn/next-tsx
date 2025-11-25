@@ -10,6 +10,7 @@ exports[`parseApp should work 1`] = `
 ",
   },
   "entry": {
+    "assetName": undefined,
     "contracts": Set {},
     "defaultExport": null,
     "errors": [],
@@ -144,8 +145,10 @@ exports[`parseApp should work 1`] = `
   "errors": [],
   "files": undefined,
   "i18nKeys": Set {},
+  "imageFiles": Set {},
   "modules": Map {
     "/index.tsx" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": null,
       "errors": [],
@@ -278,6 +281,7 @@ exports[`parseApp should work 1`] = `
       "usedHelpers": Set {},
     },
     "/Pages/Layout.tsx" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": {
         "component": {
@@ -738,6 +742,7 @@ exports[`parseApp should work 1`] = `
       },
     },
     "/Pages/Home.tsx" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": {
         "component": {
@@ -970,6 +975,7 @@ exports[`parseApp should work 1`] = `
       },
     },
     "/Contexts/LayoutContext.ts" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": null,
       "errors": [],
@@ -1030,6 +1036,7 @@ exports[`parseApp should work 1`] = `
       "usedHelpers": Set {},
     },
     "/Pages/About.tsx" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": {
         "component": {
@@ -1126,6 +1133,7 @@ exports[`parseApp should work 1`] = `
       "usedHelpers": Set {},
     },
     "/Pages/Layout.css" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": null,
       "errors": [],
@@ -1138,6 +1146,7 @@ exports[`parseApp should work 1`] = `
       "usedHelpers": Set {},
     },
     "/Pages/Page404.tsx" => {
+      "assetName": undefined,
       "contracts": Set {},
       "defaultExport": {
         "component": {

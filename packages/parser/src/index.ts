@@ -1,7 +1,12 @@
 export { parseView } from "./parseView.js";
 export { parseApp } from "./parseApp.js";
 export * from "./interfaces.js";
-export { MODULE_SOURCE } from "./modules/constants.js";
+export {
+  MODULE_SOURCE,
+  SCRIPT_EXTENSIONS,
+  CSS_EXTENSIONS,
+  IMAGE_EXTENSIONS,
+} from "./modules/constants.js";
 export {
   isExpressionString,
   isAnyOfficialComponent,
