@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.12.0...@apps/test@0.12.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* handle single expression child ([4951127](https://github.com/easyops-cn/next-tsx/commit/4951127e432c5fa79594503c528a258e41e9db6c))
+
+
+
+
+
 # [0.12.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.11.0...@apps/test@0.12.0) (2025-11-25)
 
 
