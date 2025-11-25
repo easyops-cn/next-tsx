@@ -20,7 +20,7 @@ export function parseView(source: string, options?: ParseOptions): ParsedApp {
       },
       ...(options?.libs ?? []),
     ],
-    constants: new Map(),
+    cssFiles: new Map(),
     i18nKeys: new Set<string>(),
     errors: [],
   };

@@ -99,6 +99,6 @@ export function parseFile(
   if (ast) {
     parseModule(mod, app, ast, options);
   } else if (isCss) {
-    app.constants.set(filePath, file.content);
+    app.cssFiles.set(filePath, file.content);
   }
 }
