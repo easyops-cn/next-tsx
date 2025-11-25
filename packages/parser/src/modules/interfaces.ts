@@ -18,6 +18,7 @@ export interface ParsedApp {
   modules: Map<string, ParsedModule | null>;
   files: SourceFile[];
   cssFiles: Map<string, string>;
+  imageFiles: Set<string>;
   i18nKeys: Set<string>;
   errors: ParseError[];
 }
@@ -25,6 +26,8 @@ export interface ParsedApp {
 export interface SourceFile {
   filePath: string;
   content: string;
+  /** For images */
+  assetName?: string;
 }
 
 export interface ParseModuleOptions {
@@ -35,6 +38,7 @@ export interface ParseModuleOptions {
 export interface ParsedModule {
   source: string;
   filePath: string;
+  assetName?: string;
   moduleType: ModuleType;
   defaultExport: ModulePart | null;
   namedExports: Map<string, ModulePart>;
@@ -51,6 +55,7 @@ export type ModuleType =
   | "page"
   | "template"
   | "css"
+  | "image"
   | "function"
   | "unknown";
 

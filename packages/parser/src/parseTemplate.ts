@@ -16,6 +16,7 @@ export function parseTemplate(source: string): ParsedApp {
       },
     ],
     cssFiles: new Map(),
+    imageFiles: new Set(),
     i18nKeys: new Set<string>(),
     errors: [],
   };

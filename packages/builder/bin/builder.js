@@ -1,22 +1,46 @@
 #!/usr/bin/env node
-import { readdir, readFile, writeFile, watch } from "node:fs/promises";
+import {
+  readdir,
+  readFile,
+  writeFile,
+  watch,
+  rm,
+  mkdir,
+  cp,
+} from "node:fs/promises";
 import path from "node:path";
 import { existsSync } from "node:fs";
 import jsYaml from "js-yaml";
 import chalk from "chalk";
 import _ from "lodash";
+import {
+  CSS_EXTENSIONS,
+  IMAGE_EXTENSIONS,
+  SCRIPT_EXTENSIONS,
+} from "@next-tsx/parser";
 import { init as initRaw } from "../src/raw-loader/index.js";
-import { transformCssFiles } from "./transformCssFiles.js";
+import { transformCssFiles } from "../src/transformCssFiles.js";
+import hash from "../src/hash.js";
 
 initRaw();
 
 const { safeDump, JSON_SCHEMA } = jsYaml;
 const { difference, isObject } = _;
 
-const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".css", ".json"];
-const EXCLUDED_EXTENSIONS = [".d.ts", ".spec.ts", ".spec.tsx"];
+const TEXT_EXTENSIONS = [...SCRIPT_EXTENSIONS, ...CSS_EXTENSIONS];
+const ALLOWED_EXTENSIONS = [...TEXT_EXTENSIONS, ...IMAGE_EXTENSIONS];
+const EXCLUDED_EXTENSIONS = [
+  ".d.ts",
+  ".spec.ts",
+  ".spec.tsx",
+  ".spec.js",
+  ".spec.jsx",
+];
 
 const srcDir = path.join(process.cwd(), "src");
+
+const distDir = path.join(process.cwd(), "dist");
+const imagesDir = path.join(distDir, "images");
 
 // 任务队列状态管理
 let isTaskRunning = false;
@@ -38,21 +62,40 @@ async function buildApp(watchMode) {
   /** @type {import("@next-tsx/parser").SourceFile[]} */
   const files = [];
 
+  /** @type {Map<string, string>} */
+  const imageMap = new Map();
+
   const processDirectory = async (dirPath) => {
     const list = await readdir(dirPath, { withFileTypes: true });
     for (const item of list) {
       if (item.isDirectory()) {
         await processDirectory(path.join(dirPath, item.name));
       } else if (item.isFile()) {
+        const isText = TEXT_EXTENSIONS.some((ext) => item.name.endsWith(ext));
+        const isImage =
+          !isText && IMAGE_EXTENSIONS.some((ext) => item.name.endsWith(ext));
         if (
-          ALLOWED_EXTENSIONS.some((ext) => item.name.endsWith(ext)) &&
+          (isText || isImage) &&
           !EXCLUDED_EXTENSIONS.some((ext) => item.name.endsWith(ext))
         ) {
           const filePath = path.join(dirPath, item.name);
-          const content = await readFile(filePath, "utf-8");
+          const relativeFilePath = `/${path.relative(srcDir, filePath)}`;
+          let content = "";
+          let assetName;
+          if (isText) {
+            content = await readFile(filePath, "utf-8");
+          } else {
+            const buf = await readFile(filePath);
+            const basename = path.basename(filePath);
+            const extname = path.extname(basename);
+            const contentHash = hash("sha1", buf, 16);
+            assetName = `${contentHash}${extname}`;
+            imageMap.set(relativeFilePath, assetName);
+          }
           files.push({
-            filePath: `/${path.relative(srcDir, filePath)}`,
+            filePath: relativeFilePath,
             content,
+            assetName,
           });
         }
       }
@@ -61,11 +104,28 @@ async function buildApp(watchMode) {
 
   await processDirectory(srcDir);
 
+  // Clean dist directory
+  if (existsSync(distDir)) {
+    await rm(distDir, { recursive: true, force: true });
+  }
+
   const app = parseApp(files);
 
   if (app.errors.length > 0) {
     console.error(chalk.red("Errors found during parsing the app:"));
     logErrors(app.errors, watchMode);
+  }
+
+  // Copy images
+  await mkdir(imagesDir, { recursive: true });
+  for (const imageFile of app.imageFiles) {
+    const assetName = imageMap.get(imageFile);
+    if (assetName) {
+      await cp(
+        path.join(srcDir, imageFile.slice(1)),
+        path.join(imagesDir, assetName)
+      );
+    }
   }
 
   const i18nJsonPath = path.join(srcDir, "i18n.json");

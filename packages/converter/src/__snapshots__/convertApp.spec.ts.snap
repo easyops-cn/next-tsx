@@ -23,6 +23,7 @@ exports[`convertApp should work 1`] = `
       "typescript": true,
     },
   ],
+  "imageFiles": Set {},
   "routes": [
     {
       "alias": "Page404",

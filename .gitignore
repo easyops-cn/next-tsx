@@ -19,4 +19,5 @@ report.*.json
 /dev-https.key
 /dev-https.cert
 
+/apps/*/dist
 /apps/*/storyboard.yaml

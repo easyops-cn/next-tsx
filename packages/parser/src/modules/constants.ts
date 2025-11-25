@@ -2,6 +2,12 @@ import type { BindingInfo } from "./interfaces.js";
 
 export const MODULE_SOURCE = "@next-tsx/core";
 
+export const SCRIPT_EXTENSIONS = [".ts", ".tsx"];
+
+export const CSS_EXTENSIONS = [".css"];
+
+export const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".svg"];
+
 export const GlobalVariables = new Map([
   ["BASE_URL", "BASE_URL"],
   ["translate", "I18N"],

@@ -5,6 +5,7 @@ exports[`parseView should work 1`] = `
   "appType": "view",
   "cssFiles": Map {},
   "entry": {
+    "assetName": undefined,
     "contracts": Set {
       "<% \`logs/\${CTX.logId}\` %>",
     },
@@ -1429,6 +1430,7 @@ exports[`parseView should work 1`] = `
   ],
   "files": undefined,
   "i18nKeys": Set {},
+  "imageFiles": Set {},
   "modules": [],
 }
 `;
