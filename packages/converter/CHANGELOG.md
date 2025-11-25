@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.9.0...@next-tsx/converter@0.10.0) (2025-11-25)
+
+
+### Features
+
+* support postcss ([4a661b9](https://github.com/easyops-cn/next-tsx/commit/4a661b933f22234ce94b118fa58cfd459985ff9c))
+
+
+
+
+
 # [0.9.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.8.1...@next-tsx/converter@0.9.0) (2025-11-24)
 
 
