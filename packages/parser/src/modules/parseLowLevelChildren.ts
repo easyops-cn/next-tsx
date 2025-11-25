@@ -112,12 +112,12 @@ export function parseLowLevelChildren(
               textContent:
                 child.type === "text"
                   ? child.text
-                  : child.type === "expression"
-                    ? replaceBindings(child.expression, state, app, {
-                        ...options,
-                        modifier: "=",
-                      })
-                    : constructMergeTexts(child.children, state, app, options),
+                  : constructMergeTexts(
+                      child.type === "expression" ? [child] : child.children,
+                      state,
+                      app,
+                      options
+                    ),
             },
           }
     );
