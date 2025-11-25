@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.1.1...@next-tsx/builder@0.2.0) (2025-11-25)
+
+
+### Features
+
+* support images ([e4d5e44](https://github.com/easyops-cn/next-tsx/commit/e4d5e44b9406a5bbf0a56b3bcb12f3e99e10a848))
+
+
+
+
+
 ## [0.1.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.1.0...@next-tsx/builder@0.1.1) (2025-11-25)
 
 **Note:** Version bump only for package @next-tsx/builder

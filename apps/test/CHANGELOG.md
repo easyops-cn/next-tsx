@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.12.1...@apps/test@0.13.0) (2025-11-25)
+
+
+### Features
+
+* support images ([e4d5e44](https://github.com/easyops-cn/next-tsx/commit/e4d5e44b9406a5bbf0a56b3bcb12f3e99e10a848))
+
+
+
+
+
 ## [0.12.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.12.0...@apps/test@0.12.1) (2025-11-25)
 
 
