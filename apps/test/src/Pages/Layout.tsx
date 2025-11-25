@@ -106,6 +106,10 @@ export default function Layout() {
       >
         {JSON.stringify(sessionStore.getItem("myKey"), null, 2)}
       </pre>
+      <div className="conditional-text">
+        {a === "connectors" && translate("MY_APP")}
+        {a === "personal-info" && translate("MY_APP")}
+      </div>
       <eo-descriptions
         dataSource={dataSource}
         list={[
