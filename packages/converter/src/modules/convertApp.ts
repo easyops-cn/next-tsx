@@ -126,8 +126,6 @@ export async function convertApp(
     routes,
     functions: [...functions, ...helpers],
     templates,
-    cssFiles: app.cssFiles,
-    imageFiles: app.imageFiles,
     errors: state.errors,
   };
 }

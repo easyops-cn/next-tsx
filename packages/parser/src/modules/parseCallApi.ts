@@ -95,8 +95,13 @@ export function parseCallApi(
         return null;
       }
 
+      const api = firstArg.node.value;
+      if (api.includes("@")) {
+        app.contracts.add(getApiName(api));
+      }
+
       return {
-        api: firstArg.node.value,
+        api,
         isRawProvider: true,
         params: args
           .slice(1)
@@ -153,9 +158,11 @@ export function parseCallApi(
       });
       return null;
     }
-    payload = {
-      api: firstArg.node.value,
-    };
+    const api = firstArg.node.value;
+    if (api.includes("@")) {
+      app.contracts.add(getApiName(api));
+    }
+    payload = { api };
   } else {
     const conversationId = parseJsValue(firstArg, state, app, options);
     if (typeof conversationId !== "string") {
@@ -268,4 +275,9 @@ export function parseCallApi(
   }
 
   return payload;
+}
+
+function getApiName(api: string): string {
+  const [apiName] = api.split(":");
+  return apiName;
 }

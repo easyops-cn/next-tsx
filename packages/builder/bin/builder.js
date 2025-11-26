@@ -25,7 +25,7 @@ import hash from "../src/hash.js";
 initRaw();
 
 const { safeDump, JSON_SCHEMA } = jsYaml;
-const { difference, isObject } = _;
+const { difference, isEmpty, isObject, pick } = _;
 
 const TEXT_EXTENSIONS = [...SCRIPT_EXTENSIONS, ...CSS_EXTENSIONS];
 const ALLOWED_EXTENSIONS = [...TEXT_EXTENSIONS, ...IMAGE_EXTENSIONS];
@@ -37,16 +37,16 @@ const EXCLUDED_EXTENSIONS = [
   ".spec.jsx",
 ];
 
-const srcDir = path.join(process.cwd(), "src");
-
-const distDir = path.join(process.cwd(), "dist");
+const rootDir = process.cwd();
+const srcDir = path.join(rootDir, "src");
+const distDir = path.join(rootDir, "dist");
 const imagesDir = path.join(distDir, "images");
 
 // 任务队列状态管理
 let isTaskRunning = false;
 let hasPendingTask = false;
 
-async function buildApp(watchMode) {
+async function buildApp(watchMode, withContracts) {
   const start = performance.now();
   console.log("Start building...");
   const { parseApp } = await import("@next-tsx/parser");
@@ -125,6 +125,70 @@ async function buildApp(watchMode) {
         path.join(srcDir, imageFile.slice(1)),
         path.join(imagesDir, assetName)
       );
+    }
+  }
+
+  let contracts;
+
+  if (app.contracts.size > 0) {
+    const contractsJsonPath = path.join(rootDir, "contracts.json");
+
+    if (withContracts) {
+      const res = await fetch(process.env.CONTRACT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: process.env.CONTRACT_COOKIE,
+        },
+        body: JSON.stringify({
+          contract: [...app.contracts].map((name) => ({
+            fullContractName: name,
+            version: "*",
+          })),
+        }),
+      });
+      if (!res.ok) {
+        let errorData;
+        try {
+          errorData = await res.text();
+          throw new Error(
+            `Failed to fetch contracts: ${res.status} ${res.statusText}:\n${errorData}`
+          );
+        } catch (e) {
+          if (errorData) {
+            throw e;
+          }
+        }
+        throw new Error(
+          `Failed to fetch contracts: ${res.status} ${res.statusText}`
+        );
+      }
+      const {
+        data: { list },
+      } = await res.json();
+
+      contracts = buildContracts(list);
+      await writeFile(
+        contractsJsonPath,
+        JSON.stringify(contracts, null, 2),
+        "utf-8"
+      );
+    } else {
+      if (existsSync(contractsJsonPath)) {
+        const contractsContent = await readFile(contractsJsonPath, "utf-8");
+        contracts = JSON.parse(contractsContent);
+      } else {
+        logErrors(
+          [
+            {
+              severity: "warning",
+              message: `contracts.json not found but contracts are used in the app.`,
+              filePath: "/contracts.json",
+            },
+          ],
+          watchMode
+        );
+      }
     }
   }
 
@@ -213,12 +277,9 @@ async function buildApp(watchMode) {
     }
   }
 
-  const { routes, functions, templates, cssFiles, errors } = await convertApp(
-    app,
-    {
-      rootId: "",
-    }
-  );
+  const { routes, functions, templates, errors } = await convertApp(app, {
+    rootId: "",
+  });
 
   if (errors.length > 0) {
     console.error(chalk.red("Errors found during converting the app:"));
@@ -226,14 +287,14 @@ async function buildApp(watchMode) {
   }
 
   const cssErrors = [];
-  const transformedCssFiles = await transformCssFiles(cssFiles, cssErrors);
+  const transformedCssFiles = await transformCssFiles(app.cssFiles, cssErrors);
 
   if (cssErrors.length > 0) {
     console.error(chalk.red("Errors found during transforming CSS files:"));
     logErrors(cssErrors, watchMode);
   }
 
-  const targetPath = path.join(process.cwd(), "storyboard.yaml");
+  const targetPath = path.join(rootDir, "storyboard.yaml");
   await writeFile(
     targetPath,
     safeDump(
@@ -250,6 +311,7 @@ async function buildApp(watchMode) {
           functions,
           customTemplates: templates,
           i18n,
+          contracts,
         },
       },
       {
@@ -268,7 +330,7 @@ async function buildApp(watchMode) {
 }
 
 // 任务队列管理函数
-async function executeTask(watchMode) {
+async function executeTask(watchMode, withContracts) {
   if (isTaskRunning) {
     hasPendingTask = true;
     return;
@@ -278,7 +340,7 @@ async function executeTask(watchMode) {
   hasPendingTask = false;
 
   try {
-    await buildApp(watchMode);
+    await buildApp(watchMode, withContracts);
   } catch (error) {
     console.error(chalk.red("Build failed:", error));
   } finally {
@@ -287,7 +349,7 @@ async function executeTask(watchMode) {
     // 检查是否有待处理的任务
     if (hasPendingTask) {
       // 使用 setImmediate 确保异步执行
-      setImmediate(() => executeTask(watchMode));
+      setImmediate(() => executeTask(watchMode, withContracts));
     }
   }
 }
@@ -296,9 +358,21 @@ async function executeTask(watchMode) {
 async function main() {
   const args = process.argv.slice(2);
   const watchMode = args.includes("--watch") || args.includes("-w");
+  const withContracts = args.includes("--with-contracts");
+
+  if (withContracts) {
+    if (!process.env.CONTRACT_COOKIE || !process.env.CONTRACT_URL) {
+      console.error(
+        chalk.red(
+          "CONTRACT_COOKIE and CONTRACT_URL environment variables are required when using --with-contracts"
+        )
+      );
+      process.exit(1);
+    }
+  }
 
   // 首次执行构建
-  await executeTask(watchMode);
+  await executeTask(watchMode, withContracts);
 
   if (watchMode) {
     console.log("Watching for file changes...");
@@ -311,11 +385,12 @@ async function main() {
         // 只处理我们关心的文件类型
         if (
           filename &&
-          ALLOWED_EXTENSIONS.some((ext) => filename.endsWith(ext)) &&
+          (ALLOWED_EXTENSIONS.some((ext) => filename.endsWith(ext)) ||
+            filename.endsWith(".json")) &&
           !EXCLUDED_EXTENSIONS.some((ext) => filename.endsWith(ext))
         ) {
           console.log(`File changed: ${filename}`);
-          await executeTask(watchMode);
+          await executeTask(watchMode, withContracts);
         }
       }
     } catch (error) {
@@ -356,4 +431,60 @@ function logErrors(errors, watchMode) {
   if (shouldBailout && !watchMode) {
     process.exit(1);
   }
+}
+
+/**
+ * Remove unnecessary fields from contract to stored in storyboard.
+ */
+function buildContracts(contract) {
+  return contract?.map(({ request, response, ...item }) => {
+    const isSimpleRequest = ["list", "get", "delete", "head"].includes(
+      item.endpoint?.method?.toLowerCase()
+    );
+    return {
+      ...item,
+      request: {
+        type: request?.type,
+        fields: isSimpleRequest
+          ? request.fields
+              ?.map((field) => pick(field, ["ref", "type"]))
+              // For simple requests, keep just one more field than ones in the uri params.
+              // It is used for detecting whether there is query params.
+              .slice(
+                0,
+                (item.endpoint.uri?.match(/:([^/]+)/g)?.length ?? 0) + 1
+              )
+          : hasFileType(request)
+            ? [
+                {
+                  // One field with type file is enough for detecting file upload.
+                  type: "file",
+                },
+              ]
+            : undefined,
+      },
+      response: {
+        type: response?.type,
+        wrapper: response?.wrapper,
+      },
+    };
+  });
+}
+
+function hasFileType(request) {
+  if (request?.type !== "object") {
+    return false;
+  }
+
+  const processFields = (fields) => {
+    return (
+      !isEmpty(fields) &&
+      fields.some(
+        (field) =>
+          ["file", "file[]"].includes(field.type) || processFields(field.fields)
+      )
+    );
+  };
+
+  return processFields(request.fields);
 }

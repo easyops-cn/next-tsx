@@ -13,6 +13,7 @@ export function parseApp(files: SourceFile[]) {
     cssFiles: new Map(),
     imageFiles: new Set(),
     i18nKeys: new Set<string>(),
+    contracts: new Set<string>(),
     errors: [],
   };
 

@@ -23,6 +23,7 @@ export function parseView(source: string, options?: ParseOptions): ParsedApp {
     cssFiles: new Map(),
     imageFiles: new Set(),
     i18nKeys: new Set<string>(),
+    contracts: new Set<string>(),
     errors: [],
   };
 

@@ -18,7 +18,10 @@ export default function About() {
   const { handleClick } = useContext(LayoutContext);
   const params = useSearchParams();
   const [aboutInfo, refetch] = useResource(
-    () => callApi("my.api@getAboutInfo:1.0.0", { id: params.get("id") }),
+    () =>
+      callApi("easyops.api.llm.elevo_object@ListServiceObjects:1.0.0", {
+        id: params.get("id"),
+      }),
     { async: true, fallback: null }
   );
   const modalRef = useRef();

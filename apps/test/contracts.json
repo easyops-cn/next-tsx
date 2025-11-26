@@ -1,0 +1,54 @@
+[
+  {
+    "name": "ListServiceObjects",
+    "namespaceId": "easyops.api.llm.elevo_object",
+    "version": "1.0.0",
+    "endpoint": {
+      "method": "list",
+      "uri": "/api/v1/elevo/workspaces/:workspaceId/service-objects",
+      "ext_fields": []
+    },
+    "serviceName": "logic.llm.aiops_service",
+    "request": {
+      "type": "object",
+      "fields": [
+        {
+          "ref": "",
+          "type": "string"
+        },
+        {
+          "ref": "",
+          "type": "bool"
+        }
+      ]
+    },
+    "response": {
+      "type": "object",
+      "wrapper": true
+    }
+  },
+  {
+    "name": "GetServiceObjectDetail",
+    "namespaceId": "easyops.api.llm.elevo_object",
+    "version": "1.0.0",
+    "endpoint": {
+      "method": "GET",
+      "uri": "/api/v1/elevo/service-objects/:objectId",
+      "ext_fields": []
+    },
+    "serviceName": "logic.llm.aiops_service",
+    "request": {
+      "type": "object",
+      "fields": [
+        {
+          "ref": "",
+          "type": "string"
+        }
+      ]
+    },
+    "response": {
+      "type": "ServiceObject",
+      "wrapper": true
+    }
+  }
+]
