@@ -75,6 +75,7 @@ export default function Layout() {
         content: thing.detail,
       });
     }, handleHttpError);
+    callApi("easyops.api.llm.elevo_object@GetServiceObjectDetail", {});
   };
 
   const handleClick = (e?: any) => {

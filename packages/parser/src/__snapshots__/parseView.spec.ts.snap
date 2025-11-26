@@ -3,6 +3,7 @@
 exports[`parseView should work 1`] = `
 {
   "appType": "view",
+  "contracts": Set {},
   "cssFiles": Map {},
   "entry": {
     "assetName": undefined,

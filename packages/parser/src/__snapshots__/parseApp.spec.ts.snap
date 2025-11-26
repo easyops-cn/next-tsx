@@ -3,6 +3,7 @@
 exports[`parseApp should work 1`] = `
 {
   "appType": "app",
+  "contracts": Set {},
   "cssFiles": Map {
     "/Pages/Layout.css" => "* {
   box-sizing: border-box;

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "builder --watch",
-    "build": "builder"
+    "build": "builder",
+    "build:with-contracts": "builder --with-contracts"
   },
   "nx": {
     "targets": {

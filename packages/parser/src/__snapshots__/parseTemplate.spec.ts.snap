@@ -3,6 +3,7 @@
 exports[`parseTemplate should work 1`] = `
 {
   "appType": "template",
+  "contracts": Set {},
   "cssFiles": Map {},
   "entry": {
     "assetName": undefined,

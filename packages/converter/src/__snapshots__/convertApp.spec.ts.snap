@@ -2,12 +2,6 @@
 
 exports[`convertApp should work 1`] = `
 {
-  "cssFiles": Map {
-    "/Pages/Layout.css" => "* {
-  box-sizing: border-box;
-}
-",
-  },
   "errors": [],
   "functions": [
     {
@@ -23,7 +17,6 @@ exports[`convertApp should work 1`] = `
       "typescript": true,
     },
   ],
-  "imageFiles": Set {},
   "routes": [
     {
       "alias": "Page404",

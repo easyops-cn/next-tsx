@@ -21,6 +21,7 @@ export interface ParsedApp {
   imageFiles: Set<string>;
   i18nKeys: Set<string>;
   errors: ParseError[];
+  contracts: Set<string>;
 }
 
 export interface SourceFile {
