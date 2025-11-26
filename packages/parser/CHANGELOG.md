@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.14.0...@next-tsx/parser@0.15.0) (2025-11-26)
+
+
+### Features
+
+* support build with contracts ([7d8a108](https://github.com/easyops-cn/next-tsx/commit/7d8a108ee86d9b864f7c4b1686a28c8a959f160d))
+
+
+
+
+
 # [0.14.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.13.1...@next-tsx/parser@0.14.0) (2025-11-25)
 
 

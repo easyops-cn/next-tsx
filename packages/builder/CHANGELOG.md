@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.2.0...@next-tsx/builder@0.3.0) (2025-11-26)
+
+
+### Features
+
+* support build with contracts ([7d8a108](https://github.com/easyops-cn/next-tsx/commit/7d8a108ee86d9b864f7c4b1686a28c8a959f160d))
+
+
+
+
+
 # [0.2.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.1.1...@next-tsx/builder@0.2.0) (2025-11-25)
 
 
