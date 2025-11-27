@@ -15,6 +15,7 @@ export interface ConvertOptions {
   withContexts?: Record<string, unknown>;
   allowAnyBricks?: boolean;
   withoutWrapper?: boolean;
+  themeVariant?: string;
 }
 
 export interface ConvertResult {

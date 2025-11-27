@@ -38,12 +38,14 @@ import { convertLifeCycle } from "./convertLifeCycle.js";
 import { convertProperties } from "./convertProperties.js";
 import { hasOwnProperty } from "@next-core/utils/general";
 
-const PORTAL_COMPONENTS = [
+const PORTAL_COMPONENTS = new Set([
   "eo-modal",
   "eo-drawer",
   "eo-event-agent",
   "eo-batch-agent",
-];
+]);
+
+const NO_THEME_VARIANT_BRICKS = new Set(["eo-event-agent", "eo-batch-agent"]);
 
 export async function convertComponent(
   component: ComponentChild,
@@ -234,6 +236,18 @@ export async function convertComponent(
     brick.slot = component.slot;
   }
 
+  if (
+    options.themeVariant &&
+    brick.brick?.includes("-") &&
+    !brick.brick.startsWith("tpl-") &&
+    !brick.brick.startsWith("isolated-tpl-") &&
+    !brick.properties?.themeVariant &&
+    !NO_THEME_VARIANT_BRICKS.has(brick.brick)
+  ) {
+    brick.properties ??= {};
+    brick.properties.themeVariant = options.themeVariant;
+  }
+
   brick.events = convertEvents(component, options);
 
   brick.lifeCycle = convertLifeCycle(component, options);
@@ -270,7 +284,7 @@ export async function convertComponent(
     }
   }
 
-  if (component.portal || PORTAL_COMPONENTS.includes(brick.brick)) {
+  if (component.portal || PORTAL_COMPONENTS.has(brick.brick)) {
     brick.portal = true;
   }
 

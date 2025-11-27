@@ -277,8 +277,13 @@ async function buildApp(watchMode, withContracts) {
     }
   }
 
+  console.log(
+    `Using global theme variant: ${appJson?.defaultConfig?.settings?.misc?.globalThemeVariant}`
+  );
+
   const { routes, functions, templates, errors } = await convertApp(app, {
     rootId: "",
+    themeVariant: appJson?.defaultConfig?.settings?.misc?.globalThemeVariant,
   });
 
   if (errors.length > 0) {
