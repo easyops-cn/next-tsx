@@ -1,5 +1,12 @@
 {
   "id": "test",
   "name": "Test App",
-  "homepage": "/test"
+  "homepage": "/test",
+  "defaultConfig": {
+    "settings": {
+      "misc": {
+        "globalThemeVariant": "elevo"
+      }
+    }
+  }
 }

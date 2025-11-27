@@ -11,7 +11,9 @@ export function getAppTplName(name: string) {
 
 function getViewTplNamePrefixByRootId(rootId: string) {
   if (!tplNameMap.has(rootId)) {
-    tplNameMap.set(rootId, `isolated-tpl-${counter++}`);
+    const tplName = `isolated-tpl-${counter++}`;
+    tplNameMap.set(rootId, tplName);
+    return tplName;
   }
   return tplNameMap.get(rootId)!;
 }
