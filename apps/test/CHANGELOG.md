@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.14.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.14.0...@apps/test@0.14.1) (2025-11-27)
+
+
+### Bug Fixes
+
+* support setting themeVariant globally ([59a0ecc](https://github.com/easyops-cn/next-tsx/commit/59a0ecca32d5d9414af212dd35a1721b72881018))
+
+
+
+
+
 # [0.14.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.13.0...@apps/test@0.14.0) (2025-11-26)
 
 
