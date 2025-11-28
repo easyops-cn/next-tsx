@@ -14,20 +14,20 @@ import { logErrors } from "./logErrors.js";
  * @returns {Promise<import("@next-core/types").StoryboardFunction>}
  */
 export async function transformFunction(fn, watchMode) {
-  const filePath = `${fn.name}.${fn.typescript ? "ts" : "js"}`;
+  const sourcefile = `${fn.name}.${fn.typescript ? "ts" : "js"}`;
 
   try {
     const result = await build({
       stdin: {
         contents: fn.source,
-        sourcefile: filePath,
-        loader: filePath.endsWith(".ts") ? "ts" : "js",
+        sourcefile,
+        loader: sourcefile.endsWith(".ts") ? "ts" : "js",
       },
       write: false,
       charset: "utf8",
       target: "es2018",
       sourcemap: false,
-      minify: false,
+      minify: !watchMode,
       tsconfigRaw: JSON.stringify({
         compilerOptions: {
           target: "es2018",
@@ -41,7 +41,6 @@ export async function transformFunction(fn, watchMode) {
         [
           {
             message: `Transforming function ${fn.name} failed: expected exactly one output file, but got ${result.outputFiles.length}`,
-            filePath: filePath,
             severity: "warning",
             node: null,
           },
@@ -64,7 +63,6 @@ export async function transformFunction(fn, watchMode) {
         [
           {
             message: `Transforming function ${fn.name} failed: expected exactly one statement in the output, but got ${body.length}`,
-            filePath: filePath,
             severity: "warning",
             node: null,
           },
@@ -80,7 +78,6 @@ export async function transformFunction(fn, watchMode) {
         [
           {
             message: `Transforming function ${fn.name} failed: expected a function declaration, but got ${stmt.type}`,
-            filePath: filePath,
             severity: "warning",
             node: null,
           },
@@ -118,7 +115,6 @@ export async function transformFunction(fn, watchMode) {
       [
         {
           message: `Transforming function ${fn.name} failed: ${String(error)}`,
-          filePath: filePath,
           severity: "warning",
           node: null,
         },

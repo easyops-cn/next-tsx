@@ -62,6 +62,7 @@ export function replaceBindings(
         const firstArg = callPath.get("arguments")[0];
         if (firstArg.isStringLiteral()) {
           app.i18nKeys.add(firstArg.node.value);
+          options.collectI18nKeys?.add(firstArg.node.value);
         }
       }
     },

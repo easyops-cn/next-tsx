@@ -2,6 +2,7 @@ import type {
   BrickConf,
   ContextConf,
   CustomTemplate,
+  MetaI18n,
   RouteConf,
   StoryboardFunction,
 } from "@next-core/types";
@@ -16,6 +17,7 @@ export interface ConvertOptions {
   allowAnyBricks?: boolean;
   withoutWrapper?: boolean;
   themeVariant?: string;
+  i18n?: MetaI18n;
 }
 
 export interface ConvertResult {
@@ -39,5 +41,6 @@ export interface ConvertedApp {
   routes: RouteConf[];
   functions: StoryboardFunction[];
   templates: CustomTemplate[];
+  menus: unknown[];
   errors: ParseError[];
 }

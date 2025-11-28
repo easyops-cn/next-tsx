@@ -15,6 +15,7 @@ export const GlobalVariables = new Map([
   ["localStore", "LOCAL_STORAGE"],
   ["sessionStore", "SESSION_STORAGE"],
   ["language", "LANGUAGE"],
+  ["getMenu", "APP.getMenu"],
 ]);
 
 export const CALL_API_LIST = [

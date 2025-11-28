@@ -256,6 +256,20 @@ export function querySelector<T = any>(selector: string): T;
  */
 export const BASE_URL: string;
 
+/**
+ * 创建菜单
+ */
+export function createMenu(
+  menuId: string,
+  config: Record<string, any>,
+  children: any[] | (() => Promise<any[]>)
+): void;
+
+/**
+ * 获取指定菜单
+ */
+export function getMenu(menuId: string): any;
+
 declare module "react" {
   interface DOMAttributes {
     onMount?: () => void;

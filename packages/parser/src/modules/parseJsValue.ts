@@ -17,18 +17,25 @@ export function parseJsValue(
   path: NodePath<t.Node>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions
+  options: ParseJsValueOptions,
+  constantOnly?: boolean
 ): unknown {
   if (path.isTSAsExpression()) {
-    return parseJsValue(path.get("expression"), state, app, options);
+    return parseJsValue(
+      path.get("expression"),
+      state,
+      app,
+      options,
+      constantOnly
+    );
   }
 
   if (path.isObjectExpression()) {
-    return parseJsObject(path, state, app, options);
+    return parseJsObject(path, state, app, options, constantOnly);
   }
 
   if (path.isArrayExpression()) {
-    return parseJsArray(path, state, app, options);
+    return parseJsArray(path, state, app, options, constantOnly);
   }
 
   if (
@@ -51,7 +58,11 @@ export function parseJsValue(
     return undefined;
   }
 
-  if (options.allowUseBrick && path.isArrowFunctionExpression()) {
+  if (
+    !constantOnly &&
+    options.allowUseBrick &&
+    path.isArrowFunctionExpression()
+  ) {
     const expr = path.get("body");
     if (expr.isBlockStatement()) {
       state.errors.push({
@@ -93,7 +104,7 @@ export function parseJsValue(
     } as RenderUseBrick;
   }
 
-  if (path.isExpression()) {
+  if (path.isExpression() && !constantOnly) {
     if (!validateEmbeddedExpression(path.node, state)) {
       return null;
     }
@@ -156,10 +167,12 @@ function parseJsObject(
   path: NodePath<t.ObjectExpression>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions
+  options: ParseJsValueOptions,
+  constantOnly?: boolean
 ) {
   const props = path.get("properties");
   if (
+    !constantOnly &&
     props.some(
       (p) =>
         p.isSpreadElement() ||
@@ -209,7 +222,13 @@ function parseJsObject(
       continue;
     }
 
-    result[key] = parseJsValue(prop.get("value"), state, app, options);
+    result[key] = parseJsValue(
+      prop.get("value"),
+      state,
+      app,
+      options,
+      constantOnly
+    );
   }
 
   return result;
@@ -219,10 +238,12 @@ function parseJsArray(
   path: NodePath<t.ArrayExpression>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions
+  options: ParseJsValueOptions,
+  constantOnly?: boolean
 ) {
   const elements = path.get("elements");
   if (
+    !constantOnly &&
     elements.some((e) => !e || e.isSpreadElement()) &&
     validateEmbeddedExpression(path.node, state)
   ) {
@@ -252,7 +273,13 @@ function parseJsArray(
       continue;
     }
     result.push(
-      parseJsValue(elem as NodePath<t.Expression>, state, app, options)
+      parseJsValue(
+        elem as NodePath<t.Expression>,
+        state,
+        app,
+        options,
+        constantOnly
+      )
     );
   }
 

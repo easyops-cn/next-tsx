@@ -22,6 +22,7 @@ import {
   resolveImportSource,
 } from "./resolveImportSource.js";
 import { getViewTitle } from "./getViewTitle.js";
+import { parseCreateMenu } from "./parseCreateMenu.js";
 
 const traverse =
   process.env.NODE_ENV === "test"
@@ -149,26 +150,55 @@ export function parseModule(
       };
 
       for (const stmt of body) {
-        if (
-          app.appType === "app" &&
-          mod === app.entry &&
-          stmt.isExpressionStatement()
-        ) {
+        if (app.appType === "app" && stmt.isExpressionStatement()) {
           const expr = stmt.get("expression");
           if (expr.isCallExpression()) {
             const callee = expr.get("callee");
-            if (callee.isIdentifier() && validateGlobalApi(callee, "render")) {
-              const args = expr.get("arguments");
-              if (args.length !== 1) {
-                mod.errors.push({
-                  message: `render() expects exactly one argument, received: ${args.length}`,
-                  node: expr.node,
-                  severity: "error",
-                });
+            if (callee.isIdentifier()) {
+              if (validateGlobalApi(callee, "render")) {
+                if (mod !== app.entry) {
+                  mod.errors.push({
+                    message: `render() can only be called in the entry module.`,
+                    node: expr.node,
+                    severity: "error",
+                  });
+                  continue;
+                }
+                if (renderNode) {
+                  mod.errors.push({
+                    message: `render() has already been called.`,
+                    node: expr.node,
+                    severity: "error",
+                  });
+                  continue;
+                }
+                const args = expr.get("arguments");
+                if (args.length !== 1) {
+                  mod.errors.push({
+                    message: `render() expects exactly one argument, received: ${args.length}`,
+                    node: expr.node,
+                    severity: "error",
+                  });
+                  continue;
+                }
+                renderNode = args[0];
                 continue;
               }
-              renderNode = args[0];
-              continue;
+
+              if (validateGlobalApi(callee, "createMenu")) {
+                const args = expr.get("arguments");
+                const menu = parseCreateMenu(
+                  callee,
+                  args,
+                  mod,
+                  app,
+                  globalOptions
+                );
+                if (menu) {
+                  app.menus.push(menu);
+                }
+                continue;
+              }
             }
           }
         }

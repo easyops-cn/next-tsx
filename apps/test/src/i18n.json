@@ -1,10 +1,16 @@
 {
   "en": {
     "MY_APP": "My Application",
-    "ABOUT": "About"
+    "ABOUT": "About",
+    "MY_MENU": "My Menu",
+    "MY_ANOTHER_MENU": "My Another Menu",
+    "SUB_MENU_1": "Sub Menu 1"
   },
   "zh": {
     "MY_APP": "我的应用程序",
-    "ABOUT": "关于"
+    "ABOUT": "关于",
+    "MY_MENU": "我的菜单",
+    "MY_ANOTHER_MENU": "我的另一个菜单",
+    "SUB_MENU_1": "子菜单 1"
   }
 }
