@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.14.1...@apps/test@0.15.0) (2025-11-28)
+
+
+### Features
+
+* support alias path ([5e20295](https://github.com/easyops-cn/next-tsx/commit/5e202952c38239c2fce84ccf917a348efea0cff1))
+
+
+
+
+
 ## [0.14.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.14.0...@apps/test@0.14.1) (2025-11-27)
 
 
