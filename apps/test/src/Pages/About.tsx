@@ -9,7 +9,7 @@ import {
   useResource,
   useSearchParams,
 } from "@next-tsx/core";
-import { LayoutContext } from "../Contexts/LayoutContext";
+import { LayoutContext } from "@/Contexts/LayoutContext";
 import { /* testA, */ XYZ } from "./Layout";
 
 const AboutContext = createContext();

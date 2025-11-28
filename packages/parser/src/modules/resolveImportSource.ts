@@ -7,9 +7,9 @@ export function resolveImportSource(
   currentFilePath: string,
   files: SourceFile[]
 ): string {
-  if (importSource.startsWith("/")) {
-    // Absolute path
-    return resolvePath(importSource, files);
+  if (importSource.startsWith("@/")) {
+    // Project root path
+    return resolvePath(importSource.substring(1), files);
   }
 
   if (importSource.startsWith("./") || importSource.startsWith("../")) {
@@ -34,6 +34,11 @@ export function resolveImportSource(
     return resolvePath(segments.join("/"), files);
   }
 
+  if (importSource.startsWith("/")) {
+    // Absolute path
+    return resolvePath(importSource, files);
+  }
+
   // Bare module specifier
   return importSource;
 }
@@ -48,4 +53,13 @@ function resolvePath(path: string, files: SourceFile[]): string {
     }
   }
   return path;
+}
+
+export function isLocalImportSource(importSource: string): boolean {
+  return (
+    importSource.startsWith("@/") ||
+    importSource.startsWith("./") ||
+    importSource.startsWith("../") ||
+    importSource.startsWith("/")
+  );
 }
