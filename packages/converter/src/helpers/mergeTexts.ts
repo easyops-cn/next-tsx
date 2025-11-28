@@ -13,7 +13,9 @@ export function mergeTexts(
       return String(value);
     }
     if (type === "object" && value !== null) {
-      throw new Error("Cannot render object as text");
+      // Helper functions will convert to storyboard functions,
+      // which does not support `new Error()` yet.
+      throw "Cannot render object as text";
     }
     return "";
   }

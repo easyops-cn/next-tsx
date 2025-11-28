@@ -21,6 +21,8 @@ import {
 import { init as initRaw } from "../src/raw-loader/index.js";
 import { transformCssFiles } from "../src/transformCssFiles.js";
 import hash from "../src/hash.js";
+import { transformFunction } from "../src/transformFunction.js";
+import { logErrors } from "../src/logErrors.js";
 
 initRaw();
 
@@ -286,18 +288,16 @@ async function buildApp(watchMode, withContracts) {
     themeVariant: appJson?.defaultConfig?.settings?.misc?.globalThemeVariant,
   });
 
+  const transformedFunctions = await Promise.all(
+    functions.map((fn) => transformFunction(fn, app.files, watchMode))
+  );
+
   if (errors.length > 0) {
     console.error(chalk.red("Errors found during converting the app:"));
     logErrors(errors, watchMode);
   }
 
-  const cssErrors = [];
-  const transformedCssFiles = await transformCssFiles(app.cssFiles, cssErrors);
-
-  if (cssErrors.length > 0) {
-    console.error(chalk.red("Errors found during transforming CSS files:"));
-    logErrors(cssErrors, watchMode);
-  }
+  const transformedCssFiles = await transformCssFiles(app.cssFiles, watchMode);
 
   const targetPath = path.join(rootDir, "storyboard.yaml");
   await writeFile(
@@ -313,7 +313,7 @@ async function buildApp(watchMode, withContracts) {
         },
         routes,
         meta: {
-          functions,
+          functions: transformedFunctions,
           customTemplates: templates,
           i18n,
           contracts,
@@ -407,36 +407,6 @@ async function main() {
 main().catch((error) => {
   console.error(chalk.red("Unexpected error:", error));
 });
-
-/**
- *
- * @param {import("@next-tsx/parser").ParseError[]} errors
- * @param {boolean} watchMode
- */
-function logErrors(errors, watchMode) {
-  let shouldBailout = false;
-  for (const err of errors) {
-    const color =
-      err.severity === "notice" || err.severity === "warning"
-        ? "yellow"
-        : "red";
-    console.error(chalk[color](`[${err.severity}] ${err.message}`));
-    console.error(
-      chalk[color](
-        `  at ${srcDir}${err.filePath}${err.node ? `:${err.node.loc.start.line}:${err.node.loc.start.column}` : ""}`
-      )
-    );
-    if (
-      !shouldBailout &&
-      (err.severity === "error" || err.severity === "fatal")
-    ) {
-      shouldBailout = true;
-    }
-  }
-  if (shouldBailout && !watchMode) {
-    process.exit(1);
-  }
-}
 
 /**
  * Remove unnecessary fields from contract to stored in storyboard.
