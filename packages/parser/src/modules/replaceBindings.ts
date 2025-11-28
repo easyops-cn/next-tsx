@@ -6,7 +6,10 @@ import type {
   ParsedApp,
   ParsedModule,
 } from "./interfaces.js";
-import { resolveImportSource } from "./resolveImportSource.js";
+import {
+  isLocalImportSource,
+  resolveImportSource,
+} from "./resolveImportSource.js";
 import { validateFunction, validateGlobalApi } from "./validations.js";
 import {
   CTX_BINDING_KINDS,
@@ -123,7 +126,7 @@ export function replaceBindings(
           }
 
           const source = importDecl.source.value;
-          if (source.startsWith(".") || source.startsWith("/")) {
+          if (isLocalImportSource(source)) {
             // Local modules
             const importSource = resolveImportSource(
               source,

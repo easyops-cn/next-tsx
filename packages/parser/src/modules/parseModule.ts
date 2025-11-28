@@ -17,7 +17,10 @@ import {
 } from "./validations.js";
 import { parseChildren } from "./parseChildren.js";
 import { parseFile } from "./parseFile.js";
-import { resolveImportSource } from "./resolveImportSource.js";
+import {
+  isLocalImportSource,
+  resolveImportSource,
+} from "./resolveImportSource.js";
 import { getViewTitle } from "./getViewTitle.js";
 
 const traverse =
@@ -129,7 +132,7 @@ export function parseModule(
               });
               return;
             }
-            if (importSource.startsWith(".") || importSource.startsWith("/")) {
+            if (isLocalImportSource(importSource)) {
               imports.push(importSource);
             }
           }

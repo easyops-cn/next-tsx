@@ -3,7 +3,7 @@ import {
   Routes,
   Route /* , translate, callProvider  */,
 } from "@next-tsx/core";
-import Layout from "./Pages/Layout";
+import Layout from "@/Pages/Layout";
 
 render(
   <Routes>
