@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.12.2...@next-tsx/converter@0.13.0) (2025-11-28)
+
+
+### Features
+
+* support transform functions to native mode ([01dc15d](https://github.com/easyops-cn/next-tsx/commit/01dc15d97e5e093ed69cb2d91909805a848884b0))
+
+
+
+
+
 ## [0.12.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.12.1...@next-tsx/converter@0.12.2) (2025-11-28)
 
 **Note:** Version bump only for package @next-tsx/converter
