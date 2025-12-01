@@ -33,8 +33,13 @@ jobs:
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_BASE_URL: "https://jp.duckcoding.com"
+          ANTHROPIC_SMALL_FAST_MODEL: "claude-haiku-4-5-20251001-thinking"
+          ANTHROPIC_MODEL: "claude-sonnet-4-5-20250929"
+          ANTHROPIC_AUTH_TOKEN: "${{ secrets.ANTHROPIC_AUTH_TOKEN }}"
         with:
-          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
 
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"
