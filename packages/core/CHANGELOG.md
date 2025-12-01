@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.8.0...@next-tsx/core@0.9.0) (2025-12-01)
+
+
+### Features
+
+* menus ([6697f8c](https://github.com/easyops-cn/next-tsx/commit/6697f8c2a3ddac42c8ec36f7891ac16e8c927deb))
+
+
+
+
+
 # [0.8.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.7.0...@next-tsx/core@0.8.0) (2025-11-20)
 
 

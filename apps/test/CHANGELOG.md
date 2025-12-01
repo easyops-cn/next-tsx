@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.15.1...@apps/test@0.16.0) (2025-12-01)
+
+
+### Features
+
+* menus ([6697f8c](https://github.com/easyops-cn/next-tsx/commit/6697f8c2a3ddac42c8ec36f7891ac16e8c927deb))
+
+
+
+
+
 ## [0.15.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.15.0...@apps/test@0.15.1) (2025-11-28)
 
 **Note:** Version bump only for package @apps/test
