@@ -8,6 +8,7 @@ import type {
   DataSource,
   Events,
   LifeCycle,
+  Menu,
   ParseError,
 } from "../interfaces.js";
 import type { NodePath } from "@babel/traverse";
@@ -22,6 +23,7 @@ export interface ParsedApp {
   i18nKeys: Set<string>;
   errors: ParseError[];
   contracts: Set<string>;
+  menus: Menu[];
 }
 
 export interface SourceFile {
@@ -121,6 +123,7 @@ export interface BindingInfo {
     | "component"
     | "context"
     | "contextValue"
+    | "menu"
     | "constant"
     | "function";
 
@@ -149,6 +152,9 @@ export interface BindingInfo {
 
   /** For kind "constant" */
   value?: NodePath<t.Expression>;
+
+  /** For kind "menu" */
+  menuId?: string;
 }
 
 export interface EventBindingInfo {
@@ -195,6 +201,7 @@ export interface ParseJsValueOptions {
   allowUseBrick?: boolean;
   ambiguous?: boolean;
   modifier?: string;
+  collectI18nKeys?: Set<string>;
 }
 
 export interface ComponentChild {

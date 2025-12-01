@@ -17,6 +17,7 @@ exports[`convertApp should work 1`] = `
       "typescript": true,
     },
   ],
+  "menus": [],
   "routes": [
     {
       "alias": "Page404",
@@ -84,7 +85,9 @@ exports[`convertApp should work 1`] = `
           "brick": "tpl-nav",
           "events": undefined,
           "lifeCycle": undefined,
-          "properties": {},
+          "properties": {
+            "menu": "<%= APP.getMenu("my-meu") %>",
+          },
           "slots": {
             "": {
               "bricks": [

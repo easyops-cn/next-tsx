@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
+import { useContext } from "@next-tsx/core";
 import { LayoutContext } from "../Contexts/LayoutContext";
 
 export default function Home() {

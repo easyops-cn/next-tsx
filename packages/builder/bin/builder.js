@@ -283,10 +283,14 @@ async function buildApp(watchMode, withContracts) {
     `Using global theme variant: ${appJson?.defaultConfig?.settings?.misc?.globalThemeVariant}`
   );
 
-  const { routes, functions, templates, errors } = await convertApp(app, {
-    rootId: "",
-    themeVariant: appJson?.defaultConfig?.settings?.misc?.globalThemeVariant,
-  });
+  const { routes, functions, templates, menus, errors } = await convertApp(
+    app,
+    {
+      rootId: "",
+      themeVariant: appJson?.defaultConfig?.settings?.misc?.globalThemeVariant,
+      i18n,
+    }
+  );
 
   const transformedFunctions = await Promise.all(
     functions.map((fn) => transformFunction(fn, app.files, watchMode))
@@ -317,6 +321,7 @@ async function buildApp(watchMode, withContracts) {
           customTemplates: templates,
           i18n,
           contracts,
+          menus,
         },
       },
       {

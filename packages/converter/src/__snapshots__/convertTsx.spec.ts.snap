@@ -30,6 +30,18 @@ exports[`convertTsx should work 1`] = `
                           ],
                           "key": "event",
                         },
+                        {
+                          "action": "history.pushQuery",
+                          "args": [
+                            {
+                              "logId": null,
+                            },
+                            {
+                              "notify": false,
+                            },
+                          ],
+                          "key": "event",
+                        },
                       ],
                       "if": "<% EVENT.detail %>",
                       "key": "event",
@@ -39,6 +51,18 @@ exports[`convertTsx should work 1`] = `
                           "args": [
                             "logId",
                             "<% EVENT.detail %>",
+                          ],
+                          "key": "event",
+                        },
+                        {
+                          "action": "history.pushQuery",
+                          "args": [
+                            {
+                              "logId": "<% EVENT.detail %>",
+                            },
+                            {
+                              "notify": false,
+                            },
                           ],
                           "key": "event",
                         },

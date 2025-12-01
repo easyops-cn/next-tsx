@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { callHttp, useHistory, useState, useRef, useResource, useQuery } from "@next-tsx/core";
 
 interface Log {
   logId: string;
@@ -47,6 +47,7 @@ export default function () {
   const [expandedSet, setExpandedSet] = useState(new Set<string>());
   const modalRef = useRef<ModalRef>(null);
   const [detailLog, setDetailLog] = useState<Log | null>(null);
+  const history = useHistory();
 
   const [logs, refetchLogs] = useResource<Log[]>(
     () =>
@@ -66,10 +67,10 @@ export default function () {
           onSearch={(event) => {
             if (event.detail) {
               setLogId(event.detail);
-              pushQuery({ logId: event.detail }, { notify: false });
+              history.pushQuery({ logId: event.detail }, { notify: false });
             } else {
               setLogId(undefined);
-              pushQuery({ logId: null }, { notify: false });
+              history.pushQuery({ logId: null }, { notify: false });
             }
           }}
           inputStyle={{ width: "300px" }}

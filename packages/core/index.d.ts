@@ -256,6 +256,54 @@ export function querySelector<T = any>(selector: string): T;
  */
 export const BASE_URL: string;
 
+/**
+ * 获取指定菜单
+ */
+export function useMenu(menuId: string): MenuConfig & {
+  menuId: string;
+  items: MenuItem[];
+};
+
+/**
+ * 创建菜单
+ */
+export function createMenu(
+  menuId: string,
+  config: MenuConfig,
+  items: MenuItem[] | (() => Promise<MenuItem[]>)
+): void;
+
+export interface MenuConfig {
+  title: string;
+  type?: "main" | "inject";
+  icon?: unknown;
+  link?: string;
+  titleDataSource?: unknown;
+  injectMenuGroupId?: string;
+  defaultCollapsed?: boolean;
+  defaultCollapsedBreakpoint?: number;
+}
+
+export interface MenuItem {
+  text: string;
+  type?: "default" | "group";
+  childLayout?: "default" | "category";
+  sort?: number;
+  if?: string | boolean;
+  defaultExpanded?: boolean;
+  groupId?: string;
+  groupFrom?: string;
+  to?: string | object;
+  href?: string;
+  icon?: unknown;
+  target?: string;
+  exact?: boolean;
+  activeIncludes?: (string | object)[];
+  activeExcludes?: (string | object)[];
+  activeMatchSearch?: boolean;
+  children?: MenuItem[];
+}
+
 declare module "react" {
   interface DOMAttributes {
     onMount?: () => void;

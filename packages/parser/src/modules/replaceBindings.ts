@@ -62,6 +62,7 @@ export function replaceBindings(
         const firstArg = callPath.get("arguments")[0];
         if (firstArg.isStringLiteral()) {
           app.i18nKeys.add(firstArg.node.value);
+          options.collectI18nKeys?.add(firstArg.node.value);
         }
       }
     },
@@ -338,6 +339,14 @@ export function replaceBindings(
             start: idPath.node.start!,
             end: idPath.node.end!,
             replacement: `CTX.${localBinding.contextKey!}`,
+            shorthand: shorthand ? varName : undefined,
+          });
+        } else if (localBinding.kind === "menu") {
+          replacements.push({
+            type: "id",
+            start: idPath.node.start!,
+            end: idPath.node.end!,
+            replacement: `APP.getMenu(${JSON.stringify(localBinding.menuId!)})`,
             shorthand: shorthand ? varName : undefined,
           });
         } else {

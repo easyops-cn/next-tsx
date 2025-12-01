@@ -8,6 +8,7 @@ import {
   useRef,
   useResource,
   useSearchParams,
+  useMenu,
 } from "@next-tsx/core";
 import { LayoutContext } from "@/Contexts/LayoutContext";
 import { /* testA, */ XYZ } from "./Layout";
@@ -26,9 +27,12 @@ export default function About() {
   );
   const modalRef = useRef();
 
+  const menu = useMenu("my-static-menu");
+
   return (
     <AboutContext.Provider value={{ aboutInfo, refetch }}>
       <div
+        menu={menu}
         onMount={handleClick}
         onClick={() => {
           refetch().then(() => {

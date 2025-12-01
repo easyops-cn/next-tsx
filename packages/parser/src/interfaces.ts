@@ -234,6 +234,13 @@ export interface RenderUseBrick {
   children: ComponentChild[];
 }
 
+export interface Menu {
+  menuId: string;
+  config: Record<string, unknown>;
+  items: unknown[] | DataSource;
+  i18nKeys: Set<string>;
+}
+
 export type {
   ParsedApp,
   ParsedModule,

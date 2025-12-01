@@ -35,7 +35,6 @@ export async function convertRoutes(
       const { reference, name: componentName } = component as ComponentChild & {
         reference: ComponentReference;
       };
-      // let page: ConvertedPart | null | undefined;
       let convertingPage: ConvertingPart | null | undefined;
 
       const importSource =
