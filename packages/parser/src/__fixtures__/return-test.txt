@@ -1,0 +1,28 @@
+// @ts-nocheck
+import { useState } from "@next-tsx/core";
+
+export default function TestReturnInEventHandler() {
+  const [value, setValue] = useState("");
+
+  return (
+    <View title="Test Return Statement">
+      <Button
+        onClick={(e) => {
+          if (!value) return;
+          console.log(value);
+        }}
+      >
+        Test Early Return
+      </Button>
+      <Button
+        onClick={() => {
+          const trimmed = value.trim();
+          if (!trimmed) return;
+          setValue(trimmed);
+        }}
+      >
+        Test With Variable
+      </Button>
+    </View>
+  );
+}

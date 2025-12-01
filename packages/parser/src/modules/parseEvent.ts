@@ -197,6 +197,20 @@ export function parseEventHandlers(
     };
   }
 
+  if (path.isReturnStatement()) {
+    const argument = path.get("argument");
+    if (argument.node) {
+      state.errors.push({
+        message: `Return statement in event handler must not have an argument`,
+        node: argument.node,
+        severity: "error",
+      });
+      return null;
+    }
+    // Return statement without argument is treated as a no-op (early exit)
+    return [];
+  }
+
   if (path.isExpressionStatement()) {
     return parseEventHandler(path.get("expression"), state, app, options);
   }
