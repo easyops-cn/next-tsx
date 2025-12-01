@@ -1,7 +1,10 @@
 import {
   render,
   Routes,
-  Route /* , translate, callProvider  */,
+  Route,
+  translate,
+  callProvider,
+  createMenu,
 } from "@next-tsx/core";
 import Layout from "@/Pages/Layout";
 
@@ -11,22 +14,23 @@ render(
   </Routes>
 );
 
-// createMenu("my-menu", {
-//   title: translate("MY_MENU", "My Menu"),
-//   // Static items
-//   items: [],
-// });
+// Static menu
+createMenu(
+  "my-static-menu",
+  {
+    title: translate("MY_MENU", "My Menu"),
+  },
+  [
+    {
+      text: translate("SUB_MENU_1", "Sub Menu 1"),
+    },
+  ]
+);
 
-// createMenu("my-another-menu", {
-//   title: translate("MY_ANOTHER_MENU", "My Another Menu"),
-//   // Dynamic items from provider
-//   items: () =>
-//     callProvider("my-provider", "my-first-argument").then((res) => res.list),
-// });
-
-// function createMenu(id: string, config: any) {
-//   return {
-//     ...config,
-//     menuId: id,
-//   };
-// }
+createMenu(
+  "my-dynamic-menu",
+  {
+    title: translate("MY_ANOTHER_MENU", "My Another Menu"),
+  },
+  () => callProvider("my-provider", "my-first-argument").then((res) => res.list)
+);

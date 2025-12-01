@@ -339,6 +339,7 @@ exports[`parseTemplate should work 1`] = `
   "files": undefined,
   "i18nKeys": Set {},
   "imageFiles": Set {},
+  "menus": [],
   "modules": [],
 }
 `;

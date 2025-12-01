@@ -41,6 +41,14 @@ export function parseUseResource(
   if (!validateFunction(resourcePath.node, state)) {
     return null;
   }
+  if (resourcePath.node.params.length > 0) {
+    state.errors.push({
+      message: `"useResource()" arrow function must not have parameters`,
+      node: resourcePath.node.params[0],
+      severity: "error",
+    });
+    return null;
+  }
   const call = resourcePath.get("body");
   if (call.isBlockStatement()) {
     return null;

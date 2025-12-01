@@ -14,6 +14,7 @@ export function parseApp(files: SourceFile[]) {
     imageFiles: new Set(),
     i18nKeys: new Set<string>(),
     contracts: new Set<string>(),
+    menus: [],
     errors: [],
   };
 

@@ -26,6 +26,7 @@ import { parseUseEffect } from "./parseUseEffect.js";
 import { getUniqueId } from "./getUniqueId.js";
 import { parseEvent } from "./parseEvent.js";
 import { parseUseChangeEffect } from "./parseUseChangeEffect.js";
+import { parseUseMenu } from "./parseUseMenu.js";
 
 export function parseComponent(
   fn: NodePath<t.FunctionDeclaration>,
@@ -287,6 +288,20 @@ export function parseComponent(
                     : getUniqueId(`${declId.node.name}-`),
               });
               continue;
+            } else if (validateGlobalApi(callee, "useContext")) {
+              const bindings = parseUseContext(decl, args, state, app);
+              if (bindings) {
+                for (const binding of bindings) {
+                  bindingMap.set(binding.id, binding);
+                }
+              }
+              continue;
+            } else if (validateGlobalApi(callee, "useMenu")) {
+              const binding = parseUseMenu(decl, args, state);
+              if (binding) {
+                bindingMap.set(binding.id, binding);
+              }
+              continue;
             } else {
               const identifierUse = parseIdentifierUse(
                 decl,
@@ -301,16 +316,6 @@ export function parseComponent(
                 bindingMap.set(identifierUse[0], identifierUse[1]);
                 continue;
               }
-            }
-
-            if (validateGlobalApi(callee, "useContext")) {
-              const bindings = parseUseContext(decl, args, state, app);
-              if (bindings) {
-                for (const binding of bindings) {
-                  bindingMap.set(binding.id, binding);
-                }
-              }
-              continue;
             }
           }
         }

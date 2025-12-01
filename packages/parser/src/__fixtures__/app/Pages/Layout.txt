@@ -1,6 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
-import { useState } from "@next-tsx/core";
+import { Routes, Route, useState, useMenu } from "@next-tsx/core";
 import Home from "./Home";
 import About from "./About";
 import { LayoutContext } from "../Contexts/LayoutContext";
@@ -8,22 +8,7 @@ import LayoutCss from "./Layout.css";
 
 export default function Layout() {
   const [x, setX] = useState(0);
-
-  // context:
-  //   name: SCOPE__LayoutContext__x
-  //   value: <% CTX.x %>
-  //   track: true
-  // ---
-  // brick: event-agent
-  // properties:
-  //   id: context-agent-LayoutContext
-  // events:
-  //   trigger:
-  //     - if: <% EVENT.detail.name === "setX" %>
-  //       action: context.set
-  //       args:
-  //         - name: x
-  //         - value: <% EVENT.detail.payload[0] %>
+  const menu = useMenu("my-meu");
 
   return (
     <LayoutContext.Provider value={{
@@ -32,7 +17,7 @@ export default function Layout() {
     }}>
       <style>{LayoutCss}</style>
       <h1>Home {x}</h1>
-      <Nav>
+      <Nav menu={menu}>
         <ul>
           <li>
             <Link url="/">Home</Link>

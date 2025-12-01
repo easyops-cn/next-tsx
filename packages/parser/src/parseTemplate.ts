@@ -19,6 +19,7 @@ export function parseTemplate(source: string): ParsedApp {
     imageFiles: new Set(),
     i18nKeys: new Set<string>(),
     contracts: new Set<string>(),
+    menus: [],
     errors: [],
   };
 

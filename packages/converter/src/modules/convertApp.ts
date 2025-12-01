@@ -1,6 +1,7 @@
 import type {
   BrickConfInTemplate,
   CustomTemplate,
+  MetaI18n,
   StoryboardFunction,
 } from "@next-core/types";
 import {
@@ -19,6 +20,7 @@ import type {
 import { getAppTplName } from "./getTplName.js";
 import { convertRoutes } from "./convertRoutes.js";
 import { getHelperFunctions } from "../helpers/index.js";
+import { convertDataSource } from "./convertDataSource.js";
 
 export async function convertApp(
   app: ParsedApp,
@@ -122,10 +124,63 @@ export async function convertApp(
     }
   );
 
+  const menus: unknown[] = [];
+  for (const menu of app.menus) {
+    if (Array.isArray(menu.items)) {
+      menus.push({
+        ...menu.config,
+        menuId: menu.menuId,
+        items: menu.items,
+        i18n: pickI18n(options.i18n, menu.i18nKeys),
+      });
+    } else {
+      const { resolve } = convertDataSource(menu.items);
+      menus.push({
+        ...menu.config,
+        menuId: menu.menuId,
+        dynamicItems: true,
+        itemsResolve: {
+          ...resolve,
+          ...(resolve?.transform
+            ? {
+                transform: {
+                  items: menu.items.transform,
+                },
+              }
+            : null),
+          ...(resolve?.onReject
+            ? {
+                onReject: {
+                  transform: { items: menu.items.rejectTransform },
+                },
+              }
+            : null),
+        },
+        i18n: pickI18n(options.i18n, menu.i18nKeys),
+      });
+    }
+  }
+
   return {
     routes,
     functions: [...functions, ...helpers],
     templates,
     errors: state.errors,
+    menus,
   };
+}
+
+function pickI18n(
+  i18n: MetaI18n | undefined,
+  keys: Set<string>
+): MetaI18n | undefined {
+  if (!i18n || keys.size === 0) {
+    return undefined;
+  }
+  return Object.fromEntries(
+    Object.entries(i18n).map(([key, value]) => [
+      key,
+      Object.fromEntries(Object.entries(value).filter(([k]) => keys.has(k))),
+    ])
+  );
 }

@@ -27,11 +27,15 @@ export function validateFunction(
 
 export function validateGlobalApi(
   id: NodePath<t.Identifier | t.JSXIdentifier>,
-  api: string
+  api: string,
+  allowUnknown?: boolean
 ): boolean {
   const ref = id.referencesImport(MODULE_SOURCE, api);
   if (ref) {
     return true;
+  }
+  if (!allowUnknown) {
+    return false;
   }
   return id.node.name === api && !id.scope.getBinding(id.node.name);
 }
