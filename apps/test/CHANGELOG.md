@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.16.0...@apps/test@0.16.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* support variable declarations in useEffect ([f7cc302](https://github.com/easyops-cn/next-tsx/commit/f7cc302107da4972444336d25cd2d2b25863854e))
+
+
+
+
+
 # [0.16.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.15.1...@apps/test@0.16.0) (2025-12-01)
 
 

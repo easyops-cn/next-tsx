@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.14.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.14.0...@next-tsx/converter@0.14.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* support variable declarations in useEffect ([f7cc302](https://github.com/easyops-cn/next-tsx/commit/f7cc302107da4972444336d25cd2d2b25863854e))
+
+
+
+
+
 # [0.14.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.13.0...@next-tsx/converter@0.14.0) (2025-12-01)
 
 
