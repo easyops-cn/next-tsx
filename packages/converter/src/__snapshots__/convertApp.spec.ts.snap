@@ -40,6 +40,23 @@ exports[`convertApp should work 1`] = `
       "bricks": [
         {
           "brick": "eo-event-agent",
+          "events": undefined,
+          "lifeCycle": {
+            "onMount": [
+              {
+                "action": "console.log",
+                "args": [
+                  "<% ((CTX.x + 1) + 2) %>",
+                ],
+                "key": undefined,
+              },
+            ],
+          },
+          "portal": true,
+          "properties": {},
+        },
+        {
+          "brick": "eo-event-agent",
           "events": {
             "trigger": [
               {

@@ -79,7 +79,19 @@ export function parseUseEffect(
   }
 
   // onMount/onUnmount effect, no dependencies
-  const onMountHandlers: EventHandler[] = [];
+  const _onMountHandlers = parseEventHandlers(
+    callbackBody,
+    state,
+    app,
+    options,
+    true
+  );
+  const onMountHandlers = Array.isArray(_onMountHandlers)
+    ? _onMountHandlers
+    : _onMountHandlers
+      ? [_onMountHandlers]
+      : [];
+
   const onUnmountHandlers: EventHandler[] = [];
   for (const stmt of callbackBody.get("body")) {
     if (stmt.isReturnStatement()) {
@@ -114,15 +126,6 @@ export function parseUseEffect(
         }
       }
       break;
-    } else {
-      const handlers = parseEventHandlers(stmt, state, app, options);
-      if (handlers) {
-        if (Array.isArray(handlers)) {
-          onMountHandlers.push(...handlers);
-        } else {
-          onMountHandlers.push(handlers);
-        }
-      }
     }
   }
 

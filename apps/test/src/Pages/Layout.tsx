@@ -52,8 +52,9 @@ export default function Layout() {
   }, [a, b, c]);
 
   useEffect(() => {
+    const a = "b";
     // eslint-disable-next-line no-console
-    console.log("Layout mounted", ABC, XYZ, testA());
+    console.log("Layout mounted", a, ABC, XYZ, testA());
     return () => {
       // eslint-disable-next-line no-console
       console.log("Layout unmounted");

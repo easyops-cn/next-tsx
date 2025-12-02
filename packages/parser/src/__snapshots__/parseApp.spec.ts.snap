@@ -289,128 +289,128 @@ exports[`parseApp should work 1`] = `
         "component": {
           "bindingMap": Map {
             Node {
-              "end": 302,
+              "end": 313,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 10,
-                  "index": 302,
+                  "index": 313,
                   "line": 10,
                 },
                 "filename": undefined,
                 "identifierName": "x",
                 "start": Position {
                   "column": 9,
-                  "index": 301,
+                  "index": 312,
                   "line": 10,
                 },
               },
               "name": "x",
-              "start": 301,
+              "start": 312,
               "type": "Identifier",
             } => {
               "id": Node {
-                "end": 302,
+                "end": 313,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 10,
-                    "index": 302,
+                    "index": 313,
                     "line": 10,
                   },
                   "filename": undefined,
                   "identifierName": "x",
                   "start": Position {
                     "column": 9,
-                    "index": 301,
+                    "index": 312,
                     "line": 10,
                   },
                 },
                 "name": "x",
-                "start": 301,
+                "start": 312,
                 "type": "Identifier",
               },
               "initialValue": 0,
               "kind": "state",
             },
             Node {
-              "end": 308,
+              "end": 319,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 16,
-                  "index": 308,
+                  "index": 319,
                   "line": 10,
                 },
                 "filename": undefined,
                 "identifierName": "setX",
                 "start": Position {
                   "column": 12,
-                  "index": 304,
+                  "index": 315,
                   "line": 10,
                 },
               },
               "name": "setX",
-              "start": 304,
+              "start": 315,
               "type": "Identifier",
             } => {
               "id": Node {
-                "end": 302,
+                "end": 313,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 10,
-                    "index": 302,
+                    "index": 313,
                     "line": 10,
                   },
                   "filename": undefined,
                   "identifierName": "x",
                   "start": Position {
                     "column": 9,
-                    "index": 301,
+                    "index": 312,
                     "line": 10,
                   },
                 },
                 "name": "x",
-                "start": 301,
+                "start": 312,
                 "type": "Identifier",
               },
               "kind": "setState",
             },
             Node {
-              "end": 337,
+              "end": 348,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 12,
-                  "index": 337,
+                  "index": 348,
                   "line": 11,
                 },
                 "filename": undefined,
                 "identifierName": "menu",
                 "start": Position {
                   "column": 8,
-                  "index": 333,
+                  "index": 344,
                   "line": 11,
                 },
               },
               "name": "menu",
-              "start": 333,
+              "start": 344,
               "type": "Identifier",
             } => {
               "id": Node {
-                "end": 337,
+                "end": 348,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 12,
-                    "index": 337,
+                    "index": 348,
                     "line": 11,
                   },
                   "filename": undefined,
                   "identifierName": "menu",
                   "start": Position {
                     "column": 8,
-                    "index": 333,
+                    "index": 344,
                     "line": 11,
                   },
                 },
                 "name": "menu",
-                "start": 333,
+                "start": 344,
                 "type": "Identifier",
               },
               "kind": "menu",
@@ -418,6 +418,26 @@ exports[`parseApp should work 1`] = `
             },
           },
           "children": [
+            {
+              "lifeCycle": {
+                "onMount": [
+                  {
+                    "action": "console",
+                    "key": undefined,
+                    "payload": {
+                      "args": [
+                        "<% ((CTX.x + 1) + 2) %>",
+                      ],
+                      "method": "log",
+                    },
+                  },
+                ],
+                "onUnmount": [],
+              },
+              "name": "eo-event-agent",
+              "portal": true,
+              "properties": {},
+            },
             {
               "events": {
                 "trigger": [
@@ -629,23 +649,23 @@ exports[`parseApp should work 1`] = `
           ],
           "effectsMap": Map {},
           "id": Node {
-            "end": 287,
+            "end": 298,
             "loc": SourceLocation {
               "end": Position {
                 "column": 30,
-                "index": 287,
+                "index": 298,
                 "line": 9,
               },
               "filename": undefined,
               "identifierName": "Layout",
               "start": Position {
                 "column": 24,
-                "index": 281,
+                "index": 292,
                 "line": 9,
               },
             },
             "name": "Layout",
-            "start": 281,
+            "start": 292,
             "type": "Identifier",
           },
           "type": "page",
@@ -683,23 +703,23 @@ exports[`parseApp should work 1`] = `
             ],
             "effectsMap": Map {},
             "id": Node {
-              "end": 985,
+              "end": 1089,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 12,
-                  "index": 985,
-                  "line": 42,
+                  "index": 1089,
+                  "line": 48,
                 },
                 "filename": undefined,
                 "identifierName": "Nav",
                 "start": Position {
                   "column": 9,
-                  "index": 982,
-                  "line": 42,
+                  "index": 1086,
+                  "line": 48,
                 },
               },
               "name": "Nav",
-              "start": 982,
+              "start": 1086,
               "type": "Identifier",
             },
             "type": "template",
@@ -712,85 +732,85 @@ exports[`parseApp should work 1`] = `
       "source": undefined,
       "topLevelBindings": Map {
         Node {
-          "end": 287,
+          "end": 298,
           "loc": SourceLocation {
             "end": Position {
               "column": 30,
-              "index": 287,
+              "index": 298,
               "line": 9,
             },
             "filename": undefined,
             "identifierName": "Layout",
             "start": Position {
               "column": 24,
-              "index": 281,
+              "index": 292,
               "line": 9,
             },
           },
           "name": "Layout",
-          "start": 281,
+          "start": 292,
           "type": "Identifier",
         } => {
           "id": Node {
-            "end": 287,
+            "end": 298,
             "loc": SourceLocation {
               "end": Position {
                 "column": 30,
-                "index": 287,
+                "index": 298,
                 "line": 9,
               },
               "filename": undefined,
               "identifierName": "Layout",
               "start": Position {
                 "column": 24,
-                "index": 281,
+                "index": 292,
                 "line": 9,
               },
             },
             "name": "Layout",
-            "start": 281,
+            "start": 292,
             "type": "Identifier",
           },
           "kind": "component",
         },
         Node {
-          "end": 985,
+          "end": 1089,
           "loc": SourceLocation {
             "end": Position {
               "column": 12,
-              "index": 985,
-              "line": 42,
+              "index": 1089,
+              "line": 48,
             },
             "filename": undefined,
             "identifierName": "Nav",
             "start": Position {
               "column": 9,
-              "index": 982,
-              "line": 42,
+              "index": 1086,
+              "line": 48,
             },
           },
           "name": "Nav",
-          "start": 982,
+          "start": 1086,
           "type": "Identifier",
         } => {
           "id": Node {
-            "end": 985,
+            "end": 1089,
             "loc": SourceLocation {
               "end": Position {
                 "column": 12,
-                "index": 985,
-                "line": 42,
+                "index": 1089,
+                "line": 48,
               },
               "filename": undefined,
               "identifierName": "Nav",
               "start": Position {
                 "column": 9,
-                "index": 982,
-                "line": 42,
+                "index": 1086,
+                "line": 48,
               },
             },
             "name": "Nav",
-            "start": 982,
+            "start": 1086,
             "type": "Identifier",
           },
           "kind": "component",
