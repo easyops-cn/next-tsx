@@ -1,4 +1,4 @@
-import type { RouteConf } from "@next-core/types";
+import type { BrickConf, RouteConf } from "@next-core/types";
 import {
   isOfficialComponent,
   type ComponentChild,
@@ -87,10 +87,15 @@ export async function convertRoutes(
         );
       }
 
+      // When there are no sub-routes,
+      // we can treat it as an exact match route.
+      const hasSub = hasSubRoutes(page.bricks);
+
       return {
         path: `\${APP.homepage}${path === "/" ? "" : path}`,
         alias: componentName,
-        incrementalSubRoutes: true,
+        exact: !hasSub,
+        incrementalSubRoutes: hasSub,
         bricks: page.bricks,
         context: page.context,
       };
@@ -101,4 +106,16 @@ export async function convertRoutes(
   routes.sort((a, b) => b.path.length - a.path.length);
 
   return routes;
+}
+
+function hasSubRoutes(bricks: BrickConf[]): boolean {
+  return bricks.some((brick) => {
+    return brick.slots
+      ? Object.values(brick.slots).some((slot) => {
+          return slot.type === "routes" || hasSubRoutes(slot.bricks);
+        })
+      : brick.children
+        ? hasSubRoutes(brick.children as BrickConf[])
+        : false;
+  });
 }
