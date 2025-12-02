@@ -102,10 +102,63 @@ export async function convertRoutes(
     }) ?? []
   );
 
-  // The more specific routes should come first
-  routes.sort((a, b) => b.path.length - a.path.length);
+  // The more specific routes should come first (ranked routing like React Router)
+  routes.sort((a, b) => {
+    const scoreA = computeRouteScore(a.path);
+    const scoreB = computeRouteScore(b.path);
+    return scoreB - scoreA;
+  });
 
   return routes;
+}
+
+// Scoring constants (similar to React Router)
+const staticSegmentValue = 10;
+const dynamicSegmentValue = 3;
+const emptySegmentValue = 1;
+const splatPenalty = -2;
+
+// Matches dynamic path segments like :id, :userId, etc.
+const paramRe = /^:[\w-]+$/;
+const isSplat = (s: string) => s === "*";
+
+/**
+ * Compute a score for a route path to determine matching priority.
+ * Higher scores indicate more specific routes.
+ *
+ * Scoring rules (similar to React Router):
+ * - Static segments (e.g., "users") score 10 points each
+ * - Dynamic segments (e.g., ":id") score 3 points each
+ * - Empty segments score 1 point each
+ * - Splat/wildcard ("*") subtracts 2 points
+ *
+ * This ensures that more specific routes are matched first:
+ * - "/users/profile" (score: 21) > "/users/:id" (score: 14)
+ * - "/users/:id/edit" (score: 24) > "/users/:id" (score: 14)
+ */
+export function computeRouteScore(path: string): number {
+  // Remove the ${APP.homepage} prefix to get the actual path segments
+  const actualPath = path.replace(/^\$\{APP\.homepage\}/, "");
+  const segments = actualPath.split("/").filter(Boolean);
+
+  let initialScore = segments.length;
+
+  if (segments.some(isSplat)) {
+    initialScore += splatPenalty;
+  }
+
+  return segments
+    .filter((s) => !isSplat(s))
+    .reduce(
+      (score, segment) =>
+        score +
+        (paramRe.test(segment)
+          ? dynamicSegmentValue
+          : segment === ""
+            ? emptySegmentValue
+            : staticSegmentValue),
+      initialScore
+    );
 }
 
 function hasSubRoutes(bricks: BrickConf[]): boolean {
