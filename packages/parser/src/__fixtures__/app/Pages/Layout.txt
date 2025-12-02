@@ -1,6 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
-import { Routes, Route, useState, useMenu } from "@next-tsx/core";
+import { Routes, Route, useState, useMenu, useEffect } from "@next-tsx/core";
 import Home from "./Home";
 import About from "./About";
 import { LayoutContext } from "../Contexts/LayoutContext";
@@ -9,6 +9,12 @@ import LayoutCss from "./Layout.css";
 export default function Layout() {
   const [x, setX] = useState(0);
   const menu = useMenu("my-meu");
+
+  useEffect(() => {
+    const y = x + 1;
+    const z = y + 2;
+    console.log(z);
+  }, []);
 
   return (
     <LayoutContext.Provider value={{

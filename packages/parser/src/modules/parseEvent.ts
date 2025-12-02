@@ -108,7 +108,8 @@ export function parseEventHandlers(
   path: NodePath<t.Statement | t.Expression | null | undefined>,
   state: ParsedModule,
   app: ParsedApp,
-  options: ParseJsValueOptions
+  options: ParseJsValueOptions,
+  breakOnReturn?: boolean
 ): EventHandler | EventHandler[] | null {
   if (path.isBlockStatement()) {
     const expressionBindingMap = new Map<
@@ -163,6 +164,9 @@ export function parseEventHandlers(
 
     const handlers: EventHandler[] = [];
     for (const stmt of body) {
+      if (breakOnReturn && stmt.isReturnStatement()) {
+        break;
+      }
       if (!stmt.isVariableDeclaration()) {
         const handler = parseEventHandlers(stmt, state, app, eventOptions);
         if (handler) {
@@ -172,6 +176,10 @@ export function parseEventHandlers(
     }
 
     return handlers;
+  }
+
+  if (breakOnReturn && path.isReturnStatement()) {
+    return null;
   }
 
   if (path.isIfStatement()) {
