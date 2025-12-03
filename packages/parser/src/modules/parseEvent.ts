@@ -214,7 +214,7 @@ export function parseEventHandlers(
   }
 
   state.errors.push({
-    message: `Unsupported event handler`,
+    message: `Unsupported event handler: ${path.node?.type}`,
     node: path.node,
     severity: "error",
   });

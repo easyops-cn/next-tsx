@@ -23,7 +23,7 @@ export function parseUseEffect(
   if (args.length !== 2) {
     state.errors.push({
       message: `useEffect() requires exactly 2 arguments, received ${args.length}`,
-      node: expr.node,
+      node: args.length > 2 ? args[2].node : expr.node.callee,
       severity: "error",
     });
     return null;
