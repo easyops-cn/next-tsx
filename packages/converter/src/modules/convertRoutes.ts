@@ -115,7 +115,6 @@ export async function convertRoutes(
 // Scoring constants (similar to React Router)
 const staticSegmentValue = 10;
 const dynamicSegmentValue = 3;
-const emptySegmentValue = 1;
 const splatPenalty = -2;
 
 // Matches dynamic path segments like :id, :userId, etc.
@@ -133,8 +132,8 @@ const isSplat = (s: string) => s === "*";
  * - Splat/wildcard ("*") subtracts 2 points
  *
  * This ensures that more specific routes are matched first:
- * - "/users/profile" (score: 21) > "/users/:id" (score: 14)
- * - "/users/:id/edit" (score: 24) > "/users/:id" (score: 14)
+ * - "/users/profile" (score: 22) > "/users/:id" (score: 15)
+ * - "/users/:id/edit" (score: 26) > "/users/:id" (score: 15)
  */
 export function computeRouteScore(path: string): number {
   // Remove the ${APP.homepage} prefix to get the actual path segments
@@ -152,11 +151,7 @@ export function computeRouteScore(path: string): number {
     .reduce(
       (score, segment) =>
         score +
-        (paramRe.test(segment)
-          ? dynamicSegmentValue
-          : segment === ""
-            ? emptySegmentValue
-            : staticSegmentValue),
+        (paramRe.test(segment) ? dynamicSegmentValue : staticSegmentValue),
       initialScore
     );
 }
@@ -165,7 +160,9 @@ function hasSubRoutes(bricks: BrickConf[]): boolean {
   return bricks.some((brick) => {
     return brick.slots
       ? Object.values(brick.slots).some((slot) => {
-          return slot.type === "routes" || hasSubRoutes(slot.bricks);
+          return (
+            slot.type === "routes" || (slot.bricks && hasSubRoutes(slot.bricks))
+          );
         })
       : brick.children
         ? hasSubRoutes(brick.children as BrickConf[])
