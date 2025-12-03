@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.17.1...@next-tsx/parser@0.17.2) (2025-12-03)
+
+
+### Bug Fixes
+
+* set route exact according to if it has sub-routes ([d1528c4](https://github.com/easyops-cn/next-tsx/commit/d1528c4765c9ea027508a3f701ae382bfc9c2dfc))
+
+
+
+
+
 ## [0.17.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.17.0...@next-tsx/parser@0.17.1) (2025-12-02)
 
 

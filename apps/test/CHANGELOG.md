@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.2](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.16.1...@apps/test@0.16.2) (2025-12-03)
+
+**Note:** Version bump only for package @apps/test
+
+
+
+
+
 ## [0.16.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.16.0...@apps/test@0.16.1) (2025-12-02)
 
 

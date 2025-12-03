@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.14.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.14.1...@next-tsx/converter@0.14.2) (2025-12-03)
+
+
+### Bug Fixes
+
+* refine route score ([9bf5bf5](https://github.com/easyops-cn/next-tsx/commit/9bf5bf5e02d4b61758d7f2476425fb1a2aaec480))
+* set route exact according to if it has sub-routes ([d1528c4](https://github.com/easyops-cn/next-tsx/commit/d1528c4765c9ea027508a3f701ae382bfc9c2dfc))
+* sorting routes like React Router ([38fa127](https://github.com/easyops-cn/next-tsx/commit/38fa127c09c95714f5749aa8f85167a701ba04bb))
+
+
+
+
+
 ## [0.14.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.14.0...@next-tsx/converter@0.14.1) (2025-12-02)
 
 
