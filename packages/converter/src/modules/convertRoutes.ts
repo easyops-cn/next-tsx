@@ -128,7 +128,6 @@ const isSplat = (s: string) => s === "*";
  * Scoring rules (similar to React Router):
  * - Static segments (e.g., "users") score 10 points each
  * - Dynamic segments (e.g., ":id") score 3 points each
- * - Empty segments score 1 point each
  * - Splat/wildcard ("*") subtracts 2 points
  *
  * This ensures that more specific routes are matched first:
