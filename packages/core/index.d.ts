@@ -146,6 +146,16 @@ export function useAuth(): {
   isAdmin: boolean;
 };
 
+/** 获取权限检查对象 */
+export function usePermissions(): {
+  /**
+   * 检查当前用户是否拥有指定权限
+   * @param permission - 权限点字符串（如 "user_service:api_account_manager"）
+   * @returns 如果用户拥有该权限返回 true，否则返回 false
+   */
+  check(permission: string): boolean;
+};
+
 /** 接收一个 Context 对象，返回其当前的值 */
 export function useContext<T>(context: Context<T>): T;
 
