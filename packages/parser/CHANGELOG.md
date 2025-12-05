@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.17.2...@next-tsx/parser@0.18.0) (2025-12-05)
+
+
+### Features
+
+* add usePermissions hook support and project documentation ([c43e085](https://github.com/easyops-cn/next-tsx/commit/c43e0859e6df9526a06f8a45df593acdb90ef09d))
+
+
+
+
+
 ## [0.17.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.17.1...@next-tsx/parser@0.17.2) (2025-12-03)
 
 
