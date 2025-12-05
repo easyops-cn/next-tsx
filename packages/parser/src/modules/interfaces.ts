@@ -117,6 +117,7 @@ export interface BindingInfo {
     | "derived"
     | "flags"
     | "media"
+    | "permissions"
     | "param"
     | "eventHandlerParam"
     | "eventCallback"
