@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.16.3...@apps/test@0.17.0) (2025-12-09)
+
+
+### Features
+
+* **parser:** support pipes ([41580b6](https://github.com/easyops-cn/next-tsx/commit/41580b6c6503ee09a1828e4bd1817bbbfbb96363))
+
+
+
+
+
 ## [0.16.3](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.16.2...@apps/test@0.16.3) (2025-12-05)
 
 **Note:** Version bump only for package @apps/test

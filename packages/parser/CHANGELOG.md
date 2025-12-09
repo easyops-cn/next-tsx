@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.18.0...@next-tsx/parser@0.19.0) (2025-12-09)
+
+
+### Features
+
+* **parser:** support pipes ([41580b6](https://github.com/easyops-cn/next-tsx/commit/41580b6c6503ee09a1828e4bd1817bbbfbb96363))
+
+
+
+
+
 # [0.18.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.17.2...@next-tsx/parser@0.18.0) (2025-12-05)
 
 
