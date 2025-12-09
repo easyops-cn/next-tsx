@@ -9,7 +9,7 @@ export default function TestHooks() {
 
   return (
     <div>
-      <div>Has Permission: {hasPermission}</div>
+      <div>Has Permission: {String(hasPermission)}</div>
       <div>Formatted Value: {formattedValue}</div>
     </div>
   );
