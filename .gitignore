@@ -21,3 +21,4 @@ report.*.json
 
 /apps/*/dist
 /apps/*/storyboard.yaml
+.history

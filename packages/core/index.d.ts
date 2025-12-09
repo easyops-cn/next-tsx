@@ -156,6 +156,11 @@ export function usePermissions(): {
   check(permission: string): boolean;
 };
 
+/** 获取管道工具函数 */
+export function usePipes(): {
+  [key: string]: (...args: unknown[]) => unknown;
+};
+
 /** 接收一个 Context 对象，返回其当前的值 */
 export function useContext<T>(context: Context<T>): T;
 

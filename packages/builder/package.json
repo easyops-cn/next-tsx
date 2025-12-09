@@ -1,6 +1,6 @@
 {
   "name": "@next-tsx/builder",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "homepage": "https://github.com/easyops-cn/next-tsx/tree/master/packages/builder",
   "repository": {
     "type": "git",

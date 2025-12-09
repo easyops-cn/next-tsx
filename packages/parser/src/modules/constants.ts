@@ -57,6 +57,7 @@ export const IdentifierUseMap = new Map<string, BindingInfo["kind"]>([
   ["useFlags", "flags"],
   ["useMedia", "media"],
   ["usePermissions", "permissions"],
+  ["usePipes", "pipes"],
 ]);
 
 export const TransformBindingMap = new Map<BindingInfo["kind"], string>([
@@ -70,6 +71,7 @@ export const TransformBindingMap = new Map<BindingInfo["kind"], string>([
   ["flags", "FLAGS"],
   ["media", "MEDIA"],
   ["permissions", "PERMISSIONS"],
+  ["pipes", "PIPES"],
 ]);
 
 export const CTX_BINDING_KINDS: BindingInfo["kind"][] = [
