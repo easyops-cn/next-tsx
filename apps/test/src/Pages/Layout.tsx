@@ -17,6 +17,7 @@ import MyModal from "@/Components/MyModal";
 import { LayoutContext } from "@/Contexts/LayoutContext";
 import LogoutSvg from "@/images/logout.svg";
 import About from "./About";
+import TestHooks from "./TestHooks";
 import style from "./Layout.css";
 
 const ABC = 42;
@@ -138,6 +139,7 @@ export default function Layout() {
       <div>
         <Routes>
           <Route path="/about" component={About} />
+          <Route path="/test-hooks" component={TestHooks} />
         </Routes>
       </div>
       <Temp />

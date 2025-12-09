@@ -126,7 +126,8 @@ export interface BindingInfo {
     | "contextValue"
     | "menu"
     | "constant"
-    | "function";
+    | "function"
+    | "pipes";
 
   /** For kind "state" | "derived" | "param" */
   initialValue?: unknown;
