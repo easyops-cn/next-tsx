@@ -10,7 +10,19 @@ import Layout from "@/Pages/Layout";
 
 render(
   <Routes>
-    <Route path="/" component={Layout} />
+    <Route
+      path="/"
+      component={Layout}
+      menu={{
+        pageTitle: translate("LAYOUT", "布局"),
+        breadcrumb: {
+          items: [
+            { text: translate("HOME", "首页"), to: "/" },
+            { text: translate("LAYOUT", "布局") },
+          ],
+        },
+      }}
+    />
   </Routes>
 );
 

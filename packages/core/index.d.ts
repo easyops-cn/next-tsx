@@ -7,7 +7,27 @@ export function Routes(props: PropsWithChildren<{ slot?: string }>): ReactNode;
 export function Route(props: {
   path: string;
   component: () => ReactNode;
+  menu?: RouteMenuConf;
 }): ReactNode;
+
+export interface RouteMenuConf {
+  pageTitle?: string;
+  menuId?: string;
+  subMenuId?: string;
+  breadcrumb?: BreadcrumbConf;
+}
+
+export interface BreadcrumbConf {
+  items: BreadcrumbItemConf[];
+  overwrite?: boolean;
+  noCurrentApp?: boolean;
+  useCurrentMenuTitle?: boolean;
+}
+
+export interface BreadcrumbItemConf {
+  text: string;
+  to?: string | { pathname?: string; search?: string; hash?: string };
+}
 
 /** 返回一个有状态的值和一个更新它的函数。 */
 export function useState<T>(

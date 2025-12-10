@@ -9,7 +9,7 @@ import type {
   ParsedApp,
   ParsedModule,
 } from "./interfaces.js";
-import { parsePropValue } from "./parseJsValue.js";
+import { parsePropValue, parseJsValue } from "./parseJsValue.js";
 import { parseLowLevelChildren } from "./parseLowLevelChildren.js";
 import type { ChildElement } from "./internal-interfaces.js";
 import { parseElement } from "./parseElement.js";
@@ -163,6 +163,30 @@ export function parseJSXElement(
           continue;
         }
         properties.path = attrValuePath.node.value;
+      } else if (attrName === "menu") {
+        if (!attrValuePath.isJSXExpressionContainer()) {
+          state.errors.push({
+            message: `The "menu" attribute in Route expects a JSXExpressionContainer, but got ${attrValuePath.node?.type}`,
+            node: attrValuePath.node ?? attrValuePath.parent,
+            severity: "error",
+          });
+          continue;
+        }
+        const exprPath = attrValuePath.get("expression");
+        if (exprPath.isJSXEmptyExpression()) {
+          state.errors.push({
+            message: `The "menu" attribute in Route expects an object expression, but got an empty expression`,
+            node: exprPath.node,
+            severity: "error",
+          });
+          continue;
+        }
+        properties.menu = parseJsValue(
+          exprPath as NodePath<t.Expression>,
+          state,
+          app,
+          options
+        );
       } else {
         state.errors.push({
           message: `Unsupported attribute "${attrName}" in Route`,

@@ -20,7 +20,7 @@ export async function convertRoutes(
       if (!isOfficialComponent(child, "Route")) {
         throw new Error(`All children of <Routes> must be <Route>.`);
       }
-      const { path, component } = child.properties;
+      const { path, component, menu } = child.properties;
 
       if (typeof path !== "string" || !path.startsWith("/")) {
         throw new Error(
@@ -98,6 +98,7 @@ export async function convertRoutes(
         incrementalSubRoutes: hasSub,
         bricks: page.bricks,
         context: page.context,
+        ...(menu ? { menu } : null),
       };
     }) ?? []
   );
