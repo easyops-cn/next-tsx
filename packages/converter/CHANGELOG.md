@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.14.4...@next-tsx/converter@0.15.0) (2025-12-10)
+
+
+### Features
+
+* **route:** support menu and breadcrumb configuration ([36799a9](https://github.com/easyops-cn/next-tsx/commit/36799a997ed2f980e73fe92e834e2b4e20084eca))
+
+
+
+
+
 ## [0.14.4](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.14.3...@next-tsx/converter@0.14.4) (2025-12-09)
 
 **Note:** Version bump only for package @next-tsx/converter
