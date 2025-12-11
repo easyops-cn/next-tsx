@@ -51,7 +51,7 @@ export default function () {
 
   const [logs, refetchLogs] = useResource<Log[]>(
     () =>
-      callHttp(`logs/${logId}`).then((res) => res.data.logs),
+      callHttp(`logs/${logId}`).then((res) => res.data.logs).catch(() => []),
     {
       enabled: !!logId,
       fallback: null,
