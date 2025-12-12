@@ -30,7 +30,7 @@ jobs:
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
     - name: Cache for yarn
       uses: actions/cache@v4
@@ -49,17 +49,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nx-${{ hashFiles('yarn.lock', 'package.json') }}-
 
-    # Fix `yarn install --frozen-lockfile` not working in monorepo.
-    # https://github.com/yarnpkg/yarn/issues/5840#issuecomment-468782288
     - name: Get checksum before yarn install
       id: yarn-lock-check-before
-      run: echo "::set-output name=sum::$(cksum yarn.lock)"
+      run: echo "sum=$(cksum yarn.lock)" >> $GITHUB_OUTPUT
 
     - run: yarn install --frozen-lockfile
 
     - name: Get checksum after yarn install
       id: yarn-lock-check-after
-      run: echo "::set-output name=sum::$(cksum yarn.lock)"
+      run: echo "sum=$(cksum yarn.lock)" >> $GITHUB_OUTPUT
 
     - name: Exit if yarn.lock updated
       run: exit 1
@@ -88,3 +86,45 @@ jobs:
       with:
         npm-token: ${{ secrets.NPM_TOKEN }}
       if: github.event_name == 'push'
+
+    # -------------------------
+    # 🚀 新增：diff 检查 storyboard.yaml
+    # -------------------------
+    - name: Check storyboard changes
+      id: diff
+      run: |
+        git fetch origin ${{ github.base_ref }} --depth=1
+
+        # 只检测 apps/**/storyboard.yaml
+        files=$(git diff --name-only origin/${{ github.base_ref }} HEAD -- 'apps/**/storyboard.yaml')
+
+        if [ -z "$files" ]; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        echo "changed=true" >> $GITHUB_OUTPUT
+
+        # 统计数量
+        echo "file_count=$(echo "$files" | wc -l)" >> $GITHUB_OUTPUT
+
+        # 生成 DIFF
+        {
+          echo "<details><summary>📝 Storyboard Diff（点击展开）</summary>"
+          echo
+          echo '```diff'
+          git diff origin/${{ github.base_ref }} HEAD -- $files
+          echo '```'
+          echo "</details>"
+        } > storyboard_diff.txt
+
+    - name: Update PR comment
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body-path: storyboard_diff.txt
+        edit-mode: replace
+        comment-identifier: storyboard-diff-check
+        skip-if-no-changes: true
