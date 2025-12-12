@@ -529,6 +529,7 @@ exports[`parseView should work 1`] = `
               },
               "http": true,
               "name": "logs",
+              "rejectTransform": "<% [] %>",
               "transform": "<% DATA.data.logs %>",
             },
           },

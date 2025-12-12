@@ -22,7 +22,9 @@ export default function About() {
     () =>
       callApi("easyops.api.llm.elevo_object@ListServiceObjects:1.0.0", {
         id: params.get("id"),
-      }),
+      })
+        .then((res) => res.list)
+        .catch(() => []),
     { async: true, fallback: null }
   );
   const modalRef = useRef();

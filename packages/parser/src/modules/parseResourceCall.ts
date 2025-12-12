@@ -20,7 +20,8 @@ export function parseResourceCall(
   transformArgs?: NodePath<
     t.Expression | t.SpreadElement | t.ArgumentPlaceholder
   >[],
-  method?: "then" | "catch"
+  method?: "then" | "catch",
+  catchArgs?: NodePath<t.Expression | t.SpreadElement | t.ArgumentPlaceholder>[]
 ): DataSource | null {
   const payload = parseCallApi(path, state, app, options);
   if (!payload) {
@@ -76,6 +77,28 @@ export function parseResourceCall(
       if (rejectTransform) {
         dataSource.rejectTransform = rejectTransform;
       }
+    }
+  }
+
+  // Handle chained .then().catch() pattern
+  if (catchArgs) {
+    if (catchArgs.length !== 1) {
+      state.errors.push({
+        message: `".catch()" expects exactly 1 argument, but got ${catchArgs.length}`,
+        node: catchArgs.length > 0 ? catchArgs[1].node : path.node,
+        severity: "error",
+      });
+      return null;
+    }
+    const rejectTransform = parsePromiseCallback(
+      catchArgs[0],
+      state,
+      app,
+      options,
+      "catch"
+    );
+    if (rejectTransform) {
+      dataSource.rejectTransform = rejectTransform;
     }
   }
 

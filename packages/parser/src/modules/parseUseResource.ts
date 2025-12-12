@@ -134,16 +134,48 @@ export function parseUseResource(
       });
       return null;
     }
-    resource = parseResourceCall(
-      callee.get("object"),
-      state,
-      app,
-      options,
-      resourceVar.node.name,
-      config,
-      call.get("arguments"),
-      property.node.name
-    );
+
+    const methodName = property.node.name;
+    const callObject = callee.get("object");
+
+    // Check for chained .then().catch() pattern
+    if (methodName === "catch" && callObject.isCallExpression()) {
+      const innerCallee = callObject.get("callee");
+      if (innerCallee.isMemberExpression()) {
+        const innerProperty = innerCallee.get("property");
+        if (
+          innerProperty.isIdentifier() &&
+          !innerCallee.node.computed &&
+          innerProperty.node.name === "then"
+        ) {
+          // This is callApi().then(onResolve).catch(onReject)
+          resource = parseResourceCall(
+            innerCallee.get("object"),
+            state,
+            app,
+            options,
+            resourceVar.node.name,
+            config,
+            callObject.get("arguments"),
+            "then",
+            call.get("arguments")
+          );
+        }
+      }
+    }
+
+    if (!resource) {
+      resource = parseResourceCall(
+        callObject,
+        state,
+        app,
+        options,
+        resourceVar.node.name,
+        config,
+        call.get("arguments"),
+        methodName
+      );
+    }
   } else {
     resource = parseResourceCall(
       call,
