@@ -1,0 +1,700 @@
+app:
+  uiVersion: '8.2'
+  id: test
+  name: Test App
+  homepage: /test
+  defaultConfig:
+    settings:
+      misc:
+        globalThemeVariant: elevo
+  standaloneMode: true
+  noPlaceholders: true
+  constants:
+    /Pages/Layout.css: '.my-modal .oops{color:red}'
+routes:
+  - path: '${APP.homepage}'
+    alias: Layout
+    exact: false
+    incrementalSubRoutes: true
+    bricks:
+      - brick: eo-batch-agent
+        properties:
+          id: effect-batch-agent-2
+        events:
+          trigger:
+            -
+              if: <% CTX.a %>
+              then:
+                -
+                  action: message.success
+                  args:
+                    - >-
+                      <% "Value of a changed: " + CTX.a + " / " + CTX.b + " / "
+                      + CTX.c %>
+                -
+                  action: sessionStorage.setItem
+                  args:
+                    - myKey
+                    - '<% { a:CTX.a, b:CTX.b, c:CTX.c } %>'
+        portal: true
+      - brick: eo-event-agent
+        properties: {}
+        lifeCycle:
+          onMount:
+            -
+              action: console.log
+              args:
+                - Layout mounted
+                - <% ("b") %>
+                - <% (42) %>
+                - <% ((42) * 2 + FN.testB("C")) %>
+                - <% FN.testA() %>
+          onUnmount:
+            -
+              action: console.log
+              args:
+                - Layout unmounted
+        portal: true
+      - brick: eo-event-agent
+        properties:
+          dataset:
+            ref: callback-handleClick-4
+        events:
+          trigger:
+            - key: e
+              action: event.preventDefault
+              args:
+                - <% EVENT.detail %>
+            - key: e
+              action: context.set
+              args:
+                - a
+                - New Value by callback
+            - key: e
+              action: context.set
+              args:
+                - c
+                - <% (prev) => prev + 42 %>
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              method: open
+              args: []
+              callback: {}
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              properties:
+                width: 500
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              properties:
+                height: auto
+            - key: e
+              action: window.open
+              args:
+                - <% EVENT.detail.detail?.url %>
+        portal: true
+      - brick: eo-event-agent
+        properties:
+          id: context-agent-LayoutContext
+        events:
+          trigger:
+            -
+              if: <% EVENT.detail.name === "handleClick" %>
+              then:
+                -
+                  target: '[data-ref="callback-handleClick-4"]'
+                  method: trigger
+                  args:
+                    - <% EVENT.detail.payload %>
+                  callback: {}
+        portal: true
+      - brick: style
+        properties:
+          textContent: >-
+            <%=
+            FN._helper_mergeTexts({type:"expression",value:(CONSTANTS["/Pages/Layout.css"])})
+            %>
+      - brick: button
+        properties:
+          textContent: >-
+            <%=
+            FN._helper_mergeTexts({type:"expression",value:(I18N("MY_APP"))}) %>
+        events:
+          click:
+            - key: e
+              action: event.preventDefault
+            - key: e
+              action: context.set
+              args:
+                - a
+                - New Value by callback
+            - key: e
+              action: context.set
+              args:
+                - c
+                - <% (prev) => prev + 42 %>
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              method: open
+              args: []
+              callback: {}
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              properties:
+                width: 500
+            - key: e
+              target: '[data-ref="modalRef-1"]'
+              properties:
+                height: auto
+            - key: e
+              action: window.open
+              args:
+                - <% EVENT.detail?.url %>
+      - brick: pre
+        properties:
+          textContent: >-
+            <%=
+            FN._helper_mergeTexts({type:"expression",value:(JSON.stringify(SESSION_STORAGE.getItem("myKey"),
+            null, 2))}) %>
+        events:
+          click:
+            - key: e
+              action: event.preventDefault
+            - key: e
+              action: console.log
+              args:
+                - <% EVENT %>
+          dblclick:
+            - key: thing
+              action: console.log
+              args:
+                - Doing something with
+                - <% EVENT %>
+            - key: thing
+              action: event.preventDefault
+            - key: thing
+              useProvider: oops
+              args: []
+              callback:
+                success:
+                  -
+                    action: message.info
+                    args:
+                      - <% EVENT_BY_KEY.thing.detail %>
+                error:
+                  -
+                    action: handleHttpError
+            - key: thing
+              useProvider: 'easyops.api.llm.elevo_object@GetServiceObjectDetail:*'
+              params: {}
+              callback: {}
+      - brick: div
+        properties:
+          className: conditional-text
+        slots:
+          '':
+            type: bricks
+            bricks:
+              - brick: span
+                properties:
+                  textContent: >-
+                    <%= FN._helper_mergeTexts({type:"expression",value:(CTX.a
+                    === "connectors" && I18N("MY_APP"))}) %>
+              - brick: span
+                properties:
+                  textContent: >-
+                    <%= FN._helper_mergeTexts({type:"expression",value:(CTX.a
+                    === "personal-info" && I18N("MY_APP"))}) %>
+      - brick: img
+        properties:
+          src: <%= IMG.get("ea221c727dd1b454.svg") %>
+          alt: Logout
+      - brick: eo-descriptions
+        properties:
+          dataSource: <%= CTX.dataSource %>
+          list:
+            - label: Name
+              useBrick:
+                - brick: strong
+                  properties:
+                    textContent: >-
+                      <%=
+                      FN._helper_mergeTexts({type:"expression",value:(DATA.name)})
+                      %>
+            - label: Age
+              useBrick:
+                - brick: em
+                  properties:
+                    textContent: >-
+                      <%=
+                      FN._helper_mergeTexts({type:"expression",value:(DATA.age)})
+                      %>
+          themeVariant: elevo
+        events:
+          test:
+            - key: e
+              useProvider: 'getUser:*'
+              params:
+                id: 123
+              callback:
+                success:
+                  - key: user
+                    action: message.info
+                    args:
+                      - >-
+                        <% `Fetched user: ${EVENT.detail.name},
+                        ${EVENT_BY_KEY.e.detail.reason}` %>
+      - brick: div
+        properties: {}
+        slots:
+          '':
+            type: routes
+            routes:
+              - path: '${APP.homepage}/about'
+                alias: About
+                exact: true
+                incrementalSubRoutes: false
+                bricks:
+                  - brick: eo-event-agent
+                    properties:
+                      id: context-agent-AboutContext
+                    events:
+                      trigger:
+                        -
+                          if: <% EVENT.detail.name === "refetch" %>
+                          then:
+                            -
+                              action: context.refresh
+                              args:
+                                - aboutInfo
+                              callback: {}
+                    portal: true
+                  - brick: div
+                    properties:
+                      menu: <%= APP.getMenu("my-static-menu") %>
+                    events:
+                      click:
+                        -
+                          action: context.refresh
+                          args:
+                            - aboutInfo
+                          callback:
+                            success:
+                              -
+                                action: console.log
+                                args:
+                                  - ok
+                            error:
+                              -
+                                action: handleHttpError
+                        -
+                          target: '#my-modal'
+                          method: open
+                          args: []
+                          callback:
+                            success:
+                              -
+                                action: console.log
+                                args:
+                                  - opened
+                            error:
+                              -
+                                action: console.log
+                                args:
+                                  - failed to open
+                                  - <% (42) * 2 + FN.testB("C") %>
+                                  - <% testA() %>
+                              -
+                                action: handleHttpError
+                            finally:
+                              -
+                                action: console.log
+                                args:
+                                  - finally
+                        -
+                          target: '#my-modal'
+                          properties:
+                            width: 600
+                            height: auto
+                        -
+                          target: '#my-modal'
+                          properties:
+                            title: About Modal
+                        -
+                          target: '[data-ref="modalRef-0"]'
+                          properties:
+                            width: 600
+                            height: auto
+                        -
+                          target: '[data-ref="modalRef-0"]'
+                          properties:
+                            title: About Modal
+                    lifeCycle:
+                      onMount:
+                        -
+                          target: '#context-agent-LayoutContext'
+                          method: trigger
+                          args:
+                            - name: handleClick
+                          callback: {}
+                    slots:
+                      '':
+                        type: bricks
+                        bricks:
+                          - brick: span
+                            properties:
+                              textContent: >-
+                                <%=
+                                FN._helper_mergeTexts({type:"expression",value:(I18N("ABOUT"))})
+                                %>
+                          - brick: span
+                            properties:
+                              textContent: >-
+                                <%=
+                                FN._helper_mergeTexts({type:"expression",value:(PARAMS.get("id"))})
+                                %>
+                          - brick: span
+                            properties:
+                              textContent: >-
+                                <%=
+                                FN._helper_mergeTexts({type:"expression",value:(CTX.aboutInfo)})
+                                %>
+                  - brick: div
+                    properties: {}
+                    slots:
+                      a:
+                        type: bricks
+                        bricks:
+                          - brick: ':if'
+                            dataSource: <%= CTX.aboutInfo %>
+                            slots:
+                              '':
+                                type: bricks
+                                bricks:
+                                  - brick: span
+                                    properties:
+                                      textContent: '1'
+                      b:
+                        type: bricks
+                        bricks:
+                          - brick: ':if'
+                            dataSource: <%= CTX.aboutInfo %>
+                            slots:
+                              else:
+                                type: bricks
+                                bricks:
+                                  - brick: span
+                                    properties:
+                                      textContent: '2'
+                  - brick: eo-modal
+                    properties:
+                      dataset:
+                        ref: modalRef-0
+                      themeVariant: elevo
+                    portal: true
+                context:
+                  - name: aboutInfo
+                    resolve:
+                      useProvider: 'easyops.api.llm.elevo_object@ListServiceObjects:1.0.0'
+                      params:
+                        id: <% PARAMS.get("id") %>
+                      transform:
+                        value: <% DATA.list %>
+                      onReject:
+                        transform:
+                          value: '<% [] %>'
+                      async: true
+                    track: true
+              - path: '${APP.homepage}/test-hooks'
+                alias: TestHooks
+                exact: true
+                incrementalSubRoutes: false
+                bricks:
+                  - brick: div
+                    properties: {}
+                    slots:
+                      '':
+                        type: bricks
+                        bricks:
+                          - brick: div
+                            properties:
+                              textContent: >-
+                                <%=
+                                FN._helper_mergeTexts({"type":"text","text":"Has
+                                Permission: "},
+                                {type:"expression",value:(String(CTX.hasPermission))})
+                                %>
+                          - brick: div
+                            properties:
+                              textContent: >-
+                                <%=
+                                FN._helper_mergeTexts({"type":"text","text":"Formatted
+                                Value: "},
+                                {type:"expression",value:(CTX.formattedValue)})
+                                %>
+                context:
+                  - name: hasPermission
+                    value: >-
+                      <% PERMISSIONS.check("user_service:api_account_manager")
+                      %>
+                    expose: false
+                    track: true
+                  - name: formattedValue
+                    value: '<% PIPES.jsonStringify({ foo: "bar" }) %>'
+                    expose: false
+                    track: true
+              - path: '${APP.homepage}/test-object-prop'
+                alias: TestObjectProp
+                exact: true
+                incrementalSubRoutes: false
+                bricks:
+                  - brick: div
+                    properties: {}
+                    slots:
+                      '':
+                        type: bricks
+                        bricks:
+                          - brick: eo-table
+                            properties:
+                              dataSource: '<%= { list: CTX.serviceNodes } %>'
+                              themeVariant: elevo
+                context: []
+      - brick: tpl-temp
+        properties: {}
+      - brick: tpl-my-modal
+        properties:
+          dataset:
+            ref: modalRef-1
+        portal: true
+    context:
+      - name: a
+        value: null
+        expose: false
+        track: true
+        onChange:
+          - target: '#effect-batch-agent-2'
+            args:
+              - effect
+            method: trigger
+      - name: b
+        value: '<% CTX.a ? "value" : "null" %>'
+        expose: false
+        track: true
+        onChange:
+          - target: '#effect-batch-agent-2'
+            args:
+              - effect
+            method: trigger
+      - name: c
+        value: 0
+        expose: false
+        track: true
+        onChange:
+          - target: '#effect-batch-agent-2'
+            args:
+              - effect
+            method: trigger
+      - name: serviceNodes
+        value:
+          - id: 1
+          - id: 2
+        expose: false
+        track: true
+      - name: dataSource
+        value:
+          name: Tom
+          age: 30
+        expose: false
+        track: true
+    menu:
+      pageTitle: '<% I18N("LAYOUT", "布局") %>'
+      breadcrumb:
+        items:
+          - text: '<% I18N("HOME", "首页") %>'
+            to: /
+          - text: '<% I18N("LAYOUT", "布局") %>'
+meta:
+  functions:
+    - name: testB
+      source: ''
+      deps: []
+      perm: false
+      transformed:
+        source: |
+          function testB(a) {
+            return a + "B";
+          }
+        globals: []
+    - name: testA
+      source: ''
+      deps:
+        - testB
+      perm: false
+      transformed:
+        source: |
+          function testA() {
+            return FN.testB("A" + (42 * 2 + FN.testB("C")));
+          }
+        globals:
+          - FN
+    - name: _helper_mergeTexts
+      source: ''
+      deps: []
+      perm: false
+      transformed:
+        source: |
+          function mergeTexts(...items) {
+            function mergeValuesAsText(value) {
+              if (Array.isArray(value)) {
+                return value.map(mergeValuesAsText).join("");
+              }
+              const type = typeof value;
+              if (type === "string" || type === "number") {
+                return String(value);
+              }
+              if (type === "object" && value !== null) {
+                throw "Cannot render object as text";
+              }
+              return "";
+            }
+            const texts = [];
+            for (const item of items) {
+              if (item.type === "text") {
+                texts.push(item.text.trim());
+              } else {
+                texts.push(mergeValuesAsText(item.value));
+              }
+            }
+            return texts.join("");
+          }
+        globals:
+          - Array
+          - String
+  customTemplates:
+    - name: tpl-temp
+      bricks:
+        - brick: div
+          properties:
+            textContent: Temp Component
+      state: []
+    - name: tpl-my-modal
+      bricks:
+        - brick: eo-event-agent
+          properties: {}
+          ref: imperative-handle-ref-open
+          events:
+            trigger:
+              -
+                targetRef: modalRef
+                method: open
+                args: []
+                callback: {}
+          portal: true
+        - brick: eo-event-agent
+          properties: {}
+          ref: imperative-handle-ref-setInitValue
+          events:
+            trigger:
+              - key: value
+                targetRef: formRef
+                method: setInitValue
+                args:
+                  - <% EVENT.detail %>
+                callback: {}
+          portal: true
+        - brick: eo-modal
+          properties:
+            themeVariant: elevo
+          ref: modalRef
+          slots:
+            '':
+              type: bricks
+              bricks:
+                - brick: eo-form
+                  properties:
+                    themeVariant: elevo
+                  ref: formRef
+          portal: true
+      state: []
+      proxy:
+        methods:
+          open:
+            ref: imperative-handle-ref-open
+            refMethod: trigger
+          setInitValue:
+            ref: imperative-handle-ref-setInitValue
+            refMethod: trigger
+  i18n:
+    en:
+      MY_APP: My Application
+      ABOUT: About
+      MY_MENU: My Menu
+      MY_ANOTHER_MENU: My Another Menu
+      SUB_MENU_1: Sub Menu 1
+    zh:
+      MY_APP: 我的应用程序
+      ABOUT: 关于
+      MY_MENU: 我的菜单
+      MY_ANOTHER_MENU: 我的另一个菜单
+      SUB_MENU_1: 子菜单 1
+  contracts:
+    - name: ListServiceObjects
+      namespaceId: easyops.api.llm.elevo_object
+      version: 1.0.0
+      endpoint:
+        method: list
+        uri: '/api/v1/elevo/workspaces/:workspaceId/service-objects'
+        ext_fields: []
+      serviceName: logic.llm.aiops_service
+      request:
+        type: object
+        fields:
+          - ref: ''
+            type: string
+          - ref: ''
+            type: bool
+      response:
+        type: object
+        wrapper: true
+    - name: GetServiceObjectDetail
+      namespaceId: easyops.api.llm.elevo_object
+      version: 1.0.0
+      endpoint:
+        method: GET
+        uri: '/api/v1/elevo/service-objects/:objectId'
+        ext_fields: []
+      serviceName: logic.llm.aiops_service
+      request:
+        type: object
+        fields:
+          - ref: ''
+            type: string
+      response:
+        type: ServiceObject
+        wrapper: true
+  menus:
+    - title: '<% I18N("MY_MENU", "My Menu") %>'
+      menuId: my-static-menu
+      items:
+        - text: '<% I18N("SUB_MENU_1", "Sub Menu 1") %>'
+      i18n:
+        en:
+          MY_MENU: My Menu
+          SUB_MENU_1: Sub Menu 1
+        zh:
+          MY_MENU: 我的菜单
+          SUB_MENU_1: 子菜单 1
+    - title: '<% I18N("MY_ANOTHER_MENU", "My Another Menu") %>'
+      menuId: my-dynamic-menu
+      dynamicItems: true
+      itemsResolve:
+        useProvider: my-provider
+        args:
+          - my-first-argument
+        transform:
+          items: <% DATA.list %>
+      i18n:
+        en:
+          MY_ANOTHER_MENU: My Another Menu
+        zh:
+          MY_ANOTHER_MENU: 我的另一个菜单

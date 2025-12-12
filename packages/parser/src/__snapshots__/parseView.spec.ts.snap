@@ -895,9 +895,7 @@ exports[`parseView should work 1`] = `
                           "title": "操作",
                         },
                       ],
-                      "dataSource": {
-                        "list": "<%= CTX.logs %>",
-                      },
+                      "dataSource": "<%= { list: CTX.logs } %>",
                       "pagination": false,
                       "rowKey": "logId",
                     },

@@ -20,5 +20,5 @@ report.*.json
 /dev-https.cert
 
 /apps/*/dist
-/apps/*/storyboard.yaml
+
 .history

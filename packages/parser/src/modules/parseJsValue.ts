@@ -147,7 +147,7 @@ export function parsePropValue(
           (t.isIdentifier(node) &&
             ((p = parent[parent.length - 1]?.node), true) &&
             (p && t.isObjectProperty(p)
-              ? !p.computed && !p.shorthand
+              ? p.key === node && !p.computed && !p.shorthand
               : node.name === "undefined"))
         )
       ) {

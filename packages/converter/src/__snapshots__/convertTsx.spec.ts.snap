@@ -271,9 +271,7 @@ exports[`convertTsx should work 1`] = `
                       ],
                     },
                   ],
-                  "dataSource": {
-                    "list": "<%= CTX.logs %>",
-                  },
+                  "dataSource": "<%= { list: CTX.logs } %>",
                   "pagination": false,
                   "rowKey": "logId",
                   "scrollConfig": {

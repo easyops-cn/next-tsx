@@ -18,6 +18,7 @@ import { LayoutContext } from "@/Contexts/LayoutContext";
 import LogoutSvg from "@/images/logout.svg";
 import About from "./About";
 import TestHooks from "./TestHooks";
+import TestObjectProp from "./TestObjectProp";
 import style from "./Layout.css";
 
 const ABC = 42;
@@ -39,6 +40,7 @@ export default function Layout() {
   const [a, setA] = useState<string | null>(null);
   const b = a ? "value" : "null";
   const [c, setC] = useState<number>(0);
+  const [serviceNodes, _setServiceNodes] = useState([{ id: 1 }, { id: 2 }]);
   const modalRef = useRef();
 
   useChangeEffect(() => {
@@ -93,7 +95,7 @@ export default function Layout() {
     window.open(e.detail?.url);
   };
 
-  const layoutContext = { handleClick };
+  const layoutContext = { handleClick, serviceNodes };
 
   return (
     <LayoutContext.Provider value={layoutContext}>
@@ -140,6 +142,7 @@ export default function Layout() {
         <Routes>
           <Route path="/about" component={About} />
           <Route path="/test-hooks" component={TestHooks} />
+          <Route path="/test-object-prop" component={TestObjectProp} />
         </Routes>
       </div>
       <Temp />
