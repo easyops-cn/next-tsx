@@ -456,7 +456,8 @@ routes:
                         bricks:
                           - brick: eo-table
                             properties:
-                              dataSource: '<%= { list: CTX.serviceNodes } %>'
+                              dataSource: 
+                                list: '<%= { list: CTX.serviceNodes } %>'
                               themeVariant: elevo
                 context: []
       - brick: tpl-temp

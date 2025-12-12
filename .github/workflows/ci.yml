@@ -48,7 +48,7 @@ jobs:
         key: ${{ runner.os }}-nx-${{ hashFiles('yarn.lock', 'package.json') }}-${{ hashFiles('**/package.json') }}
         restore-keys: |
           ${{ runner.os }}-nx-${{ hashFiles('yarn.lock', 'package.json') }}-
-
+ 
     # Fix `yarn install --frozen-lockfile` not working in monorepo.
     # https://github.com/yarnpkg/yarn/issues/5840#issuecomment-468782288
     - name: Get checksum before yarn install
@@ -88,3 +88,41 @@ jobs:
       with:
         npm-token: ${{ secrets.NPM_TOKEN }}
       if: github.event_name == 'push'
+
+    - name: Generate storyboard diff
+      id: storyboard-diff
+      run: |
+        FILES=$(git diff --name-only origin/${GITHUB_BASE_REF} HEAD -- 'apps/**/storyboard.yaml' || true)
+        COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
+        if [ "$COUNT" -eq "0" ]; then
+          echo "No changes detected"
+          echo "::set-output name=diff_exists::false"
+          exit 0
+        fi
+        echo "### 📝 Storyboard Diff (${COUNT} files changed)" > storyboard_diff.txt
+        echo "<details open><summary>点击展开 diff</summary>" >> storyboard_diff.txt
+        echo "" >> storyboard_diff.txt
+        echo "| 文件 | 状态 |" >> storyboard_diff.txt
+        echo "| --- | --- |" >> storyboard_diff.txt
+        for f in $FILES; do
+          if [ -n "$f" ]; then
+            echo "| $f | changed |" >> storyboard_diff.txt
+          fi
+        done
+        echo "" >> storyboard_diff.txt
+        echo '```diff' >> storyboard_diff.txt
+        git diff origin/${GITHUB_BASE_REF} HEAD -- $FILES >> storyboard_diff.txt
+        echo '```' >> storyboard_diff.txt
+        echo "</details>" >> storyboard_diff.txt
+        echo "<!-- storyboard-diff-check -->" >> storyboard_diff.txt
+        echo "::set-output name=diff_exists::true"
+
+    - name: Comment PR with storyboard diff
+      if: steps.storyboard-diff.outputs.diff_exists == 'true' && github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body-path: storyboard_diff.txt
+        edit-mode: replace      
