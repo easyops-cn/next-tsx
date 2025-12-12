@@ -133,7 +133,7 @@ async function buildApp(watchMode, withContracts) {
   let contracts;
 
   if (app.contracts.size > 0) {
-    const contractsJsonPath = path.join(rootDir, "contracts.json");
+    const contractsJsonPath = path.join(rootDir, "src", "contracts.json");
 
     if (withContracts) {
       const res = await fetch(process.env.CONTRACT_URL, {
