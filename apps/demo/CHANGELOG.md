@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.12](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.2.11...@apps/demo@0.2.12) (2025-12-12)
+
+
+### Bug Fixes
+
+* **parser:** correct dependency tracking for object properties with dynamic values ([8c1084b](https://github.com/easyops-cn/next-tsx/commit/8c1084be05997fc8c9ee20a162a0d7b450782ab5))
+
+
+
+
+
 ## [0.2.11](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.2.10...@apps/demo@0.2.11) (2025-12-12)
 
 **Note:** Version bump only for package @apps/demo

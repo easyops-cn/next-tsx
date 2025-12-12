@@ -1,6 +1,6 @@
 {
   "name": "@next-tsx/builder",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "homepage": "https://github.com/easyops-cn/next-tsx/tree/master/packages/builder",
   "repository": {
     "type": "git",
@@ -32,8 +32,8 @@
     "@babel/types": "^7.27.7",
     "@next-core/cook": "^2.5.12",
     "@next-core/utils": "^1.8.9",
-    "@next-tsx/converter": "^0.15.1",
-    "@next-tsx/parser": "^0.20.1",
+    "@next-tsx/converter": "^0.15.2",
+    "@next-tsx/parser": "^0.20.2",
     "chalk": "^5.6.2",
     "cssnano": "^7.1.2",
     "cssnano-preset-lite": "^4.0.4",

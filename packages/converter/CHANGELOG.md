@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.2](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.15.1...@next-tsx/converter@0.15.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* **parser:** correct dependency tracking for object properties with dynamic values ([8c1084b](https://github.com/easyops-cn/next-tsx/commit/8c1084be05997fc8c9ee20a162a0d7b450782ab5))
+
+
+
+
+
 ## [0.15.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.15.0...@next-tsx/converter@0.15.1) (2025-12-12)
 
 
