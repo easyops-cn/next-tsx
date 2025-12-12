@@ -48,7 +48,7 @@ jobs:
         key: ${{ runner.os }}-nx-${{ hashFiles('yarn.lock', 'package.json') }}-${{ hashFiles('**/package.json') }}
         restore-keys: |
           ${{ runner.os }}-nx-${{ hashFiles('yarn.lock', 'package.json') }}-
-
+ 
     # Fix `yarn install --frozen-lockfile` not working in monorepo.
     # https://github.com/yarnpkg/yarn/issues/5840#issuecomment-468782288
     - name: Get checksum before yarn install
@@ -88,3 +88,83 @@ jobs:
       with:
         npm-token: ${{ secrets.NPM_TOKEN }}
       if: github.event_name == 'push'
+
+# 📝 检测 storyboard.yaml 变化并生成折叠 diff + 文件统计表
+    - name: Generate storyboard diff
+      id: storyboard-diff
+      run: |
+        FILES=$(git diff --name-only origin/${GITHUB_BASE_REF} HEAD -- 'apps/**/storyboard.yaml' || true)
+        FILE_COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
+        TOTAL_ADDS=0
+        TOTAL_DELS=0
+
+        echo "<!-- storyboard-diff-check -->" > storyboard_diff.txt
+
+        if [ "$FILE_COUNT" -eq "0" ]; then
+          echo "### 📝 Storyboard Diff (0 files changed, +0/-0 lines)" >> storyboard_diff.txt
+          echo "" >> storyboard_diff.txt
+          echo "<details open>" >> storyboard_diff.txt
+          echo "<summary>No changes detected</summary>" >> storyboard_diff.txt
+          echo "```diff" >> storyboard_diff.txt
+          echo "No differences found." >> storyboard_diff.txt
+          echo "```" >> storyboard_diff.txt
+          echo "</details>" >> storyboard_diff.txt
+          echo "::set-output name=diff_exists::false"
+          exit 0
+        fi
+
+        # 写总统计标题
+        echo "### 📝 Storyboard Diff (${FILE_COUNT} files changed)" >> storyboard_diff.txt
+        echo "" >> storyboard_diff.txt
+
+        # 文件增删行统计表头
+        echo "| File | + Added | - Deleted |" >> storyboard_diff.txt
+        echo "|------|---------|-----------|" >> storyboard_diff.txt
+
+        # 遍历文件统计增删行
+        declare -A FILE_ADDS
+        declare -A FILE_DELS
+
+        for f in $FILES; do
+          if [ -n "$f" ]; then
+            ADDS=$(git diff origin/${GITHUB_BASE_REF} HEAD -- $f | grep '^+' | grep -v '^+++' | wc -l)
+            DELS=$(git diff origin/${GITHUB_BASE_REF} HEAD -- $f | grep '^-' | grep -v '^---' | wc -l)
+            FILE_ADDS[$f]=$ADDS
+            FILE_DELS[$f]=$DELS
+            TOTAL_ADDS=$((TOTAL_ADDS + ADDS))
+            TOTAL_DELS=$((TOTAL_DELS + DELS))
+          fi
+        done
+
+        # 输出统计表
+        for f in "${!FILE_ADDS[@]}"; do
+          echo "| $f | ${FILE_ADDS[$f]} | ${FILE_DELS[$f]} |" >> storyboard_diff.txt
+        done
+
+        # 输出折叠 diff
+        for f in $FILES; do
+          if [ -n "$f" ]; then
+            echo "" >> storyboard_diff.txt
+            echo "<details>" >> storyboard_diff.txt
+            echo "<summary>$f (+${FILE_ADDS[$f]}/-${FILE_DELS[$f]})</summary>" >> storyboard_diff.txt
+            echo '```diff' >> storyboard_diff.txt
+            git diff origin/${GITHUB_BASE_REF} HEAD -- $f >> storyboard_diff.txt
+            echo '```' >> storyboard_diff.txt
+            echo "</details>" >> storyboard_diff.txt
+          fi
+        done
+
+        echo "" >> storyboard_diff.txt
+        echo "Total changes: +${TOTAL_ADDS}/-${TOTAL_DELS}" >> storyboard_diff.txt
+        echo "::set-output name=diff_exists::true"
+
+    - name: Comment PR with storyboard diff
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body-path: storyboard_diff.txt
+        edit-mode: replace
+        comment-id: storyboard-diff-check
