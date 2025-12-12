@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.10](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.2.9...@apps/demo@0.2.10) (2025-12-12)
+
+**Note:** Version bump only for package @apps/demo
+
+
+
+
+
 ## [0.2.9](https://github.com/easyops-cn/next-tsx/compare/@apps/demo@0.2.8...@apps/demo@0.2.9) (2025-12-10)
 
 **Note:** Version bump only for package @apps/demo

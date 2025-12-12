@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.18.1](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.18.0...@apps/test@0.18.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* **useResource:** support `then().catch()` ([bba5a47](https://github.com/easyops-cn/next-tsx/commit/bba5a4749fcc4e9551d0cc58f7e1bf9ed19363ce))
+
+
+
+
+
 # [0.18.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.17.0...@apps/test@0.18.0) (2025-12-10)
 
 
