@@ -1,0 +1,58 @@
+app:
+  uiVersion: '8.2'
+  id: demo
+  name: Demo App
+  homepage: /demo
+  standaloneMode: true
+  noPlaceholders: true
+  constants: {}
+routes:
+  - path: '${APP.homepage}'
+    alias: Layout
+    exact: true
+    incrementalSubRoutes: false
+    bricks:
+      - brick: div
+        properties: {}
+        events:
+          click:
+            -
+              action: message.info
+              args:
+                - ok
+        slots:
+          '':
+            type: bricks
+            bricks:
+              - brick: p
+                properties:
+                  textContent: Demo Page
+              - brick: button
+                properties:
+                  textContent: Demo Layout
+                events:
+                  dblclick:
+                    - key: e
+                      if: <% EVENT.type === "x" %>
+                      then:
+                        - key: e
+                          action: event.preventDefault
+                        - key: e
+                          action: console.log
+                          args:
+                            - X clicked!
+                            - <% ((EVENT.detail).x) %>
+                      else:
+                        - key: e
+                          if: <% EVENT.type === "y" %>
+                          then:
+                            - key: e
+                              action: console.log
+                              args:
+                                - Y clicked!
+                                - <% ((EVENT.detail).y).y %>
+    context: []
+meta:
+  functions: []
+  customTemplates: []
+  menus: []
