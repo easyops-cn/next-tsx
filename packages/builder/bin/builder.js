@@ -120,7 +120,15 @@ async function buildApp(watchMode, withContracts) {
 
   // Copy images
   await mkdir(imagesDir, { recursive: true });
-  for (const imageFile of app.imageFiles) {
+  // 收集所有需要复制的图片（包括 TSX 导入的和 CSS 引用的）
+  const imagesToCopy = new Set(app.imageFiles);
+
+  // 将所有在 imageMap 中的图片都复制过去
+  for (const [imagePath] of imageMap) {
+    imagesToCopy.add(imagePath);
+  }
+
+  for (const imageFile of imagesToCopy) {
     const assetName = imageMap.get(imageFile);
     if (assetName) {
       await cp(
@@ -301,7 +309,12 @@ async function buildApp(watchMode, withContracts) {
     logErrors(errors, watchMode);
   }
 
-  const transformedCssFiles = await transformCssFiles(app.cssFiles, watchMode);
+  const transformedCssFiles = await transformCssFiles(
+    app.cssFiles,
+    watchMode,
+    imageMap,
+    srcDir
+  );
 
   const targetPath = path.join(rootDir, "storyboard.yaml");
   await writeFile(

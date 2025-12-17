@@ -5,7 +5,7 @@ export default function TestObjectProp() {
   const { serviceNodes } = useContext(LayoutContext);
 
   return (
-    <div>
+    <div className="test-object-prop" style={{ padding: "20px" }}>
       <eo-table dataSource={{ list: serviceNodes }} />
     </div>
   );

@@ -145,11 +145,13 @@ export function replaceBindings(
                 return;
               }
               if (isImportDefault) {
+                // 使用 _helper_processCss 处理 CSS 字符串中的图片占位符
+                state.usedHelpers.add("_helper_processCss");
                 replacements.push({
                   type: "id",
                   start: idPath.node.start!,
                   end: idPath.node.end!,
-                  replacement: `CONSTANTS[${JSON.stringify(importSource)}]`,
+                  replacement: `FN._helper_processCss(CONSTANTS[${JSON.stringify(importSource)}])`,
                   shorthand: shorthand ? varName : undefined,
                 });
               } else {
