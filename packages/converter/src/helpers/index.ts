@@ -3,6 +3,7 @@ import getLatestMetricValue from "../../../src/helpers/getLatestMetricValue.ts?r
 import extractList from "../../../src/helpers/extractList.ts?raw";
 import groupMetricData from "../../../src/helpers/groupMetricData.ts?raw";
 import getMetricDisplayNames from "../../../src/helpers/getMetricDisplayNames.ts?raw";
+import processCss from "../../../src/helpers/processCss.ts?raw";
 
 let helperFunctions: Map<string, string> | undefined;
 
@@ -17,6 +18,7 @@ export function getHelperFunctions() {
         "_helper_getMetricDisplayNames",
         fixFunctionSource(getMetricDisplayNames),
       ],
+      ["_helper_processCss", fixFunctionSource(processCss)],
     ]);
   }
   return helperFunctions;

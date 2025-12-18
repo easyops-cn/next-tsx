@@ -3,3 +3,11 @@
     color: red;
   }
 }
+
+/* 测试 CSS 中的图片 URL 替换 */
+.text-inline-img {
+  background-image: url("../Images/test.png");
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+}

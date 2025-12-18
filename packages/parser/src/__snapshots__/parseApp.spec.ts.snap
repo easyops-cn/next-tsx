@@ -469,7 +469,7 @@ exports[`parseApp should work 1`] = `
               "lifeCycle": undefined,
               "name": "style",
               "properties": {
-                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CONSTANTS["/Pages/Layout.css"])}) %>",
+                "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(FN._helper_processCss(CONSTANTS["/Pages/Layout.css"]))}) %>",
               },
               "ref": undefined,
               "reference": null,
@@ -818,6 +818,7 @@ exports[`parseApp should work 1`] = `
       },
       "usedHelpers": Set {
         "_helper_mergeTexts",
+        "_helper_processCss",
       },
     },
     "/Pages/Home.tsx" => {

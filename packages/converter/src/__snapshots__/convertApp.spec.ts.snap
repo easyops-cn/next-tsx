@@ -16,6 +16,11 @@ exports[`convertApp should work 1`] = `
       "source": "function mock() {}",
       "typescript": true,
     },
+    {
+      "name": "_helper_processCss",
+      "source": "function mock() {}",
+      "typescript": true,
+    },
   ],
   "menus": [],
   "routes": [
@@ -88,7 +93,7 @@ exports[`convertApp should work 1`] = `
           "events": undefined,
           "lifeCycle": undefined,
           "properties": {
-            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(CONSTANTS["/Pages/Layout.css"])}) %>",
+            "textContent": "<%= FN._helper_mergeTexts({type:"expression",value:(FN._helper_processCss(CONSTANTS["/Pages/Layout.css"]))}) %>",
           },
         },
         {

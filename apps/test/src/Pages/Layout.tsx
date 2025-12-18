@@ -15,11 +15,12 @@ import {
 } from "@next-tsx/core";
 import MyModal from "@/Components/MyModal";
 import { LayoutContext } from "@/Contexts/LayoutContext";
-import LogoutSvg from "@/images/logout.svg";
+import LogoutSvg from "@/Images/logout.svg";
 import About from "./About";
 import TestHooks from "./TestHooks";
 import TestObjectProp from "./TestObjectProp";
 import style from "./Layout.css";
+import img from "../Images/test.png";
 
 const ABC = 42;
 export const XYZ = ABC * 2 + testB("C");
@@ -117,6 +118,8 @@ export default function Layout() {
         {a === "personal-info" && translate("MY_APP")}
       </div>
       <img src={LogoutSvg} alt="Logout" />
+      <div className="text-inline-img">测试css内联图片</div>
+      <div style={{ backgroundImage: `url(${img})` }}>测试图片~</div>
       <eo-descriptions
         dataSource={dataSource}
         list={[
