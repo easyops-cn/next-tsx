@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.6.4...@next-tsx/builder@0.7.0) (2025-12-18)
+
+
+### Features
+
+* **builder:** css inline image ([64c197b](https://github.com/easyops-cn/next-tsx/commit/64c197bf988d521b3e4fdb82d409e85a24bc87e2))
+
+
+
+
+
 ## [0.6.4](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/builder@0.6.3...@next-tsx/builder@0.6.4) (2025-12-12)
 
 **Note:** Version bump only for package @next-tsx/builder

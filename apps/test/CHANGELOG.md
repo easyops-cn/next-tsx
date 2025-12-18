@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.18.3...@apps/test@0.19.0) (2025-12-18)
+
+
+### Features
+
+* **builder:** css inline image ([64c197b](https://github.com/easyops-cn/next-tsx/commit/64c197bf988d521b3e4fdb82d409e85a24bc87e2))
+
+
+
+
+
 ## [0.18.3](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.18.2...@apps/test@0.18.3) (2025-12-12)
 
 
