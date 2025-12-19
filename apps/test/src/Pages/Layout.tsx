@@ -19,6 +19,7 @@ import LogoutSvg from "@/Images/logout.svg";
 import About from "./About";
 import TestHooks from "./TestHooks";
 import TestObjectProp from "./TestObjectProp";
+import Config from "./Config"; // 测试目录导入：./Config/index.tsx
 import style from "./Layout.css";
 import img from "../Images/test.png";
 
@@ -146,6 +147,7 @@ export default function Layout() {
           <Route path="/about" component={About} />
           <Route path="/test-hooks" component={TestHooks} />
           <Route path="/test-object-prop" component={TestObjectProp} />
+          <Route path="/config" component={Config} />
         </Routes>
       </div>
       <Temp />
