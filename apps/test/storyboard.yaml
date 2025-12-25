@@ -474,6 +474,24 @@ routes:
                               dataSource: '<%= { list: CTX.serviceNodes } %>'
                               themeVariant: elevo
                 context: []
+              - path: '${APP.homepage}/config'
+                alias: Config
+                exact: true
+                incrementalSubRoutes: false
+                bricks:
+                  - brick: div
+                    properties: {}
+                    slots:
+                      '':
+                        type: bricks
+                        bricks:
+                          - brick: h1
+                            properties:
+                              textContent: 配置页面
+                          - brick: p
+                            properties:
+                              textContent: 这是一个测试目录导入的示例
+                context: []
       - brick: tpl-temp
         properties: {}
       - brick: tpl-my-modal

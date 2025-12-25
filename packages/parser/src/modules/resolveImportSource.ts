@@ -44,14 +44,26 @@ export function resolveImportSource(
 }
 
 function resolvePath(path: string, files: SourceFile[]): string {
+  // 1. 直接匹配文件
   if (files.some((f) => f.filePath === path)) {
     return path;
   }
+
+  // 2. 尝试添加扩展名
   for (const ext of resolveExtensions) {
     if (files.some((f) => f.filePath === `${path}${ext}`)) {
       return `${path}${ext}`;
     }
   }
+
+  // 3. 尝试作为目录解析 index 文件
+  for (const ext of resolveExtensions) {
+    const indexPath = `${path}/index${ext}`;
+    if (files.some((f) => f.filePath === indexPath)) {
+      return indexPath;
+    }
+  }
+
   return path;
 }
 
