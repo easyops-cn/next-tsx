@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.16.0...@next-tsx/converter@0.16.1) (2025-12-25)
+
+**Note:** Version bump only for package @next-tsx/converter
+
+
+
+
+
 # [0.16.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/converter@0.15.2...@next-tsx/converter@0.16.0) (2025-12-18)
 
 

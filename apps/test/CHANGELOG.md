@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.19.0...@apps/test@0.20.0) (2025-12-25)
+
+
+### Features
+
+* implement resolve index file ([a703b23](https://github.com/easyops-cn/next-tsx/commit/a703b23a00d02d5a1291cc1c32912c7a39a4d5a6))
+
+
+
+
+
 # [0.19.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.18.3...@apps/test@0.19.0) (2025-12-18)
 
 

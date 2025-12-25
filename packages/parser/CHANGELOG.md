@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.21.0...@next-tsx/parser@0.22.0) (2025-12-25)
+
+
+### Features
+
+* implement resolve index file ([a703b23](https://github.com/easyops-cn/next-tsx/commit/a703b23a00d02d5a1291cc1c32912c7a39a4d5a6))
+
+
+
+
+
 # [0.21.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.20.2...@next-tsx/parser@0.21.0) (2025-12-18)
 
 
