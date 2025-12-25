@@ -15,7 +15,7 @@ export default function Settings() {
       }}
     >
       <Route
-        path="/profile"
+        path="/settings"
         component={SettingsProfile}
         menu={{
           pageTitle: "个人资料",
@@ -25,7 +25,7 @@ export default function Settings() {
         }}
       />
       <Route
-        path="/security"
+        path="/settings/security"
         component={SettingsSecurity}
         menu={{
           pageTitle: "安全设置",

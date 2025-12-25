@@ -7,7 +7,6 @@ import {
   createMenu,
 } from "@next-tsx/core";
 import Layout from "@/Pages/Layout";
-import Settings from "@/Pages/Settings";
 
 render(
   <Routes>
@@ -24,7 +23,6 @@ render(
         },
       }}
     />
-    <Route path="/settings" component={Settings} />
   </Routes>
 );
 

@@ -262,236 +262,323 @@ routes:
           '':
             type: routes
             routes:
-              - path: '${APP.homepage}/about'
-                alias: About
-                exact: true
-                incrementalSubRoutes: false
-                bricks:
-                  - brick: eo-event-agent
-                    properties:
-                      id: context-agent-AboutContext
-                    events:
-                      trigger:
-                        -
-                          if: <% EVENT.detail.name === "refetch" %>
-                          then:
+              - type: routes
+                path: '${APP.homepage}'
+                routes:
+                  - path: '${APP.homepage}/about'
+                    alias: About
+                    exact: true
+                    incrementalSubRoutes: false
+                    bricks:
+                      - brick: eo-event-agent
+                        properties:
+                          id: context-agent-AboutContext
+                        events:
+                          trigger:
+                            -
+                              if: <% EVENT.detail.name === "refetch" %>
+                              then:
+                                -
+                                  action: context.refresh
+                                  args:
+                                    - aboutInfo
+                                  callback: {}
+                        portal: true
+                      - brick: div
+                        properties:
+                          menu: <%= APP.getMenu("my-static-menu") %>
+                        events:
+                          click:
                             -
                               action: context.refresh
                               args:
                                 - aboutInfo
+                              callback:
+                                success:
+                                  -
+                                    action: console.log
+                                    args:
+                                      - ok
+                                error:
+                                  -
+                                    action: handleHttpError
+                            -
+                              target: '#my-modal'
+                              method: open
+                              args: []
+                              callback:
+                                success:
+                                  -
+                                    action: console.log
+                                    args:
+                                      - opened
+                                error:
+                                  -
+                                    action: console.log
+                                    args:
+                                      - failed to open
+                                      - <% (42) * 2 + FN.testB("C") %>
+                                      - <% testA() %>
+                                  -
+                                    action: handleHttpError
+                                finally:
+                                  -
+                                    action: console.log
+                                    args:
+                                      - finally
+                            -
+                              target: '#my-modal'
+                              properties:
+                                width: 600
+                                height: auto
+                            -
+                              target: '#my-modal'
+                              properties:
+                                title: About Modal
+                            -
+                              target: '[data-ref="modalRef-0"]'
+                              properties:
+                                width: 600
+                                height: auto
+                            -
+                              target: '[data-ref="modalRef-0"]'
+                              properties:
+                                title: About Modal
+                        lifeCycle:
+                          onMount:
+                            -
+                              target: '#context-agent-LayoutContext'
+                              method: trigger
+                              args:
+                                - name: handleClick
                               callback: {}
-                    portal: true
-                  - brick: div
-                    properties:
-                      menu: <%= APP.getMenu("my-static-menu") %>
-                    events:
-                      click:
-                        -
-                          action: context.refresh
-                          args:
-                            - aboutInfo
-                          callback:
-                            success:
-                              -
-                                action: console.log
-                                args:
-                                  - ok
-                            error:
-                              -
-                                action: handleHttpError
-                        -
-                          target: '#my-modal'
-                          method: open
-                          args: []
-                          callback:
-                            success:
-                              -
-                                action: console.log
-                                args:
-                                  - opened
-                            error:
-                              -
-                                action: console.log
-                                args:
-                                  - failed to open
-                                  - <% (42) * 2 + FN.testB("C") %>
-                                  - <% testA() %>
-                              -
-                                action: handleHttpError
-                            finally:
-                              -
-                                action: console.log
-                                args:
-                                  - finally
-                        -
-                          target: '#my-modal'
-                          properties:
-                            width: 600
-                            height: auto
-                        -
-                          target: '#my-modal'
-                          properties:
-                            title: About Modal
-                        -
-                          target: '[data-ref="modalRef-0"]'
-                          properties:
-                            width: 600
-                            height: auto
-                        -
-                          target: '[data-ref="modalRef-0"]'
-                          properties:
-                            title: About Modal
-                    lifeCycle:
-                      onMount:
-                        -
-                          target: '#context-agent-LayoutContext'
-                          method: trigger
-                          args:
-                            - name: handleClick
-                          callback: {}
-                    slots:
-                      '':
-                        type: bricks
+                        slots:
+                          '':
+                            type: bricks
+                            bricks:
+                              - brick: span
+                                properties:
+                                  textContent: >-
+                                    <%=
+                                    FN._helper_mergeTexts({type:"expression",value:(I18N("ABOUT"))})
+                                    %>
+                              - brick: span
+                                properties:
+                                  textContent: >-
+                                    <%=
+                                    FN._helper_mergeTexts({type:"expression",value:(PARAMS.get("id"))})
+                                    %>
+                              - brick: span
+                                properties:
+                                  textContent: >-
+                                    <%=
+                                    FN._helper_mergeTexts({type:"expression",value:(CTX.aboutInfo)})
+                                    %>
+                      - brick: div
+                        properties: {}
+                        slots:
+                          a:
+                            type: bricks
+                            bricks:
+                              - brick: ':if'
+                                dataSource: <%= CTX.aboutInfo %>
+                                slots:
+                                  '':
+                                    type: bricks
+                                    bricks:
+                                      - brick: span
+                                        properties:
+                                          textContent: '1'
+                          b:
+                            type: bricks
+                            bricks:
+                              - brick: ':if'
+                                dataSource: <%= CTX.aboutInfo %>
+                                slots:
+                                  else:
+                                    type: bricks
+                                    bricks:
+                                      - brick: span
+                                        properties:
+                                          textContent: '2'
+                      - brick: eo-modal
+                        properties:
+                          dataset:
+                            ref: modalRef-0
+                          themeVariant: elevo
+                        portal: true
+                    context:
+                      - name: aboutInfo
+                        resolve:
+                          useProvider: >-
+                            easyops.api.llm.elevo_object@ListServiceObjects:1.0.0
+                          params:
+                            id: <% PARAMS.get("id") %>
+                          transform:
+                            value: <% DATA.list %>
+                          onReject:
+                            transform:
+                              value: '<% [] %>'
+                          async: true
+                        track: true
+                  - path: '${APP.homepage}/test-hooks'
+                    alias: TestHooks
+                    exact: true
+                    incrementalSubRoutes: false
+                    bricks:
+                      - brick: div
+                        properties: {}
+                        slots:
+                          '':
+                            type: bricks
+                            bricks:
+                              - brick: div
+                                properties:
+                                  textContent: >-
+                                    <%=
+                                    FN._helper_mergeTexts({"type":"text","text":"Has
+                                    Permission: "},
+                                    {type:"expression",value:(String(CTX.hasPermission))})
+                                    %>
+                              - brick: div
+                                properties:
+                                  textContent: >-
+                                    <%=
+                                    FN._helper_mergeTexts({"type":"text","text":"Formatted
+                                    Value: "},
+                                    {type:"expression",value:(CTX.formattedValue)})
+                                    %>
+                    context:
+                      - name: hasPermission
+                        value: >-
+                          <%
+                          PERMISSIONS.check("user_service:api_account_manager")
+                          %>
+                        expose: false
+                        track: true
+                      - name: formattedValue
+                        value: '<% PIPES.jsonStringify({ foo: "bar" }) %>'
+                        expose: false
+                        track: true
+                  - path: '${APP.homepage}/test-object-prop'
+                    alias: TestObjectProp
+                    exact: true
+                    incrementalSubRoutes: false
+                    bricks:
+                      - brick: div
+                        properties:
+                          className: test-object-prop
+                          style:
+                            padding: 20px
+                        slots:
+                          '':
+                            type: bricks
+                            bricks:
+                              - brick: eo-table
+                                properties:
+                                  dataSource: '<%= { list: CTX.serviceNodes } %>'
+                                  themeVariant: elevo
+                    context: []
+                  - path: '${APP.homepage}/config'
+                    alias: Config
+                    exact: true
+                    incrementalSubRoutes: false
+                    bricks:
+                      - brick: div
+                        properties: {}
+                        slots:
+                          '':
+                            type: bricks
+                            bricks:
+                              - brick: h1
+                                properties:
+                                  textContent: 配置页面
+                              - brick: p
+                                properties:
+                                  textContent: 这是一个测试目录导入的示例
+                    context: []
+                  - type: routes
+                    path: '${APP.homepage}/settings'
+                    alias: Settings
+                    exact: false
+                    routes:
+                      - path: '${APP.homepage}/settings/security'
+                        alias: SettingsSecurity
+                        exact: true
+                        incrementalSubRoutes: false
                         bricks:
-                          - brick: span
+                          - brick: div
                             properties:
-                              textContent: >-
-                                <%=
-                                FN._helper_mergeTexts({type:"expression",value:(I18N("ABOUT"))})
-                                %>
-                          - brick: span
-                            properties:
-                              textContent: >-
-                                <%=
-                                FN._helper_mergeTexts({type:"expression",value:(PARAMS.get("id"))})
-                                %>
-                          - brick: span
-                            properties:
-                              textContent: >-
-                                <%=
-                                FN._helper_mergeTexts({type:"expression",value:(CTX.aboutInfo)})
-                                %>
-                  - brick: div
-                    properties: {}
-                    slots:
-                      a:
-                        type: bricks
-                        bricks:
-                          - brick: ':if'
-                            dataSource: <%= CTX.aboutInfo %>
+                              style:
+                                padding: 20px
+                                border: '1px solid #ccc'
                             slots:
                               '':
                                 type: bricks
                                 bricks:
-                                  - brick: span
+                                  - brick: h2
                                     properties:
-                                      textContent: '1'
-                      b:
-                        type: bricks
+                                      textContent: 安全设置
+                                  - brick: p
+                                    properties:
+                                      textContent: 这里是安全设置页面的内容
+                                  - brick: p
+                                    properties:
+                                      textContent: '面包屑应该显示: 首页 > 设置 > 安全设置'
+                        context: []
+                        menu:
+                          pageTitle: 安全设置
+                          breadcrumb:
+                            items:
+                              - text: 安全设置
+                      - path: '${APP.homepage}/settings'
+                        alias: SettingsProfile
+                        exact: true
+                        incrementalSubRoutes: false
                         bricks:
-                          - brick: ':if'
-                            dataSource: <%= CTX.aboutInfo %>
+                          - brick: div
+                            properties:
+                              style:
+                                padding: 20px
+                                border: '1px solid #ccc'
                             slots:
-                              else:
+                              '':
                                 type: bricks
                                 bricks:
-                                  - brick: span
+                                  - brick: h2
                                     properties:
-                                      textContent: '2'
-                  - brick: eo-modal
-                    properties:
-                      dataset:
-                        ref: modalRef-0
-                      themeVariant: elevo
-                    portal: true
-                context:
-                  - name: aboutInfo
-                    resolve:
-                      useProvider: 'easyops.api.llm.elevo_object@ListServiceObjects:1.0.0'
-                      params:
-                        id: <% PARAMS.get("id") %>
-                      transform:
-                        value: <% DATA.list %>
-                      onReject:
-                        transform:
-                          value: '<% [] %>'
-                      async: true
-                    track: true
-              - path: '${APP.homepage}/test-hooks'
-                alias: TestHooks
-                exact: true
-                incrementalSubRoutes: false
-                bricks:
-                  - brick: div
-                    properties: {}
-                    slots:
-                      '':
-                        type: bricks
-                        bricks:
-                          - brick: div
-                            properties:
-                              textContent: >-
-                                <%=
-                                FN._helper_mergeTexts({"type":"text","text":"Has
-                                Permission: "},
-                                {type:"expression",value:(String(CTX.hasPermission))})
-                                %>
-                          - brick: div
-                            properties:
-                              textContent: >-
-                                <%=
-                                FN._helper_mergeTexts({"type":"text","text":"Formatted
-                                Value: "},
-                                {type:"expression",value:(CTX.formattedValue)})
-                                %>
-                context:
-                  - name: hasPermission
-                    value: >-
-                      <% PERMISSIONS.check("user_service:api_account_manager")
-                      %>
-                    expose: false
-                    track: true
-                  - name: formattedValue
-                    value: '<% PIPES.jsonStringify({ foo: "bar" }) %>'
-                    expose: false
-                    track: true
-              - path: '${APP.homepage}/test-object-prop'
-                alias: TestObjectProp
-                exact: true
-                incrementalSubRoutes: false
-                bricks:
-                  - brick: div
-                    properties:
-                      className: test-object-prop
-                      style:
-                        padding: 20px
-                    slots:
-                      '':
-                        type: bricks
-                        bricks:
-                          - brick: eo-table
-                            properties:
-                              dataSource: '<%= { list: CTX.serviceNodes } %>'
-                              themeVariant: elevo
-                context: []
-              - path: '${APP.homepage}/config'
-                alias: Config
-                exact: true
-                incrementalSubRoutes: false
-                bricks:
-                  - brick: div
-                    properties: {}
-                    slots:
-                      '':
-                        type: bricks
-                        bricks:
-                          - brick: h1
-                            properties:
-                              textContent: 配置页面
-                          - brick: p
-                            properties:
-                              textContent: 这是一个测试目录导入的示例
-                context: []
+                                      textContent: 个人资料
+                                  - brick: p
+                                    properties:
+                                      textContent: 这里是个人资料页面的内容
+                                  - brick: p
+                                    properties:
+                                      textContent: '面包屑应该显示: 首页 > 设置 > 个人资料'
+                        context: []
+                        menu:
+                          pageTitle: 个人资料
+                          breadcrumb:
+                            items:
+                              - text: 个人资料
+                    context: []
+                    menu: |-
+                      <%= {
+                              breadcrumb: {
+                                items: [
+                                  { text: I18N("HOME", "首页"), to: "/" },
+                                  { text: "设置" },
+                                ],
+                              },
+                            } %>
+                menu: |-
+                  <%= {
+                              breadcrumb: {
+                                items: [
+                                  { text: I18N("HOME", "首页"), to: "/" },
+                                  { text: "子页面" },
+                                ],
+                              },
+                            } %>
       - brick: tpl-temp
         properties: {}
       - brick: tpl-my-modal
