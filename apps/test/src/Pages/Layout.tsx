@@ -22,6 +22,7 @@ import TestObjectProp from "./TestObjectProp";
 import Config from "./Config"; // 测试目录导入：./Config/index.tsx
 import style from "./Layout.css";
 import img from "../Images/test.png";
+import Settings from "./Settings";
 
 const ABC = 42;
 export const XYZ = ABC * 2 + testB("C");
@@ -143,11 +144,21 @@ export default function Layout() {
         }}
       />
       <div>
-        <Routes>
+        <Routes
+          menu={{
+            breadcrumb: {
+              items: [
+                { text: translate("HOME", "首页"), to: "/" },
+                { text: "子页面" },
+              ],
+            },
+          }}
+        >
           <Route path="/about" component={About} />
           <Route path="/test-hooks" component={TestHooks} />
           <Route path="/test-object-prop" component={TestObjectProp} />
           <Route path="/config" component={Config} />
+          <Route path="/settings" component={Settings} />
         </Routes>
       </div>
       <Temp />

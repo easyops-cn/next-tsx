@@ -13,7 +13,8 @@ export async function convertRoutes(
   children: ComponentChild[] | undefined,
   state: ConvertState,
   currentModule: ParsedModule,
-  options: ConvertOptions
+  options: ConvertOptions,
+  parentMenu?: unknown
 ): Promise<RouteConf[]> {
   const routes = await Promise.all(
     children?.map(async (child) => {
@@ -87,6 +88,27 @@ export async function convertRoutes(
         );
       }
 
+      // Check if page.bricks contains a RouteConf wrapper (when page returns <Routes>)
+      const routeWrapper = page.bricks.find(
+        (brick) => "type" in brick && brick.type === "routes"
+      );
+
+      if (routeWrapper && "routes" in routeWrapper && routeWrapper.routes) {
+        // Page returns <Routes>, extract child routes
+        return {
+          type: "routes",
+          path: `\${APP.homepage}${path === "/" ? "" : path}`,
+          alias: componentName,
+          exact: false,
+          routes: routeWrapper.routes,
+          context: page.context,
+          ...("menu" in routeWrapper && routeWrapper.menu
+            ? { menu: routeWrapper.menu }
+            : {}),
+          ...(menu ? { menu } : {}), // Route's own menu overrides
+        } as RouteConf;
+      }
+
       // When there are no sub-routes,
       // we can treat it as an exact match route.
       const hasSub = hasSubRoutes(page.bricks);
@@ -109,6 +131,18 @@ export async function convertRoutes(
     const scoreB = computeRouteScore(b.path);
     return scoreB - scoreA;
   });
+
+  // If parent Routes has menu, wrap routes in a parent route with type: "routes"
+  if (parentMenu) {
+    return [
+      {
+        type: "routes" as const,
+        path: "${APP.homepage}",
+        routes,
+        menu: parentMenu,
+      },
+    ];
+  }
 
   return routes;
 }
@@ -158,6 +192,11 @@ export function computeRouteScore(path: string): number {
 
 function hasSubRoutes(bricks: BrickConf[]): boolean {
   return bricks.some((brick) => {
+    // Check if the brick itself is a RouteConf (has type: "routes")
+    if ("type" in brick && brick.type === "routes") {
+      return true;
+    }
+
     return brick.slots
       ? Object.values(brick.slots).some((slot) => {
           return (

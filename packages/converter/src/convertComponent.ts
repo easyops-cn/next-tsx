@@ -137,7 +137,13 @@ export async function convertComponent(
         brick = await convertIf(component);
         break;
       case "Routes":
-        return convertRoutes(component.children, state, mod, options);
+        return convertRoutes(
+          component.children,
+          state,
+          mod,
+          options,
+          component.properties.menu
+        );
       case "Route":
         // Route is handled in convertRoutes
         state.errors.push({
