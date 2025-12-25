@@ -112,7 +112,7 @@ export async function convertRoutes(
   });
 
   // If parent Routes has menu, wrap routes in a parent route with type: "routes"
-  if (parentMenu && typeof parentMenu === "object") {
+  if (parentMenu) {
     return [
       {
         type: "routes" as const,
