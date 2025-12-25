@@ -2,7 +2,12 @@ import type { ReactNode, PropsWithChildren } from "react";
 
 export function render(app: ReactNode): ReactNode;
 
-export function Routes(props: PropsWithChildren<{ slot?: string }>): ReactNode;
+export function Routes(
+  props: PropsWithChildren<{
+    slot?: string;
+    menu?: RouteMenuConf;
+  }>
+): ReactNode;
 
 export function Route(props: {
   path: string;

@@ -13,7 +13,8 @@ export async function convertRoutes(
   children: ComponentChild[] | undefined,
   state: ConvertState,
   currentModule: ParsedModule,
-  options: ConvertOptions
+  options: ConvertOptions,
+  parentMenu?: unknown
 ): Promise<RouteConf[]> {
   const routes = await Promise.all(
     children?.map(async (child) => {
@@ -109,6 +110,18 @@ export async function convertRoutes(
     const scoreB = computeRouteScore(b.path);
     return scoreB - scoreA;
   });
+
+  // If parent Routes has menu, wrap routes in a parent route with type: "routes"
+  if (parentMenu && typeof parentMenu === "object") {
+    return [
+      {
+        type: "routes" as const,
+        path: "${APP.homepage}",
+        routes,
+        menu: parentMenu,
+      },
+    ];
+  }
 
   return routes;
 }

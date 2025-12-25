@@ -65,7 +65,8 @@ export async function convertApp(
     routesComponent.children,
     state,
     entry,
-    options
+    options,
+    routesComponent.properties.menu
   );
 
   const functions: StoryboardFunction[] = [];
