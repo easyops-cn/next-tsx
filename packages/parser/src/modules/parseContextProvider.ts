@@ -171,6 +171,7 @@ export function parseContextProvider(
         break;
       case "state":
       case "resource":
+      case "derived":
         // Passthrough, no-op
         break;
       case "refetch":
