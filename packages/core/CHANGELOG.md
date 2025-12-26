@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.12.0...@next-tsx/core@0.13.0) (2025-12-26)
+
+
+### Features
+
+* **routes:** support menu property on Routes component ([1cee404](https://github.com/easyops-cn/next-tsx/commit/1cee404acbe34c4df7a472b28b45d06ced144a17))
+
+
+
+
+
 # [0.12.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/core@0.11.0...@next-tsx/core@0.12.0) (2025-12-10)
 
 

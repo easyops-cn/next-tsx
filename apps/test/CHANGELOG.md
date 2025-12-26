@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.20.0...@apps/test@0.21.0) (2025-12-26)
+
+
+### Bug Fixes
+
+* **converter:** support string type for Routes menu property ([047036b](https://github.com/easyops-cn/next-tsx/commit/047036bd7407d9323c3a49086e66c7c165d1c383))
+
+
+### Features
+
+* **routes:** support menu property on Routes component ([1cee404](https://github.com/easyops-cn/next-tsx/commit/1cee404acbe34c4df7a472b28b45d06ced144a17))
+
+
+
+
+
 # [0.20.0](https://github.com/easyops-cn/next-tsx/compare/@apps/test@0.19.0...@apps/test@0.20.0) (2025-12-25)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.1](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.22.0...@next-tsx/parser@0.22.1) (2025-12-26)
+
+
+### Bug Fixes
+
+* context provider support derived type ([bfae9af](https://github.com/easyops-cn/next-tsx/commit/bfae9af52b4a23645c0d78db3a44042ae01f946c))
+
+
+
+
+
 # [0.22.0](https://github.com/easyops-cn/next-tsx/compare/@next-tsx/parser@0.21.0...@next-tsx/parser@0.22.0) (2025-12-25)
 
 
